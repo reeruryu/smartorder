@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MemberServiceImplTest {
-
+	
 	@Mock
 	private MailComponents mailComponents;
 	@Mock
@@ -33,18 +33,7 @@ class MemberServiceImplTest {
 	@InjectMocks
 	private MemberServiceImpl memberService;
 
-//	@Test
-//	void success() {
-//		Member member = Member.builder()
-//			.userId("abc@abc")
-//			.emailAuthYn(false)
-//			.build();
-//
-//		MemberException exception = assertThrows(MemberException.class,
-//			() -> MemberServiceImpl.checkAvailableUserStatus(member));
-//
-//		assertEquals(ErrorCode.USER_NOT_EMAIL_AUTH, exception.getErrorCode());
-//	}
+	// 슬랙 연동 확인
 
 
 }
