@@ -1,4 +1,4 @@
-package com.example.smartorder.controller;
+package com.example.smartorder.main.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

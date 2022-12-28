@@ -16,3 +16,14 @@ spring:
     configuration:
       map-underscore-to-camel-case: true
       log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: h2ju1004@gmail.com
+    password: wmefsolhrcusfffu
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true

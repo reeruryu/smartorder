@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>index</title>
 </head>
 <body>
-    index
+<h1>index</h1>
+<div th:replace="/fragments/layout.html :: fragment-body-menu"></div>
+
 </body>
 </html>

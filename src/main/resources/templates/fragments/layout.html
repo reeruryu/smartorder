@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>smartorder</title>
+</head>
+<body>
+
+<div th:fragment="fragment-body-menu">
+  <div>
+    <a href="/member/mypage">마이페이지</a>
+    |
+    <a href="/member/order">주문하기</a>
+    |
+    <a href="/member/cart">장바구니</a>
+    |
+    <a href="/member/today-order">주문 보기</a>
+    <hr/>
+  </div>
+
+  <div>
+    <a href="/ceo/main">ceo</a>
+    |
+    <a href="/admin/main.do">admin</a>
+    <hr/>
+  </div>
+
+  <div>
+    <a href="/member/login">Login</a>
+    <a href="/member/logout">Logout</a>
+    <a href="/member/register">회원가입</a>
+    <hr/>
+  </div>
+</div>
+
+<div th:fragment="fragment-ceo-body-menu">
+  <div>
+    <a href="/ceo/main"> ceo 메인 </a>
+    |
+    <a href="/ceo/open"> 영업 관리 </a>
+    |
+    <a href="/ceo/menu/list"> 메뉴 관리 </a>
+    |
+    <a href="/ceo/today-order/list.do"> 주문 접수 </a>
+    |
+    <a href="/ceo/order-history/list.do"> 주문 내역 </a>
+    <hr/>
+  </div>
+</div>
+
+<div th:fragment="fragment-admin-body-menu">
+  <div>
+    <a href="/admin/main.do"> 관리자 메인 </a>
+    |
+    <a href="/admin/member/list.do"> 회원 관리 </a>
+    |
+    <a href="/admin/category/list.do"> 카테고리 관리 </a>
+    |
+    <a href="/admin/store/list.do"> 매장 관리 </a>
+    <hr/>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회원 활성화</title>
+</head>
+<body>
+<h1>회원 활성화</h1>
+
+<div th:if="${result eq true}">
+  <p>회원님의 계정이 활성화 되었습니다.</p>
+</div>
+
+<div th:if="${result eq false}">
+  <p>회원님의 계정 활성화에 실패하였습니다.</p>
+</div>
+</body>
+</html>
