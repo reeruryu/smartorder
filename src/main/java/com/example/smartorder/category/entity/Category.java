@@ -23,4 +23,5 @@ public class Category {
 
 	private String categoryName;
 
+	private int sortValue;
 }
