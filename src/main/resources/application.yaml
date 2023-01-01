@@ -11,12 +11,6 @@ spring:
       ddl-auto: update
     show-sql: true
 
-  mybatis:
-    mapper-locations: mybatis/**/*.xml
-    configuration:
-      map-underscore-to-camel-case: true
-      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
   mail:
     host: smtp.gmail.com
     port: 587
@@ -27,3 +21,8 @@ spring:
         smtp:
           starttls:
             enable: true
+
+mybatis:
+  mapper-locations: mybatis/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true

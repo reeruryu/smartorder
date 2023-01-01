@@ -1,6 +1,7 @@
 package com.example.smartorder.member.service.Impl;
 
 import static com.example.smartorder.member.type.ErrorCode.USER_NOT_FOUND;
+import static com.example.smartorder.member.type.UserRole.ROLE_USER;
 import static com.example.smartorder.member.type.UserStatus.STATUS_EMAIL_REQ;
 import static com.example.smartorder.member.type.UserStatus.STATUS_ING;
 
@@ -10,6 +11,7 @@ import com.example.smartorder.member.model.CustomUserDetails;
 import com.example.smartorder.member.model.MemberInput;
 import com.example.smartorder.member.repository.MemberRepository;
 import com.example.smartorder.member.service.MemberService;
+import com.example.smartorder.member.type.UserRole;
 import com.example.smartorder.util.PasswordUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ public class MemberServiceImpl implements MemberService {
 			.pw(encPassword)
 			.emailAuthYn(false)
 			.emailAuthKey(uuid)
+			.userRole(ROLE_USER)
 			.userStatus(STATUS_EMAIL_REQ)
 			.build();
 		memberRepository.save(member);
@@ -100,6 +103,10 @@ public class MemberServiceImpl implements MemberService {
 
 	private static void grantUserRole(Member member, List<GrantedAuthority> grantedAuthorities) {
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+//		if (!ROLE_USER.equals(member.getUserRole())) {
+//			grantedAuthorities.add(new SimpleGrantedAuthority(member.getUserRole()));
+//		}
 
 		if (member.isCeoYn()) {
 			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_CEO"));

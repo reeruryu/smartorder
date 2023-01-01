@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>관리자 페이지</title>
+  <style>
+    .list table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .list table th, .list table td {
+      border: solid 1px #000;
+    }
+    .search-form {
+      position: relative;
+      padding: 5px 0 10px;
+      text-align: right;
+    }
+    .search-form .total-count {
+      position: absolute;
+      left: 0; top: 0;
+      height: 20px;
+      float: left;
+    }
+    .pager {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .pager a.on{
+      font-weight: bold;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+<h1>메뉴 관리</h1>
+<div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>
+<div>
+  <a href="/admin/category/list.do"> 카테고리 관리 </a>
+  |
+  <a href="/admin/menu/list.do"> 메뉴 관리 </a>
+  <hr/>
+</div>
+
+</body>
+</html>

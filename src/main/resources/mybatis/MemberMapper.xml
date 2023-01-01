@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.smartorder.admin.mapper.MemberMapper">
+
+  <sql id="selectListWhere">
+    <if test="searchType != null and searchValue != null">
+      <choose>
+        <when test="searchType == 'userId'">
+          and user_id like concat('%', #{searchValue}, '%')
+        </when>
+        <when test="searchType == 'userName'">
+          and user_name like concat('%', #{searchValue}, '%')
+        </when>
+        <when test="searchType == 'phone'">
+          and phone like concat('%', #{searchValue}, '%')
+        </when>
+        <otherwise>
+          and
+          (
+          user_id like concat('%', #{searchValue}, '%')
+          or
+          user_name like concat('%', #{searchValue}, '%')
+          or
+          phone like concat('%', #{searchValue}, '%')
+          )
+        </otherwise>
+      </choose>
+    </if>
+
+  </sql>
+
+  <select id="selectListCount" resultType="long">
+    select count(*)
+    from member
+    where 1 = 1
+    <include refid="selectListWhere"/>
+  </select>
+
+  <select id="selectList" resultType="com.example.smartorder.admin.dto.MemberDto">
+    select *
+    from member
+    where 1 = 1
+    <include refid="selectListWhere"/>
+    limit #{pageStart}, #{pageEnd}
+  </select>
+
+</mapper>

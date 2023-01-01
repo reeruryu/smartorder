@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>관리자 페이지</title>
+  <style>
+    .list table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .list table th, .list table td {
+      border: solid 1px #000;
+    }
+    .search-form {
+      position: relative;
+      padding: 5px 0 10px;
+      text-align: right;
+    }
+    .search-form .total-count {
+      position: absolute;
+      left: 0; top: 0;
+      height: 20px;
+      float: left;
+    }
+    .pager {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .pager a.on{
+      font-weight: bold;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+<h1>회원 관리</h1>
+<div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>
+<div class="list">
+
+  <div class="search-form">
+    <p class="total-count">전체 <span th:text="${totalCount}"></span>개</p>
+
+    <form method="get">
+      <select name="searchType">
+        <option value="all">전체</option>
+        <option th:selected="${#strings.equals(param.searchType, 'userId')}" value="userId">아이디</option>
+        <option th:selected="${#strings.equals(param.searchType, 'userName')}" value="userName">이름</option>
+        <option th:selected="${#strings.equals(param.searchType, 'phone')}" value="phone">연락처</option>
+      </select>
+      <input th:value="${param.searchValue}" type="search" name="searchValue" placeholder="검색어 입력"/>
+      <button type="submit">검색</button>
+    </form>
+  </div>
+
+  <table>
+    <thead>
+    <tr>
+      <th>NO</th>
+      <th>아이디(이메일)</th>
+      <th>이름</th>
+      <th>연락처</th>
+      <th>이메일 인증 여부</th>
+      <th>가입일</th>
+      <th>권한</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="x : ${list}">
+      <td th:text="${x.seq}">1</td>
+      <td>
+        <a th:text="${x.userId}"
+           th:href="${'detail.do?userId=' + x.userId}">
+          xxx@xxx.com</a>
+      </td>
+      <td th:text="${x.userName}">xxx</td>
+      <td th:text="${x.phone}">xxx-xxxx-xxxx</td>
+      <td>
+        <p th:if="${x.emailAuthYn}">Y</p>
+        <p th:if="${x.emailAuthYn eq false}">N</p>
+      </td>
+      <td th:text="${x.regDt}">xxxx.xx.xx</td>
+      <td th:text="${x.userRole.getDescription()}">xxxx</td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="pager" th:utext="${pager}">
+  </div>
+
+</div>
+</body>
+</html>
