@@ -6,6 +6,7 @@ import com.example.smartorder.admin.model.MemberParam;
 import com.example.smartorder.admin.service.AdminMemberService;
 import com.example.smartorder.member.entity.Member;
 import com.example.smartorder.member.repository.MemberRepository;
+import com.example.smartorder.member.type.UserRole;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -50,4 +51,18 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 		return MemberDto.of(member);
 	}
 
+	@Override
+	public boolean updateRole(String userId, UserRole userRole) {
+		Optional<Member> optionalMember = memberRepository.findById(userId);
+		if (!optionalMember.isPresent()) {
+			return false;
+		}
+
+		Member member = optionalMember.get();
+
+		member.setUserRole(userRole);
+		memberRepository.save(member);
+
+		return true;
+	}
 }

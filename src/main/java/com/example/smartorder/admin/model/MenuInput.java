@@ -18,7 +18,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-public class MenuInput extends BaseEntity {
+public class MenuInput {
 
 	private Long id;
 

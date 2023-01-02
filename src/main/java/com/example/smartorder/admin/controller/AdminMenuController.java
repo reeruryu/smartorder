@@ -86,7 +86,7 @@ public class AdminMenuController extends BaseController {
 			long id = parameter.getId();
 			MenuDto editMenu = adminMenuService.getById(id);
 			if (editMenu == null) {
-				model.addAttribute("message", "강좌정보가 존재하지 않습니다.");
+				model.addAttribute("message", "메뉴정보가 존재하지 않습니다.");
 				return "common/error";
 			}
 

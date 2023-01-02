@@ -37,11 +37,11 @@ public class Member extends BaseEntity {
 	private String emailAuthKey;
 
 
-	private boolean ceoYn;
-	private boolean adminYn;
+	private boolean ceoYn; // 필요 없
+	private boolean adminYn; // 필요 없
 
 	@Enumerated(EnumType.STRING)
-	private UserRole userRole;
+	private UserRole userRole; // userRole로 바꿈
 
 	@Enumerated(EnumType.STRING)
 	private UserStatus userStatus;

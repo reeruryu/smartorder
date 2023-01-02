@@ -104,17 +104,17 @@ public class MemberServiceImpl implements MemberService {
 	private static void grantUserRole(Member member, List<GrantedAuthority> grantedAuthorities) {
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-//		if (!ROLE_USER.equals(member.getUserRole())) {
-//			grantedAuthorities.add(new SimpleGrantedAuthority(member.getUserRole()));
+		if (!ROLE_USER.equals(member.getUserRole())) {
+			grantedAuthorities.add(new SimpleGrantedAuthority(member.getUserRole().name()));
+		}
+
+//		if (member.isCeoYn()) {
+//			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_CEO"));
 //		}
-
-		if (member.isCeoYn()) {
-			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_CEO"));
-		}
-
-		if (member.isAdminYn()) {
-			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		}
+//
+//		if (member.isAdminYn()) {
+//			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+//		}
 	}
 
 }

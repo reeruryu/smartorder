@@ -1,13 +1,13 @@
 package com.example.smartorder.menu.entity;
 
-import com.example.smartorder.Store;
-import com.example.smartorder.category.entity.Category;
 import com.example.smartorder.member.entity.BaseEntity;
+import com.example.smartorder.store.entity.Store;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +28,7 @@ public class StoreMenu extends BaseEntity {
 	@ManyToOne
 	private Menu menu;
 
-	@ManyToOne
+	@OneToOne
 	private Store store;
 
 	private String saleState;

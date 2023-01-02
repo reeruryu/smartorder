@@ -1,6 +1,5 @@
 package com.example.smartorder.admin.dto;
 
-import com.example.smartorder.Store;
 import com.example.smartorder.member.entity.Member;
 import com.example.smartorder.member.type.UserRole;
 import java.time.LocalDateTime;
@@ -24,7 +23,6 @@ public class MemberDto {
 	private boolean emailAuthYn;
 
 	private UserRole userRole;
-	private List<Store> stores;
 	private LocalDateTime regDt;
 	private LocalDateTime wdDt;
 
@@ -39,6 +37,7 @@ public class MemberDto {
 			.phone(member.getPhone())
 			.regDt(member.getRegDt())
 			.emailAuthYn(member.isEmailAuthYn())
+			.userRole(member.getUserRole())
 			.build();
 	}
 
