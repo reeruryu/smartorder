@@ -1,10 +1,13 @@
 package com.example.smartorder.admin.service.Impl;
 
 import com.example.smartorder.admin.dto.CategoryDto;
+import com.example.smartorder.admin.mapper.CategoryMapper;
 import com.example.smartorder.admin.model.CategoryInput;
 import com.example.smartorder.category.entity.Category;
 import com.example.smartorder.category.repository.CategoryRepository;
 import com.example.smartorder.admin.service.AdminCategoryService;
+import com.example.smartorder.menu.entity.Menu;
+import com.example.smartorder.menu.repository.MenuRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,8 @@ import org.springframework.stereotype.Service;
 public class AdminCategoryServiceImpl implements AdminCategoryService {
 
 	private final CategoryRepository categoryRepository;
+	private final MenuRepository menuRepository;
+//	private final CategoryMapper categoryMapper;
 
 	@Override
 	public List<CategoryDto> list() {
@@ -23,6 +28,11 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
 		return CategoryDto.of(list);
 	}
+
+//	@Override
+//	public List<CategoryDto> listByMenu() {
+//		return categoryMapper.selectList();
+//	}
 
 	@Override
 	public boolean add(CategoryInput parameter) {
@@ -56,6 +66,15 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
 	@Override
 	public boolean del(CategoryInput parameter) {
+
+		List<Menu> menuList = menuRepository
+			.findAllByCategoryId(parameter.getId());
+		if (menuList != null) {
+			for (Menu menu: menuList) {
+				menuRepository.deleteById(menu.getId());
+			}
+		}
+
 		categoryRepository.deleteById(parameter.getId());
 
 		return true;

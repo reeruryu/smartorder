@@ -14,4 +14,5 @@ public interface AdminCategoryService {
 
 	boolean del(CategoryInput parameter);
 
+//	List<CategoryDto> listByMenu();
 }

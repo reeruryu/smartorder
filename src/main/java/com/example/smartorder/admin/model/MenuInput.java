@@ -1,4 +1,4 @@
-package com.example.smartorder.menu.entity;
+package com.example.smartorder.admin.model;
 
 import com.example.smartorder.category.entity.Category;
 import com.example.smartorder.member.entity.BaseEntity;
@@ -18,22 +18,21 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
-@Entity
-public class Menu extends BaseEntity {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class MenuInput extends BaseEntity {
+
 	private Long id;
 
-	@ManyToOne
-	private Category category;
+	private long categoryId;
 
 	private String menuName;
 
 	private long menuPrice;
 	private int sortValue;
 
-	private String imagePath;
+//	private String imagePath;
 
 	private String description;
+
+	private String idList;
 
 }

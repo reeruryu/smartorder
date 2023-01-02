@@ -19,6 +19,8 @@ public class CategoryDto {
 	private String categoryName;
 	private int sortValue;
 
+	private int menuCount;
+
 	public static List<CategoryDto> of(List<Category> list) {
 		if (list != null) {
 			List<CategoryDto> categoryList = new ArrayList<>();
