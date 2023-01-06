@@ -12,10 +12,11 @@
 
   <select id="selectList" resultType="com.example.smartorder.dto.StoreMenuDto">
     select
-      m.menu_name,
-      m.menu_price,
-      sm.sale_state,
-      sm.hidden_yn
+        sm.id,
+        m.menu_name,
+        m.menu_price,
+        sm.sale_state,
+        sm.hidden_yn
     from store_menu sm
            join menu m on m.id = sm.menu_id
     where sm.menu_id in

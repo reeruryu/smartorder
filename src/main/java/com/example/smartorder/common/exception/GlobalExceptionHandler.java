@@ -1,9 +1,13 @@
 package com.example.smartorder.common.exception;
 
+import static com.example.smartorder.common.error.ErrorCode.BAD_REQUEST;
 import static com.example.smartorder.common.error.ErrorCode.INTERNAL_SERVER_ERROR;
 
 import com.example.smartorder.common.dto.ApiResponse;
+import javax.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -17,6 +21,21 @@ public class GlobalExceptionHandler {
 
 		return ApiResponse.fail(e.getErrorCode());
 	}
+
+	@ExceptionHandler(MissingServletRequestParameterException.class)
+	public ApiResponse<String> handleException(MissingServletRequestParameterException e) {
+		log.error("{} is occured", BAD_REQUEST.getCode());
+
+		return ApiResponse.fail(BAD_REQUEST);
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ApiResponse<String> handleException(HttpMessageNotReadableException e) {
+		log.error("{} is occured", BAD_REQUEST.getCode());
+
+		return ApiResponse.fail(BAD_REQUEST);
+	}
+
 	@ExceptionHandler(Exception.class)
 	public ApiResponse<String> handleException(Exception e) {
 		log.error("Exception is occured", e);
