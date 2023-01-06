@@ -1,11 +1,9 @@
 package com.example.smartorder.admin.dto;
 
-import com.example.smartorder.category.entity.Category;
-import com.example.smartorder.menu.entity.Menu;
+import com.example.smartorder.entity.Menu;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

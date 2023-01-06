@@ -53,13 +53,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 			.antMatchers("/",
 				"/member/register",
-				"/member/email-auth"
+				"/member/email-auth",
+				"/ceo/**"
 				)
 			.permitAll();
 
 		http.authorizeRequests()
-			.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-			.antMatchers("/ceo/**").hasAuthority("ROLE_CEO");
+			.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN");
+//			.antMatchers("/ceo/**").hasAuthority("ROLE_CEO");
 
 		http.formLogin()
 			.loginPage("/member/login")

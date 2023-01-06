@@ -5,10 +5,11 @@ import com.example.smartorder.admin.mapper.MenuMapper;
 import com.example.smartorder.admin.model.MenuInput;
 import com.example.smartorder.admin.model.MenuParam;
 import com.example.smartorder.admin.service.AdminMenuService;
-import com.example.smartorder.category.entity.Category;
-import com.example.smartorder.category.repository.CategoryRepository;
-import com.example.smartorder.menu.entity.Menu;
-import com.example.smartorder.menu.repository.MenuRepository;
+import com.example.smartorder.entity.Category;
+import com.example.smartorder.repository.CategoryRepository;
+import com.example.smartorder.entity.Menu;
+import com.example.smartorder.repository.MenuRepository;
+import com.example.smartorder.repository.StoreMenuRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
 	private final MenuRepository menuRepository;
 	private final CategoryRepository categoryRepository;
+
+	private final StoreMenuRepository storeMenuRepository;
 	private final MenuMapper menuMapper;
 
 	@Override
@@ -103,6 +106,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
 	@Override
 	public boolean del(String idList) {
+
 		if (idList != null && idList.length() > 0) {
 			String[] ids = idList.split(",");
 			for (String x: ids) {
@@ -114,6 +118,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
 				if (id > 0) {
 					menuRepository.deleteById(id);
+					// storemenu도 삭제해야 함
 				}
 			}
 		}

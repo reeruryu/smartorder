@@ -1,6 +1,6 @@
 package com.example.smartorder.admin.dto;
 
-import com.example.smartorder.category.entity.Category;
+import com.example.smartorder.entity.Category;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
