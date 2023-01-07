@@ -1,12 +1,13 @@
 package com.example.smartorder.entity;
 
 import com.example.smartorder.member.entity.Member;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,29 +20,33 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Store extends BaseEntity {
+public class CartMenu extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-	private Member member;
+	private Cart cart;
 
-	private String storeName;
+	@ManyToOne
+	private StoreMenu storeMenu;
 
-	private String zipcode;
+	private int menuCount;
 
-	private String addr;
-	private String addrDetail;
+	public static CartMenu createCartMenu(Cart cart, StoreMenu storeMenu, int count) {
+		CartMenu cartMenu = new CartMenu();
+		cartMenu.setCart(cart);
+		cartMenu.setStoreMenu(storeMenu);
+		cartMenu.setMenuCount(count);
 
-	private long lat;
-	private long lnt;
+		return cartMenu;
+	}
 
-	private LocalTime startTime;
-	private LocalTime endTime;
+	public void addCount(int count) {
+		this.menuCount += count;
+	}
 
-	private String openDay; // ex) 0,2,3,6 (0 = Monday, 1 = Tuesday,..... 6 = Sunday)
-
-	private boolean openYn;
-
+	public void updateCount(int count) {
+		this.menuCount = count;
+	}
 }

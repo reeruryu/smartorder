@@ -1,6 +1,5 @@
 package com.example.smartorder.entity;
 
-import com.example.smartorder.member.entity.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

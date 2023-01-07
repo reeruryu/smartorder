@@ -6,6 +6,7 @@ import static com.example.smartorder.common.error.ErrorCode.INTERNAL_SERVER_ERRO
 import com.example.smartorder.common.dto.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -38,6 +39,13 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	public ApiResponse<String> handleException(MissingServletRequestParameterException e) {
+		log.error("{} is occured", BAD_REQUEST.getCode());
+
+		return ApiResponse.fail(BAD_REQUEST);
+	}
+
+	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+	public ApiResponse<String> handleException(HttpRequestMethodNotSupportedException e) {
 		log.error("{} is occured", BAD_REQUEST.getCode());
 
 		return ApiResponse.fail(BAD_REQUEST);

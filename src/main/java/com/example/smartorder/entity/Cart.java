@@ -1,14 +1,11 @@
 package com.example.smartorder.entity;
 
-import com.example.smartorder.type.SaleState;
-import java.time.LocalDate;
+import com.example.smartorder.member.entity.Member;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,21 +19,17 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class StoreMenu extends BaseEntity {
+public class Cart extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@OneToOne
-	private Menu menu;
+	private Member member;
 
-	@ManyToOne
-	private Store store;
-
-	@Enumerated(EnumType.STRING)
-	private SaleState saleState;
-
-	private LocalDate soldoutDt; // 스케쥴러로 구현해서 삭제할 예정
-	private boolean hiddenYn;
-
+	public static Cart createCart(Member member) {
+		Cart cart = new Cart();
+		cart.setMember(member);
+		return cart;
+	}
 }

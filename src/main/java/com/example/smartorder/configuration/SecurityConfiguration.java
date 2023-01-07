@@ -54,6 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/",
 				"/member/register",
 				"/member/email-auth",
+				"/cart/**",
 				"/ceo/**"
 				)
 			.permitAll();

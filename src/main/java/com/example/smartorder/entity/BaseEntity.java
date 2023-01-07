@@ -1,4 +1,4 @@
-package com.example.smartorder.member.entity;
+package com.example.smartorder.entity;
 
 import com.example.smartorder.member.type.UserRole;
 import com.example.smartorder.member.type.UserStatus;
