@@ -20,7 +20,7 @@ public class ApiStoreMenuController {
 
 	private final StoreMenuService storeMenuService;
 
-	@GetMapping("/ceo/{storeId}/list/menu") //
+	@GetMapping("/ceo/store/{storeId}/list/menu") //
 	public ApiResponse<List<StoreMenuDto>> listStoreMenu(@NotNull @PathVariable Long storeId,
 		@RequestParam(required = false) Long categoryId) { // ,Principal principal)
 //		String userId = principal.getName();
@@ -30,7 +30,7 @@ public class ApiStoreMenuController {
 
 		return ApiResponse.OK(storeMenuList);
 	}
-	@PutMapping("/ceo/{storeId}/update/menu") //
+	@PutMapping("/ceo/store/{storeId}/update/menu") //
 	public ApiResponse<String> updateStoreMenu(@NotNull @PathVariable Long storeId,
 		@RequestParam Long storeMenuId, @RequestBody UpdateStoreMenu parameter) { // ,Principal principal)
 //		String userId = principal.getName();

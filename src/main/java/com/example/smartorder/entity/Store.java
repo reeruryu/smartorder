@@ -2,7 +2,10 @@ package com.example.smartorder.entity;
 
 import com.example.smartorder.member.entity.BaseEntity;
 import com.example.smartorder.member.entity.Member;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,9 +41,11 @@ public class Store extends BaseEntity {
 	private long lat;
 	private long lnt;
 
-	//	private LocalDateTime startTime;
-//	private LocalDateTime endTime;
-//	private LocalDateTime openDay;
+	private LocalTime startTime;
+	private LocalTime endTime;
+
+	private String openDay; // ex) 0,2,3,6 (0 = Monday, 1 = Tuesday,..... 6 = Sunday)
+
 	private boolean openYn;
 
 }

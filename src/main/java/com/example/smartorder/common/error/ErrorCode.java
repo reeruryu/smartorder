@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 	BAD_REQUEST(400, "잘못된 요청입니다."),
+	END_FASTER_THAN_START(400, "시작 시간이 마감 시간보다 더 빨리야 합니다."),
 
 	UNAUTHORIZED(401, "UNAUTHORIZED"),
 
