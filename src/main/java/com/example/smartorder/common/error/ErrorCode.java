@@ -18,9 +18,11 @@ public enum ErrorCode {
 	NOT_FOUND_STORE(404, "해당하는 가게가 없습니다."),
 	NOT_FOUND_CATEGORY(404, "해당하는 카테고리가 없습니다."),
 	NOT_FOUND_STOREMENU(404, "해당하는 가게 메뉴가 없습니다."),
+	NOT_FOUND_CARTMENU(404, "해당하는 장바구니 메뉴가 없습니다."),
 	NOT_SAME_STORE(404, "장바구니에 다른 가게 메뉴를 담을 수 없습니다."),
 
 	CANNOT_BUY_STOREMENU(404, "현재 구매할 수 없는 가게 메뉴입니다"),
+	CANNOT_ACCESS_CART(404, "본인의 장바구니만 수정이 가능합니다."),
 	STORE_NOT_OPEN(404, "운영 중인 가게가 아닙니다."),
 
 

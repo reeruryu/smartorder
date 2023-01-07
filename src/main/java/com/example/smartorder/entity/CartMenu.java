@@ -46,7 +46,4 @@ public class CartMenu extends BaseEntity {
 		this.menuCount += count;
 	}
 
-	public void updateCount(int count) {
-		this.menuCount = count;
-	}
 }
