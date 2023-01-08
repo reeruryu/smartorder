@@ -5,11 +5,13 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum PayState {
+public enum OrderState {
 
-	BEFORE_PAY("결제 전"),
-	PAY_COMPLETE("결제 완료"),
-	PAY_CANCEL("결제 취소")
+	BEFORE_COOKING("조리 전"),
+	COOKING("조리 중"),
+	PICKUP_REQ("픽업 요청"),
+
+	PICKUP_COMPLETE("픽업 완료")
 	;
 
 	private final String description;

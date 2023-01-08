@@ -1,6 +1,7 @@
 package com.example.smartorder.service;
 
 import com.example.smartorder.dto.CartMenuDto;
+import com.example.smartorder.model.OrderCartMenu;
 import com.example.smartorder.model.AddCartMenu;
 import com.example.smartorder.model.UpdateCartMenu;
 import java.util.List;
@@ -28,4 +29,8 @@ public interface CartService {
 	 */
 	void deleteCartMenu(Long cartMenuId, String userId);
 
+	/**
+	 * 장바구니에 담긴 메뉴들을 주문합니다.
+	 */
+	Long orderCartMenu(Long cartId, String userId);
 }

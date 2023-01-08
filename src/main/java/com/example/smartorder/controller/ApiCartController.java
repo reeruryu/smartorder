@@ -1,7 +1,10 @@
 package com.example.smartorder.controller;
 
+import static com.example.smartorder.common.error.ErrorCode.*;
+
 import com.example.smartorder.common.dto.ApiResponse;
 import com.example.smartorder.dto.CartMenuDto;
+import com.example.smartorder.model.OrderCartMenu;
 import com.example.smartorder.model.AddCartMenu;
 import com.example.smartorder.model.UpdateCartMenu;
 import com.example.smartorder.service.CartService;
@@ -43,7 +46,7 @@ public class ApiCartController {
 	@PutMapping("/cart/{userId}")
 	public ApiResponse<String> updateCartMenu(
 		@NotNull @PathVariable String userId,
-		@RequestBody UpdateCartMenu parameter) {
+		@Valid @RequestBody UpdateCartMenu parameter) {
 
 		cartService.updateCartMenu(parameter, userId);
 
@@ -53,10 +56,21 @@ public class ApiCartController {
 	@DeleteMapping("/cart/{userId}/{cartMenuId}")
 	public ApiResponse<String> deleteCartMenu(
 		@NotNull @PathVariable String userId,
-		@PathVariable Long cartMenuId) {
+		@NotNull @PathVariable Long cartMenuId) {
 
 		cartService.deleteCartMenu(cartMenuId, userId);
 
 		return ApiResponse.OK();
 	}
+
+//	 주문 번호 리턴
+	@PostMapping("/cart/{userId}/order")
+	public ApiResponse<Long> orderCartMenu(@NotNull @PathVariable String userId,
+		@Valid @RequestBody OrderCartMenu parameter) {
+
+		Long orderId = cartService.orderCartMenu(parameter.getCartId(), userId);
+
+		return ApiResponse.OK(orderId);
+	}
+
 }

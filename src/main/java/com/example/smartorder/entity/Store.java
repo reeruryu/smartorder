@@ -1,7 +1,12 @@
 package com.example.smartorder.entity;
 
+import static com.example.smartorder.common.error.ErrorCode.END_FASTER_THAN_START;
+
+import com.example.smartorder.common.exception.ValidationException;
 import com.example.smartorder.member.entity.Member;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +17,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
+@Slf4j
 public class Store extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,5 +50,26 @@ public class Store extends BaseEntity {
 	private String openDay; // ex) 0,2,3,6 (0 = Monday, 1 = Tuesday,..... 6 = Sunday)
 
 	private boolean openYn;
+
+	public boolean isOpenDay(LocalDateTime now) {
+		int todayDay = LocalDateTime.now().getDayOfWeek().getValue();
+		log.info("오늘은 " + String.valueOf(todayDay) + "요일");
+
+		return this.openDay.contains(String.valueOf(todayDay));
+	}
+
+	public boolean isOpenTime(LocalTime now) {
+		if (this.startTime.isAfter(now)) {
+			log.info("startTime 검사");
+			return false;
+		}
+
+		if (this.endTime.isBefore(now)) {
+			log.info("endTime 검사");
+			return false;
+		}
+
+		return true;
+	}
 
 }

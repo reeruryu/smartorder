@@ -2,18 +2,22 @@ package com.example.smartorder.service.Impl;
 
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_CART;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_BUY_STOREMENU;
+import static com.example.smartorder.common.error.ErrorCode.CART_EMPTY;
+import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_CART;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_CARTMENU;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STORE;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STOREMENU;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
+import static com.example.smartorder.common.error.ErrorCode.STORE_NOT_OPEN;
 import static com.example.smartorder.type.SaleState.ON_SALE;
 
 import com.example.smartorder.common.error.ErrorCode;
 import com.example.smartorder.common.exception.NotFoundException;
 import com.example.smartorder.dto.CartMenuDto;
+import com.example.smartorder.entity.Store;
+import com.example.smartorder.dto.OrderDto;
 import com.example.smartorder.entity.Cart;
 import com.example.smartorder.entity.CartMenu;
-import com.example.smartorder.entity.Store;
 import com.example.smartorder.entity.StoreMenu;
 import com.example.smartorder.mapper.CartMenuMapper;
 import com.example.smartorder.member.entity.Member;
@@ -25,13 +29,21 @@ import com.example.smartorder.repository.CartRepository;
 import com.example.smartorder.repository.StoreMenuRepository;
 import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.CartService;
+import com.example.smartorder.service.OrderService;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class CartServiceImpl implements CartService {
 	private final CartMenuRepository cartMenuRepository;
 	private final MemberRepository memberRepository;
@@ -40,6 +52,7 @@ public class CartServiceImpl implements CartService {
 	private final StoreRepository storeRepository;
 
 	private final CartMenuMapper cartMenuMapper;
+	private final OrderService orderService; // 주문 ?
 
 	@Override
 	public void addCartMenu(AddCartMenu parameter, String userId) { // storemenuid, menucnt
@@ -123,10 +136,59 @@ public class CartServiceImpl implements CartService {
 
 	}
 
+	@Override
+	public Long orderCartMenu(Long cartId, String userId) {
 
+		// 유저
+		Member member = getMember(userId);
 
+		// 카트
+		Cart cart = cartRepository.findByMember(member);
+		if (cart == null) {
+			throw new NotFoundException(NOT_FOUND_CART);
+		}
 
+		// 카트 메뉴
+		List<CartMenu> cartMenuList = cartMenuRepository.findAllByCart(cart);
+		if (CollectionUtils.isEmpty(cartMenuList)) {
+			throw new NotFoundException(CART_EMPTY);
+		}
 
+		// 가게 메뉴
+		List<Map<String, Object>> orderMenu = new ArrayList<>();
+		long totalPrice = 0;
+		StoreMenu storeMenu = new StoreMenu();
+		for (CartMenu cartMenu: cartMenuList) {
+			storeMenu = validateStoreMenu(cartMenu.getStoreMenu().getId());
+
+			long menuPrice = storeMenu.getMenu().getMenuPrice();
+			totalPrice += (menuPrice * cartMenu.getMenuCount());
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("menuName", storeMenu.getMenu().getMenuName());
+			map.put("menuPrice", menuPrice);
+			map.put("menuCount", cartMenu.getMenuCount());
+			orderMenu.add(map);
+		}
+
+		// 가게
+		Store store = validateStore(storeMenu.getStore().getId());
+
+		// 주문하기 (회원, 가게, 주문 메뉴, 총 금액, 결제 상태, 주문 상태,
+		Long orderId = orderService.order(OrderDto.builder()
+			.member(member)
+			.store(store)
+			.orderMenu(orderMenu)
+			.orderPrice(totalPrice)
+			.build());
+
+		// 장바구니 메뉴 제거
+		for (CartMenu cartMenu: cartMenuList) {
+			cartMenuRepository.delete(cartMenu);
+		}
+
+		return orderId;
+	}
 
 	private Member getMember(String userId) {
 		Member member = memberRepository.findById(userId)
@@ -148,6 +210,7 @@ public class CartServiceImpl implements CartService {
 	}
 
 	private CartMenu validateCartMenu(Long cartMenuId, Member member) {
+		// 카트 메뉴 있는지
 		CartMenu cartMenu = cartMenuRepository.findById(cartMenuId)
 			.orElseThrow(() -> new NotFoundException(NOT_FOUND_CARTMENU));
 
@@ -159,6 +222,27 @@ public class CartServiceImpl implements CartService {
 	}
 
 	// 주문 시 가게  openYn, 운영 요일, 시간 check
+	private Store validateStore(Long storeId) {
+		Store store = storeRepository.findById(storeId)
+			.orElseThrow(() -> new NotFoundException(NOT_FOUND_STORE));
+
+		if (!store.isOpenYn()) {
+			log.info("isOpenYn()");
+			throw new NotFoundException(STORE_NOT_OPEN);
+		}
+
+		if(!store.isOpenDay(LocalDateTime.now())) {
+			log.info("isOpenDay()");
+			throw new NotFoundException(STORE_NOT_OPEN);
+		}
+
+		if(!store.isOpenTime(LocalTime.now())) {
+			log.info("isOpenTime()");
+			throw new NotFoundException(STORE_NOT_OPEN);
+		}
+
+		return store;
+	}
 
 
 }

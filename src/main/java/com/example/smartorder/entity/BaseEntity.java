@@ -23,8 +23,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class BaseEntity {
 	@CreatedDate
-	private LocalDateTime regDt;// 가입날짜
+	private LocalDateTime regDt; // 가입, 등록, 주문 날짜 .. 등 (create)
 	@LastModifiedDate
-	private LocalDateTime udDt; // 수정날짜
+	private LocalDateTime udDt; // 수정 날짜 (update)
 
 }
