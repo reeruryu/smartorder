@@ -21,7 +21,4 @@ public class AddCartMenu {
 	@Min(value = 1, message = "최소 1개 이상 담아주세요.")
 	int menuCount;
 
-	@NotNull
-	Long storeId;
-
 }

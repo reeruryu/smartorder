@@ -54,11 +54,6 @@ public class CartServiceImpl implements CartService {
 			cartRepository.save(cart);
 		}
 
-/*		// 가게 validate 검사
-		Store store = storeRepository.findById(parameter.getStoreId())
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_STORE));
-		// 운영 중인지 검사하기*/
-
 		// 가게 메뉴 validate 검사
 		StoreMenu storeMenu = validateStoreMenu(parameter.getStoreMenuId());
 
@@ -70,6 +65,11 @@ public class CartServiceImpl implements CartService {
 				throw new NotFoundException(ErrorCode.NOT_SAME_STORE);
 			}
 		}
+
+		/*		// 가게 validate 검사
+		Store store = storeRepository.findById(storeMenu.getStore().getId())
+			.orElseThrow(() -> new NotFoundException(NOT_FOUND_STORE));
+		// 운영 중인지 검사하기*/
 
 		// 카트 메뉴 get
 		CartMenu cartMenu = cartMenuRepository.findByCartAndStoreMenu(cart, storeMenu);
@@ -122,6 +122,11 @@ public class CartServiceImpl implements CartService {
 		cartMenuRepository.deleteById(cartMenuId);
 
 	}
+
+
+
+
+
 
 	private Member getMember(String userId) {
 		Member member = memberRepository.findById(userId)
