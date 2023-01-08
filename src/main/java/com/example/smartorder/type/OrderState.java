@@ -6,7 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum OrderState {
-
 	BEFORE_COOKING("조리 전"),
 	COOKING("조리 중"),
 	PICKUP_REQ("픽업 요청"),

@@ -53,9 +53,9 @@ public class Orders extends BaseEntity{
 	@Enumerated(EnumType.STRING)
 	private OrderState orderState;
 
-	private boolean orderCancelYn;
+//	private boolean orderCancelYn; // 필요 없어서 지울 예정
 
-	private String orderCancelReason;
+	private String orderCancelReason; // 지울지 고민 중
 
 
 

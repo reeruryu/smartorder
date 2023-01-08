@@ -27,6 +27,7 @@ public enum ErrorCode {
 	CANNOT_ACCESS_CART(404, "본인의 장바구니만 수정이 가능합니다."),
 	STORE_NOT_OPEN(404, "운영 중인 가게가 아닙니다."),
 	CART_EMPTY(404, "장바구니가 비어 있습니다."),
+	CANNOT_ACCESS_STORE(404, "매장 점주 아이디가 아닙니다."),
 
 
 

@@ -55,7 +55,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				"/member/register",
 				"/member/email-auth",
 				"/cart/**",
-				"/ceo/**"
+				"/ceo/**",
+				"/order/**"
 				)
 			.permitAll();
 
