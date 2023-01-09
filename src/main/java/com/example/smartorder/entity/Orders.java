@@ -4,6 +4,7 @@ import com.example.smartorder.member.entity.Member;
 import com.example.smartorder.type.OrderState;
 import com.example.smartorder.type.PayState;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Column;
@@ -53,9 +54,11 @@ public class Orders extends BaseEntity{
 	@Enumerated(EnumType.STRING)
 	private OrderState orderState;
 
-//	private boolean orderCancelYn; // 필요 없어서 지울 예정
+	private boolean orderCancelYn;
 
 	private String orderCancelReason; // 지울지 고민 중
+
+	private LocalDateTime cancelDt; // 새로운 컬럼 추가
 
 
 

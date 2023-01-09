@@ -7,6 +7,8 @@ import com.example.smartorder.common.error.ErrorCode;
 import com.example.smartorder.common.exception.NotFoundException;
 import com.example.smartorder.dto.OrderHistDto;
 import com.example.smartorder.model.GetCeoOrderHist;
+import com.example.smartorder.model.OrderCancel;
+import com.example.smartorder.model.OrderCeoCancel;
 import com.example.smartorder.service.OrderService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,6 +23,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,6 +62,24 @@ public class ApiOrderController {
 		Page<OrderHistDto> orderDtos = orderService.getCeoOrderHist(pageable, startDate, endDate, parameter.getStoreId(), userId);
 
 		return ApiResponse.OK(orderDtos);
+	}
+
+	@PostMapping("/order/{userId}/cancel")
+	public ApiResponse<Long> orderCancel(@NotNull @PathVariable String userId,
+		@RequestBody OrderCancel parameter) {
+
+		Long orderId = orderService.orderCancel(parameter, userId);
+
+		return ApiResponse.OK(orderId);
+	}
+
+	@PostMapping("/order/ceo/{userId}/cancel")
+	public ApiResponse<Long> orderCeoCancel(@NotNull @PathVariable String userId,
+		@RequestBody OrderCeoCancel parameter) {
+
+		Long orderId = orderService.orderCeoCancel(parameter, userId);
+
+		return ApiResponse.OK(orderId);
 	}
 
 }

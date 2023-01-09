@@ -5,6 +5,8 @@ import com.example.smartorder.dto.OrderDto;
 import com.example.smartorder.dto.OrderHistDto;
 import com.example.smartorder.member.entity.Member;
 import com.example.smartorder.model.AddCartMenu;
+import com.example.smartorder.model.OrderCancel;
+import com.example.smartorder.model.OrderCeoCancel;
 import com.example.smartorder.model.UpdateCartMenu;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,4 +33,14 @@ public interface OrderService {
 	 */
 	Page<OrderHistDto> getCeoOrderHist(Pageable pageable,
 		LocalDate startDate, LocalDate endDate, Long storeId, String userId);
+
+	/**
+	 * 고객이 주문을 취소합니다.
+	 */
+	Long orderCancel(OrderCancel parameter, String userId);
+
+	/**
+	 * 점주가 주문을 취소합니다.
+	 */
+	Long orderCeoCancel(OrderCeoCancel parameter, String userId);
 }
