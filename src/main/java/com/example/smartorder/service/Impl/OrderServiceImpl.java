@@ -10,7 +10,6 @@ import static com.example.smartorder.common.error.ErrorCode.ORDER_ALREADY_CANCEL
 import static com.example.smartorder.type.OrderState.*;
 import static com.example.smartorder.type.PayState.*;
 
-import com.example.smartorder.common.error.ErrorCode;
 import com.example.smartorder.common.exception.NotFoundException;
 import com.example.smartorder.dto.OrderDto;
 import com.example.smartorder.dto.OrderHistDto;
@@ -23,12 +22,9 @@ import com.example.smartorder.model.OrderCeoCancel;
 import com.example.smartorder.repository.OrderRepository;
 import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.OrderService;
-import com.example.smartorder.type.OrderState;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.criterion.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -94,17 +90,17 @@ public class OrderServiceImpl implements OrderService {
 			throw new NotFoundException(CANNOT_ACCESS_ORDER);
 		}
 
-		if (order.isOrderCancelYn()) {
+		if (order.isOrderCancel()) {
 			throw new NotFoundException(ORDER_ALREADY_CANCEL);
 		}
 
-		if (!BEFORE_COOKING.equals(order.getOrderState())) {
+		if (BEFORE_COOKING != order.getOrderState()) {
 			throw new NotFoundException(CANNOT_CANCEL_ORDER);
 		}
 
 		// 결제 전이면 끝, 결제완료면 취소 진행
 
-		order.setOrderCancelYn(true);
+		order.setOrderCancel(true);
 		order.setOrderCancelReason(parameter.getOrderCancelReason());
 		order.setCancelDt(LocalDateTime.now());
 		orderRepository.save(order);
@@ -127,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new NotFoundException(CANNOT_ACCESS_ORDER);
 		}
 
-		if (order.isOrderCancelYn()) {
+		if (order.isOrderCancel()) {
 			throw new NotFoundException(ORDER_ALREADY_CANCEL);
 		}
 
@@ -135,7 +131,7 @@ public class OrderServiceImpl implements OrderService {
 		//  -> 고객 결제 취소 진행
 
 		order.setPayState(PAY_CANCEL);
-		order.setOrderCancelYn(true);
+		order.setOrderCancel(true);
 		order.setOrderCancelReason(parameter.getOrderCancelReason());
 		order.setCancelDt(LocalDateTime.now());
 		orderRepository.save(order);

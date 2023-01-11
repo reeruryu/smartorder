@@ -25,15 +25,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/order")
 public class ApiOrderController {
 	private final OrderService orderService;
 
-	@GetMapping("/order/{userId}")
+	@GetMapping("/{userId}")
 	public ApiResponse<Page<OrderHistDto>> getOrderHist(@NotNull @PathVariable String userId,
 		@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
 		@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate endDate,
@@ -48,7 +50,8 @@ public class ApiOrderController {
 		return ApiResponse.OK(orderDtos);
 	}
 
-	@GetMapping("/order/ceo/{userId}")
+	// TODO  custom validator를 따로 만들어서 처리하기
+	@GetMapping("/ceo/{userId}")
 	public ApiResponse<Page<OrderHistDto>> getCeoOrderHist(@NotNull @PathVariable String userId,
 		@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
 		@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate endDate,
@@ -64,7 +67,7 @@ public class ApiOrderController {
 		return ApiResponse.OK(orderDtos);
 	}
 
-	@PostMapping("/order/{userId}/cancel")
+	@PostMapping("/{userId}/cancel")
 	public ApiResponse<Long> orderCancel(@NotNull @PathVariable String userId,
 		@RequestBody OrderCancel parameter) {
 
@@ -73,7 +76,7 @@ public class ApiOrderController {
 		return ApiResponse.OK(orderId);
 	}
 
-	@PostMapping("/order/ceo/{userId}/cancel")
+	@PostMapping("/ceo/{userId}/cancel")
 	public ApiResponse<Long> orderCeoCancel(@NotNull @PathVariable String userId,
 		@RequestBody OrderCeoCancel parameter) {
 

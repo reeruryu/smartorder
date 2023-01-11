@@ -1,5 +1,6 @@
 package com.example.smartorder.entity;
 
+import com.example.smartorder.dto.OrderMenuDto;
 import com.example.smartorder.member.entity.Member;
 import com.example.smartorder.type.OrderState;
 import com.example.smartorder.type.PayState;
@@ -44,7 +45,7 @@ public class Orders extends BaseEntity{
 
 	@Type(type = "json")
 	@Column(columnDefinition = "json", nullable = false)
-	private List<Map<String, Object>> orderMenu;
+	private List<OrderMenuDto> orderMenu;
 
 	private long orderPrice;
 
@@ -54,15 +55,11 @@ public class Orders extends BaseEntity{
 	@Enumerated(EnumType.STRING)
 	private OrderState orderState;
 
-	private boolean orderCancelYn;
+	private boolean orderCancel;
 
-	private String orderCancelReason; // 지울지 고민 중
+	private String orderCancelReason;
 
-	private LocalDateTime cancelDt; // 새로운 컬럼 추가
-
-
-
-
+	private LocalDateTime cancelDt;
 
 
 }

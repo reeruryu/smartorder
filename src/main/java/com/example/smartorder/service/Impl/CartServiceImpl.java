@@ -14,6 +14,7 @@ import static com.example.smartorder.type.SaleState.ON_SALE;
 import com.example.smartorder.common.error.ErrorCode;
 import com.example.smartorder.common.exception.NotFoundException;
 import com.example.smartorder.dto.CartMenuDto;
+import com.example.smartorder.dto.OrderMenuDto;
 import com.example.smartorder.entity.Store;
 import com.example.smartorder.dto.OrderDto;
 import com.example.smartorder.entity.Cart;
@@ -33,9 +34,7 @@ import com.example.smartorder.service.OrderService;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -155,7 +154,7 @@ public class CartServiceImpl implements CartService {
 		}
 
 		// 가게 메뉴
-		List<Map<String, Object>> orderMenu = new ArrayList<>();
+		List<OrderMenuDto> orderMenu = new ArrayList<>();
 		long totalPrice = 0;
 		StoreMenu storeMenu = new StoreMenu();
 		for (CartMenu cartMenu: cartMenuList) {
@@ -164,11 +163,11 @@ public class CartServiceImpl implements CartService {
 			long menuPrice = storeMenu.getMenu().getMenuPrice();
 			totalPrice += (menuPrice * cartMenu.getMenuCount());
 
-			Map<String, Object> map = new HashMap<>();
-			map.put("menuName", storeMenu.getMenu().getMenuName());
-			map.put("menuPrice", menuPrice);
-			map.put("menuCount", cartMenu.getMenuCount());
-			orderMenu.add(map);
+			orderMenu.add(OrderMenuDto.builder()
+									.menuName(storeMenu.getMenu().getMenuName())
+									.menuPrice(menuPrice)
+									.menuCount(cartMenu.getMenuCount())
+									.build());
 		}
 
 		// 가게
@@ -176,11 +175,11 @@ public class CartServiceImpl implements CartService {
 
 		// 주문하기 (회원, 가게, 주문 메뉴, 총 금액, 결제 상태, 주문 상태,
 		Long orderId = orderService.order(OrderDto.builder()
-			.member(member)
-			.store(store)
-			.orderMenu(orderMenu)
-			.orderPrice(totalPrice)
-			.build());
+													.member(member)
+													.store(store)
+													.orderMenu(orderMenu)
+													.orderPrice(totalPrice)
+													.build());
 
 		// 장바구니 메뉴 제거
 		for (CartMenu cartMenu: cartMenuList) {
@@ -202,7 +201,7 @@ public class CartServiceImpl implements CartService {
 			.orElseThrow(() -> new NotFoundException(NOT_FOUND_STOREMENU));
 
 		// 가게 메뉴가 구매가 불가능할 시
-		if (storeMenu.isHiddenYn() || !ON_SALE.equals(storeMenu.getSaleState())) {
+		if (storeMenu.isHiddenYn() || ON_SALE != storeMenu.getSaleState()) {
 			throw new NotFoundException(CANNOT_BUY_STOREMENU);
 		}
 

@@ -14,6 +14,7 @@ import com.example.smartorder.repository.StoreRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -60,7 +61,7 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 			return false;
 		}
 		Member member = optionalMember.get();
-		if (!ROLE_CEO.equals(member.getUserRole())) {
+		if (ROLE_CEO != member.getUserRole()) {
 			return false;
 		}
 
@@ -69,7 +70,7 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 			.storeName(parameter.getStoreName())
 			.zipcode(parameter.getZipcode())
 			.addr(parameter.getAddr())
-			.addrDetail(parameter.getAddrDetail())
+			.addrDetail(parameter.getAddrDetail()) // 주소 입력 시 위도 경도 프론트에서 받아 옴
 			.build();
 		storeRepository.save(store);
 
@@ -84,7 +85,7 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 			return false;
 		}
 		Member member = optionalMember.get();
-		if (!ROLE_CEO.equals(member.getUserRole())) {
+		if (ROLE_CEO != member.getUserRole()) {
 			return false;
 		}
 
@@ -95,7 +96,7 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 		store.setStoreName(parameter.getStoreName());
 		store.setZipcode(parameter.getZipcode());
 		store.setAddr(parameter.getAddr());
-		store.setAddrDetail(parameter.getAddrDetail());
+		store.setAddrDetail(parameter.getAddrDetail()); // 주소 입력 시 위도 경도 프론트에서 받아 옴
 		storeRepository.save(store);
 
 		return true;

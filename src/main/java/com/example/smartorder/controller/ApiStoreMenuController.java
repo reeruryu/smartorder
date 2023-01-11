@@ -20,20 +20,20 @@ public class ApiStoreMenuController {
 
 	private final StoreMenuService storeMenuService;
 
-	@GetMapping("/ceo/store/{storeId}/list/menu") //
+	// TODO spring security -> Principal principal -> principal.getName() -> service에 userId 추가
+
+	@GetMapping("/ceo/store/{storeId}/list/menu")
 	public ApiResponse<List<StoreMenuDto>> listStoreMenu(@NotNull @PathVariable Long storeId,
-		@RequestParam(required = false) Long categoryId) { // ,Principal principal)
-//		String userId = principal.getName();
+		@RequestParam(required = false) Long categoryId) {
 
 		List<StoreMenuDto> storeMenuList = storeMenuService.listStoreMenu(storeId,
-			categoryId); // , userId);
+			categoryId);
 
 		return ApiResponse.OK(storeMenuList);
 	}
 	@PutMapping("/ceo/store/{storeId}/update/menu") //
-	public ApiResponse<String> updateStoreMenu(@NotNull @PathVariable Long storeId,
-		@RequestParam Long storeMenuId, @RequestBody UpdateStoreMenu parameter) { // ,Principal principal)
-//		String userId = principal.getName();
+	public ApiResponse updateStoreMenu(@NotNull @PathVariable Long storeId,
+		@RequestParam Long storeMenuId, @RequestBody UpdateStoreMenu parameter) {
 
 		storeMenuService.updateStoreMenu(storeId, storeMenuId, parameter); // , userId);
 

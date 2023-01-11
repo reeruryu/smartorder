@@ -23,7 +23,7 @@ import lombok.Setter;
 public class OrderHistDto {
 	Long orderId;
 	Long storeId;
-	List<Map<String, Object>> orderMenu;
+	List<OrderMenuDto> orderMenu;
 	LocalDateTime regDt;
 
 	long orderPrice;

@@ -104,7 +104,7 @@ public class MemberServiceImpl implements MemberService {
 	private static void grantUserRole(Member member, List<GrantedAuthority> grantedAuthorities) {
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-		if (!ROLE_USER.equals(member.getUserRole())) {
+		if (ROLE_USER != member.getUserRole()) {
 			grantedAuthorities.add(new SimpleGrantedAuthority(member.getUserRole().name()));
 		}
 

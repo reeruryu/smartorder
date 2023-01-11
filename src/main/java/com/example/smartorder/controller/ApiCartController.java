@@ -18,15 +18,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/cart")
 public class ApiCartController {
 	private final CartService cartService;
 
-	@PostMapping("/cart/{userId}")
-	public ApiResponse<String> addCartMenu(@NotNull @PathVariable String userId,
+	@PostMapping("/{userId}")
+	public ApiResponse addCartMenu(@NotNull @PathVariable String userId,
 		@Valid @RequestBody AddCartMenu parameter) {
 
 		cartService.addCartMenu(parameter, userId);
@@ -34,7 +36,7 @@ public class ApiCartController {
 		return ApiResponse.OK();
 	}
 
-	@GetMapping("/cart/{userId}")
+	@GetMapping("/{userId}")
 	public ApiResponse<List<CartMenuDto>> cartMenuList(
 		@NotNull @PathVariable String userId) {
 
@@ -43,8 +45,8 @@ public class ApiCartController {
 		return ApiResponse.OK(list);
 	}
 
-	@PutMapping("/cart/{userId}")
-	public ApiResponse<String> updateCartMenu(
+	@PutMapping("/{userId}")
+	public ApiResponse updateCartMenu(
 		@NotNull @PathVariable String userId,
 		@Valid @RequestBody UpdateCartMenu parameter) {
 
@@ -53,8 +55,8 @@ public class ApiCartController {
 		return ApiResponse.OK();
 	}
 
-	@DeleteMapping("/cart/{userId}/{cartMenuId}")
-	public ApiResponse<String> deleteCartMenu(
+	@DeleteMapping("/{userId}/{cartMenuId}")
+	public ApiResponse deleteCartMenu(
 		@NotNull @PathVariable String userId,
 		@NotNull @PathVariable Long cartMenuId) {
 
@@ -64,7 +66,7 @@ public class ApiCartController {
 	}
 
 //	 주문 번호 리턴
-	@PostMapping("/cart/{userId}/order")
+	@PostMapping("/{userId}/order")
 	public ApiResponse<Long> orderCartMenu(@NotNull @PathVariable String userId,
 		@Valid @RequestBody OrderCartMenu parameter) {
 

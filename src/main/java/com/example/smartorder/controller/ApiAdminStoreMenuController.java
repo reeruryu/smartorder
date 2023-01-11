@@ -18,7 +18,7 @@ public class ApiAdminStoreMenuController {
 	private final StoreMenuService storeMenuService;
 
 	@PostMapping("/ceo/create/menus") // 모든 메뉴 첫 등록 시
-	public ApiResponse<?> createAllStoreMenu(@Valid @RequestBody CreateAllStoreMenu request,
+	public ApiResponse createAllStoreMenu(@Valid @RequestBody CreateAllStoreMenu request,
 		Errors errors) { // 가게 아이디
 
 		storeMenuService.createAllStoreMenu(request.getStoreId());
@@ -27,7 +27,7 @@ public class ApiAdminStoreMenuController {
 	}
 
 	@PostMapping("/ceo/create/menu") // 신 메뉴 출시
-	public ApiResponse<?> createNewStoreMenu(@Valid @RequestBody CreateNewStoreMenu request,
+	public ApiResponse createNewStoreMenu(@Valid @RequestBody CreateNewStoreMenu request,
 		Errors errors) { // 가게 아이디
 
 		storeMenuService.createNewStoreMenu(request.getMenuIdList());

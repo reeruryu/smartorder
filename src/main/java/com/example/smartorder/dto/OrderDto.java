@@ -18,6 +18,6 @@ import lombok.Setter;
 public class OrderDto {
 	Member member;
 	Store store;
-	List<Map<String, Object>> orderMenu;
+	List<OrderMenuDto> orderMenu;
 	long orderPrice;
 }

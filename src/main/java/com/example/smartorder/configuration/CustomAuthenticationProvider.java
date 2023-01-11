@@ -48,15 +48,15 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 		}
 
 		UserStatus userStatus = user.getMember().getUserStatus();
-		if (STATUS_EMAIL_REQ.equals(userStatus)) {
+		if (STATUS_EMAIL_REQ == userStatus) {
 			throw new MemberException(USER_NOT_EMAIL_AUTH.getDescription());
 		}
 
-		if (STATUS_STOP.equals(userStatus)) {
+		if (STATUS_STOP == userStatus) {
 			throw new MemberException(USER_STATUS_STOP.getDescription());
 		}
 
-		if (STATUS_WITHDRAW.equals(userStatus)) {
+		if (STATUS_WITHDRAW == userStatus) {
 			throw new MemberException(USER_STATUS_WITHDRAW.getDescription());
 		}
 

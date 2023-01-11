@@ -29,7 +29,7 @@ public class ApiStoreController {
 	private final StoreService storeService;
 
 	@PutMapping("/ceo/store/{storeId}/openDay") //
-	public ApiResponse<String> updateStoreOpenDay(@NotNull @PathVariable Long storeId,
+	public ApiResponse updateStoreOpenDay(@NotNull @PathVariable Long storeId,
 		@RequestBody UpdateStoreOpenDay parameter) {
 
 		storeService.updateStoreOpenDay(storeId, parameter.getOpenDayList());
@@ -38,7 +38,7 @@ public class ApiStoreController {
 	}
 
 	@PutMapping("/ceo/store/{storeId}/openTime") //
-	public ApiResponse<String> updateStoreOpenTime(@NotNull @PathVariable Long storeId,
+	public ApiResponse updateStoreOpenTime(@NotNull @PathVariable Long storeId,
 		@Valid @RequestBody UpdateStoreOpenTime parameter) {
 
 		storeService.updateStoreOpenTime(storeId, parameter);
@@ -47,7 +47,7 @@ public class ApiStoreController {
 	}
 
 	@PutMapping("/ceo/store/{storeId}/openYn") //
-	public ApiResponse<String> updateStoreOpenYn(@NotNull @PathVariable Long storeId,
+	public ApiResponse updateStoreOpenYn(@NotNull @PathVariable Long storeId,
 		@Valid @RequestBody UpdateStoreOpenYn parameter) {
 
 		storeService.updateStoreOpenYn(storeId, parameter.isOpenYn());
