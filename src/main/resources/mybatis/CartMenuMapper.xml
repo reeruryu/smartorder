@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.smartorder.mapper.CartMenuMapper">
+
+  <select id="selectList" resultType="com.example.smartorder.dto.CartMenuDto">
+    select
+        cm.id,
+        cm.menu_count,
+        m.menu_name,
+        m.menu_price,
+        s.id as store_id
+    from cart_menu cm join store_menu sm on sm.id = cm.store_menu_id,
+         menu m, store s
+    where cm.cart_id = #{cartId}
+      and m.id = sm.menu_id and s.id = sm.store_id;
+  </select>
+
+</mapper>

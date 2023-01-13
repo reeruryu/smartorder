@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.smartorder.mapper.StoreMenuMapper">
+
+  <sql id="selectListWhere">
+    <if test="categoryId > 0">
+      and m.category_id = #{categoryId}
+    </if>
+  </sql>
+
+  <select id="selectList" resultType="com.example.smartorder.dto.StoreMenuDto">
+    select
+        sm.id,
+        m.menu_name,
+        m.menu_price,
+        sm.sale_state,
+        sm.hidden_yn
+    from store_menu sm
+           join menu m on m.id = sm.menu_id
+    where sm.menu_id in
+          (select m.id from menu m
+                       where 1=1
+                       <include refid="selectListWhere"/>)
+      and store_id = #{storeId}
+  </select>
+
+</mapper>

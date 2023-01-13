@@ -1,6 +1,5 @@
 package com.example.smartorder.admin.model;
 
-import com.example.smartorder.member.entity.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

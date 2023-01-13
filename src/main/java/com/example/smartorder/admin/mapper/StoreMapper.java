@@ -11,5 +11,6 @@ import org.apache.ibatis.annotations.Mapper;
 public interface StoreMapper {
 	List<StoreDto> selectList(StoreParam parameter);
 	Long selectListCount(StoreParam parameter);
+	List<com.example.smartorder.dto.StoreDto> selectNearList(double lat, double lnt);
 
 }

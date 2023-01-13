@@ -1,7 +1,6 @@
 package com.example.smartorder.admin.dto;
 
-import com.example.smartorder.member.entity.Member;
-import com.example.smartorder.store.entity.Store;
+import com.example.smartorder.entity.Store;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

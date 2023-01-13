@@ -4,12 +4,21 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     username: smartorder
     password: smartorder
+#  batch:
+#    jdbc:
+#      initialize-schema: always
+#    job:
+#      names: ${job.name:NONE}
 
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  redis:
+    host: localhost
+    port: 6379
 
   mail:
     host: smtp.gmail.com

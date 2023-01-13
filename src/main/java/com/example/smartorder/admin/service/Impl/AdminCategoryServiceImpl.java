@@ -1,13 +1,12 @@
 package com.example.smartorder.admin.service.Impl;
 
 import com.example.smartorder.admin.dto.CategoryDto;
-import com.example.smartorder.admin.mapper.CategoryMapper;
 import com.example.smartorder.admin.model.CategoryInput;
-import com.example.smartorder.category.entity.Category;
-import com.example.smartorder.category.repository.CategoryRepository;
+import com.example.smartorder.entity.Category;
+import com.example.smartorder.repository.CategoryRepository;
 import com.example.smartorder.admin.service.AdminCategoryService;
-import com.example.smartorder.menu.entity.Menu;
-import com.example.smartorder.menu.repository.MenuRepository;
+import com.example.smartorder.entity.Menu;
+import com.example.smartorder.repository.MenuRepository;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
