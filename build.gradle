@@ -32,6 +32,8 @@ dependencies {
 
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:'
     implementation 'com.vladmihalcea:hibernate-types-52:2.9.13'
+//    implementation 'com.google.code.geocoder-java:geocoder-java:0.16'
+
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
