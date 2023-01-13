@@ -3,7 +3,6 @@ package com.example.smartorder.controller;
 import static com.example.smartorder.common.error.ErrorCode.*;
 
 import com.example.smartorder.common.dto.ApiResponse;
-import com.example.smartorder.common.error.ErrorCode;
 import com.example.smartorder.common.exception.NotFoundException;
 import com.example.smartorder.dto.OrderHistDto;
 import com.example.smartorder.model.GetCeoOrderHist;
@@ -11,12 +10,10 @@ import com.example.smartorder.model.OrderCancel;
 import com.example.smartorder.model.OrderCeoCancel;
 import com.example.smartorder.service.OrderService;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -32,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/order")
-public class ApiOrderController {
+public class OrderController {
 	private final OrderService orderService;
 
 	@GetMapping("/{userId}")

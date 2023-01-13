@@ -2,7 +2,7 @@ package com.example.smartorder.repository;
 
 import com.example.smartorder.entity.Orders;
 import com.example.smartorder.entity.Store;
-import com.example.smartorder.member.entity.Member;
+import com.example.smartorder.entity.Member;
 import java.time.LocalDateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

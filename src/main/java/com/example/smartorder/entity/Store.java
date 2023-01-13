@@ -1,9 +1,5 @@
 package com.example.smartorder.entity;
 
-import static com.example.smartorder.common.error.ErrorCode.END_FASTER_THAN_START;
-
-import com.example.smartorder.common.exception.ValidationException;
-import com.example.smartorder.member.entity.Member;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;

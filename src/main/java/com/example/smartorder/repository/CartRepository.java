@@ -1,9 +1,7 @@
 package com.example.smartorder.repository;
 
 import com.example.smartorder.entity.Cart;
-import com.example.smartorder.member.entity.Member;
-import java.util.Optional;
-import org.springframework.data.domain.Example;
+import com.example.smartorder.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

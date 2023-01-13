@@ -1,20 +1,19 @@
 package com.example.smartorder.admin.service.Impl;
 
-import static com.example.smartorder.member.type.UserRole.ROLE_CEO;
 
 import com.example.smartorder.admin.dto.StoreDto;
 import com.example.smartorder.admin.mapper.StoreMapper;
 import com.example.smartorder.admin.model.StoreInput;
 import com.example.smartorder.admin.model.StoreParam;
 import com.example.smartorder.admin.service.AdminStoreService;
-import com.example.smartorder.member.entity.Member;
-import com.example.smartorder.member.repository.MemberRepository;
+import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Store;
+import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.StoreRepository;
+import com.example.smartorder.type.UserRole;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -61,7 +60,7 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 			return false;
 		}
 		Member member = optionalMember.get();
-		if (ROLE_CEO != member.getUserRole()) {
+		if (UserRole.ROLE_CEO != member.getUserRole()) {
 			return false;
 		}
 
@@ -85,7 +84,7 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 			return false;
 		}
 		Member member = optionalMember.get();
-		if (ROLE_CEO != member.getUserRole()) {
+		if (UserRole.ROLE_CEO != member.getUserRole()) {
 			return false;
 		}
 

@@ -1,7 +1,5 @@
 package com.example.smartorder.controller;
 
-import static com.example.smartorder.common.error.ErrorCode.*;
-
 import com.example.smartorder.common.dto.ApiResponse;
 import com.example.smartorder.dto.CartMenuDto;
 import com.example.smartorder.model.OrderCartMenu;
@@ -24,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/cart")
-public class ApiCartController {
+public class CartController {
 	private final CartService cartService;
 
 	@PostMapping("/{userId}")

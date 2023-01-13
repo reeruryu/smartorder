@@ -1,13 +1,11 @@
 package com.example.smartorder.entity;
 
 import com.example.smartorder.dto.OrderMenuDto;
-import com.example.smartorder.member.entity.Member;
 import com.example.smartorder.type.OrderState;
 import com.example.smartorder.type.PayState;
 import com.vladmihalcea.hibernate.type.json.JsonStringType;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

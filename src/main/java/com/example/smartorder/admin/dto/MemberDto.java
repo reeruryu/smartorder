@@ -1,10 +1,9 @@
 package com.example.smartorder.admin.dto;
 
-import com.example.smartorder.member.entity.Member;
-import com.example.smartorder.member.type.UserRole;
+import com.example.smartorder.entity.Member;
+import com.example.smartorder.type.UserRole;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +35,6 @@ public class MemberDto {
 			.userName(member.getUserName())
 			.phone(member.getPhone())
 			.regDt(member.getRegDt())
-			.emailAuthYn(member.isEmailAuthYn())
 			.userRole(member.getUserRole())
 			.build();
 	}

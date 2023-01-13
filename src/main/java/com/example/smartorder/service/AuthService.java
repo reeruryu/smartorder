@@ -1,6 +1,6 @@
 package com.example.smartorder.service;
 
-import com.example.smartorder.admin.model.Auth;
+import com.example.smartorder.model.Auth;
 import com.example.smartorder.dto.AuthDto;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

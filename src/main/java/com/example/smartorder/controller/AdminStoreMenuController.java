@@ -7,14 +7,13 @@ import com.example.smartorder.service.StoreMenuService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class ApiAdminStoreMenuController {
+public class AdminStoreMenuController {
 	private final StoreMenuService storeMenuService;
 
 	@PostMapping("/ceo/create/menus") // 모든 메뉴 첫 등록 시

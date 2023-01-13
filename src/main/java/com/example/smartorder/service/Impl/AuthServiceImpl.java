@@ -13,10 +13,9 @@ import static com.example.smartorder.type.UserStatus.STATUS_ING;
 import static com.example.smartorder.type.UserStatus.STATUS_STOP;
 import static com.example.smartorder.type.UserStatus.STATUS_WITHDRAW;
 
-import com.example.smartorder.admin.model.Auth;
+import com.example.smartorder.model.Auth;
 import com.example.smartorder.common.exception.MemberException;
 import com.example.smartorder.component.MailComponents;
-import com.example.smartorder.component.TokenProvider;
 import com.example.smartorder.dto.AuthDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.model.CustomUserDetails;
@@ -32,7 +31,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

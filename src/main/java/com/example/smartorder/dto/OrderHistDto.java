@@ -1,14 +1,10 @@
 package com.example.smartorder.dto;
 
 import com.example.smartorder.entity.Orders;
-import com.example.smartorder.entity.Store;
-import com.example.smartorder.member.entity.Member;
 import com.example.smartorder.type.OrderState;
 import com.example.smartorder.type.PayState;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

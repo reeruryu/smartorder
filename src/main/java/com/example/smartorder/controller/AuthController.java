@@ -1,6 +1,6 @@
 package com.example.smartorder.controller;
 
-import com.example.smartorder.admin.model.Auth;
+import com.example.smartorder.model.Auth;
 import com.example.smartorder.common.dto.ApiResponse;
 import com.example.smartorder.component.TokenProvider;
 import com.example.smartorder.dto.AuthDto;

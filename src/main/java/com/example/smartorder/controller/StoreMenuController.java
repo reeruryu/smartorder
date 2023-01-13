@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-public class ApiStoreMenuController {
+public class StoreMenuController {
 
 	private final StoreMenuService storeMenuService;
 
