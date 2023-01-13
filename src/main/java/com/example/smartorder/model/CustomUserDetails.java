@@ -1,9 +1,10 @@
-package com.example.smartorder.member.model;
+package com.example.smartorder.model;
 
-import static com.example.smartorder.member.type.UserStatus.STATUS_EMAIL_REQ;
-import static com.example.smartorder.member.type.UserStatus.STATUS_ING;
+import static com.example.smartorder.type.UserStatus.STATUS_EMAIL_REQ;
+import static com.example.smartorder.type.UserStatus.STATUS_STOP;
+import static com.example.smartorder.type.UserStatus.STATUS_WITHDRAW;
 
-import com.example.smartorder.member.entity.Member;
+import com.example.smartorder.entity.Member;
 import java.util.Collection;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -35,13 +36,25 @@ public class CustomUserDetails implements UserDetails {
 		return member.getUserId();
 	}
 
+	/**
+	 * 만료 여부
+	 */
 	@Override
 	public boolean isAccountNonExpired() {
+		if (STATUS_WITHDRAW == member.getUserStatus()) {
+			return false;
+		}
 		return true;
 	}
 
+	/**
+	 * 잠김 여부
+	 */
 	@Override
 	public boolean isAccountNonLocked() {
+		if (STATUS_STOP == member.getUserStatus()) {
+			return false;
+		}
 		return true;
 	}
 
@@ -50,11 +63,14 @@ public class CustomUserDetails implements UserDetails {
 		return true;
 	}
 
+	/**
+	 * 활성화 여부
+	 */
 	@Override
 	public boolean isEnabled() {
-//		if (STATUS_EMAIL_REQ.equals(member.getUserStatus())) {
-//			return false;
-//		}
+		if (STATUS_EMAIL_REQ == member.getUserStatus()) {
+			return false;
+		}
 		return true;
 	}
 }

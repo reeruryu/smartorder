@@ -26,6 +26,13 @@ public class GlobalExceptionHandler {
 		return ApiResponse.fail(e.getErrorCode());
 	}
 
+	@ExceptionHandler(MemberException.class)
+	public ApiResponse<String> handleException(MemberException e) {
+		log.error("{} is occured", e.getErrorCode());
+
+		return ApiResponse.fail(e.getErrorCode());
+	}
+
 	@ExceptionHandler(ValidationException.class)
 	public ApiResponse<String> handleException(ValidationException e) {
 		log.error("{} is occured", e.getErrorCode());

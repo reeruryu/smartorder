@@ -11,10 +11,12 @@ public enum ErrorCode {
 
 
 	UNAUTHORIZED(401, "UNAUTHORIZED"),
-
+	USER_NOT_EMAIL_AUTH(401, "이메일 인증이 완료되지 않았습니다."),
+	USER_STATUS_STOP(401, "정지된 회원입니다."),
+	USER_STATUS_WITHDRAW(401, "탈퇴한 회원입니다."),
 
 	// 404 NOT FOUND
-	NOT_FOUND_USER(404, "해당하는 유저가 없습니다."),
+	NOT_FOUND_USER(404, "회원 정보가 존재하지 않습니다."),
 	NOT_FOUND_STORE(404, "해당하는 가게가 없습니다."),
 	NOT_FOUND_CATEGORY(404, "해당하는 카테고리가 없습니다."),
 	NOT_FOUND_STOREMENU(404, "해당하는 가게 메뉴가 없습니다."),
@@ -35,15 +37,24 @@ public enum ErrorCode {
 
 
 
+
 	// 405 Method Not Allowed
 	NOT_SUPPORT_REQUEST_METHOD(404, "해당 request method를 지원하지 않습니다."),
+
+
+	// 409
+	ALREADY_USERID_EXISTS(409, "이미 사용 중인 아이디입니다."),
+	ALREADY_AUTH_EMAIL(409, "이미 이메일 인증을 완료한 계정입니다."),
+
 
 
 	// 415
 	NOT_SUPPORT_MEDIA_TYPE(415, "해당 media type을 지원하지 않습니다."),
 
 
-	INTERNAL_SERVER_ERROR(500, "서버 내부 오류가 발생했습니다.")
+	// 500
+	INTERNAL_SERVER_ERROR(500, "서버 내부 오류가 발생했습니다."),
+	FAIL_SEND_MAIL(500, "메일 전송에 실패했습니다.")
 	;
 
 	private int code;

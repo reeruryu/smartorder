@@ -31,6 +31,9 @@ spring:
           starttls:
             enable: true
 
+  jwt:
+    secret: c21hcnRvcmRlci1wcm9qZWN0LXJ5dXJlZXJ1LWp3dC1zZWNyZXQta2V5
+
 mybatis:
   mapper-locations: mybatis/**/*.xml
   configuration:

@@ -1,4 +1,4 @@
-package com.example.smartorder.member.type;
+package com.example.smartorder.type;
 
 public enum UserStatus {
 	STATUS_EMAIL_REQ, // 현재 이메일 요청 중

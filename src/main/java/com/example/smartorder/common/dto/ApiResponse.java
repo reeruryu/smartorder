@@ -1,11 +1,12 @@
 package com.example.smartorder.common.dto;
 
+import static com.example.smartorder.common.error.ErrorCode.*;
+
 import com.example.smartorder.common.error.ErrorCode;
 import java.util.List;
-import lombok.AllArgsConstructor;
+import java.util.stream.Collectors;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
 
 @Getter
 public class ApiResponse<T> {
@@ -41,6 +42,17 @@ public class ApiResponse<T> {
 	public static <T> ApiResponse<T> fail(ErrorCode errorCode) {
 		return new ApiResponse<>(new ApiHeader(errorCode.getCode(),
 			errorCode.name()), new ApiBody(null, errorCode.getMessage()));
+	}
+
+	// fail - validation 메세지 반환
+	public static <T> ApiResponse<T> fail(List<ObjectError> errors) {
+
+		List<String> errorMessage = errors.stream()
+			.map(e -> e.getDefaultMessage())
+			.collect(Collectors.toList());
+
+		return new ApiResponse<>(new ApiHeader(BAD_REQUEST.getCode(), "BAD_REQUEST"),
+			new ApiBody(null, errorMessage));
 	}
 
 }

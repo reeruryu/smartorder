@@ -1,38 +1,30 @@
 package com.example.smartorder.configuration;
 
-import com.example.smartorder.member.service.MemberService;
+import com.example.smartorder.component.JwtAuthenticationFilter;
+import com.example.smartorder.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private final MemberService memberService;
+	private final JwtAuthenticationFilter authenticationFilter;
+	private final AuthService authService;
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	public CustomAuthenticationProvider customAuthenticationProvider() {
-		return new CustomAuthenticationProvider(memberService, passwordEncoder());
-	}
-
-	@Bean
-	UserAuthenticationFailureHandler getFailureHandler() {
-		return new UserAuthenticationFailureHandler();
 	}
 
 	@Override
@@ -51,50 +43,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().sameOrigin();
 
 		http.authorizeRequests()
+			.antMatchers("/admin/**").hasRole("ADMIN")
 			.antMatchers("/",
-				"/member/register",
-				"/member/email-auth",
+				"/auth/**",
 				"/cart/**",
 				"/ceo/**",
 				"/order/**",
 				"/store/**"
 				)
-			.permitAll();
-
-		http.authorizeRequests()
-			.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN");
-//			.antMatchers("/ceo/**").hasAuthority("ROLE_CEO");
-
-		http.formLogin()
-			.loginPage("/member/login")
-			.defaultSuccessUrl("/")
-			.failureHandler(getFailureHandler())
-			.permitAll();
-
-
-
-//			.and()
-//			.addFilterBefore(customAuthenticationFilter(),
-//				UsernamePasswordAuthenticationFilter.class);
-
-		http.logout()
-			.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-			.logoutSuccessUrl("/")
-			.invalidateHttpSession(true);
-
-		http.exceptionHandling()
-			.accessDeniedPage("/error/denied");
+			.permitAll()
+			.and()
+			.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 		super.configure(http);
 	}
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-//		auth.userDetailsService(memberService)
-//			.passwordEncoder(passwordEncoder());
-//
-//		super.configure(auth);
-		auth.authenticationProvider(customAuthenticationProvider());
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
 	}
 }

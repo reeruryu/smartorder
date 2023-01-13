@@ -1,4 +1,4 @@
-package com.example.smartorder.member.type;
+package com.example.smartorder.type;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
