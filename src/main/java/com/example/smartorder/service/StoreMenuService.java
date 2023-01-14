@@ -1,8 +1,6 @@
 package com.example.smartorder.service;
 
-import com.example.smartorder.admin.dto.MenuDto;
 import com.example.smartorder.dto.StoreMenuDto;
-import com.example.smartorder.entity.Menu;
 import com.example.smartorder.model.UpdateStoreMenu;
 import java.util.List;
 

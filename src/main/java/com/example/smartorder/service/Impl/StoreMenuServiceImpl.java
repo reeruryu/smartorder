@@ -3,7 +3,8 @@ package com.example.smartorder.service.Impl;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_CATEGORY;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STORE;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STOREMENU;
-import static com.example.smartorder.type.SaleState.*;
+import static com.example.smartorder.type.SaleState.ON_SALE;
+import static com.example.smartorder.type.SaleState.SOLDOUT_FOR_ONE_DAY;
 
 import com.example.smartorder.common.exception.NotFoundException;
 import com.example.smartorder.dto.StoreMenuDto;
@@ -19,7 +20,6 @@ import com.example.smartorder.repository.StoreMenuRepository;
 import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.StoreMenuService;
 import com.example.smartorder.type.SaleState;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

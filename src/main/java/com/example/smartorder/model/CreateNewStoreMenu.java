@@ -1,6 +1,5 @@
 package com.example.smartorder.model;
 
-import com.example.smartorder.entity.Menu;
 import java.util.List;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,5 @@
 package com.example.smartorder.model;
 
-import com.example.smartorder.type.SaleState;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

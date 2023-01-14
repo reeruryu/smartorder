@@ -1,6 +1,6 @@
 package com.example.smartorder.common.dto;
 
-import static com.example.smartorder.common.error.ErrorCode.*;
+import static com.example.smartorder.common.error.ErrorCode.BAD_REQUEST;
 
 import com.example.smartorder.common.error.ErrorCode;
 import java.util.List;

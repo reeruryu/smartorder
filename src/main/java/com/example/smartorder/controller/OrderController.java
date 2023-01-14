@@ -1,6 +1,6 @@
 package com.example.smartorder.controller;
 
-import static com.example.smartorder.common.error.ErrorCode.*;
+import static com.example.smartorder.common.error.ErrorCode.END_FASTER_THAN_START;
 
 import com.example.smartorder.common.dto.ApiResponse;
 import com.example.smartorder.common.exception.NotFoundException;

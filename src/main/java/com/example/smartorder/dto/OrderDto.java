@@ -1,7 +1,7 @@
 package com.example.smartorder.dto;
 
-import com.example.smartorder.entity.Store;
 import com.example.smartorder.entity.Member;
+import com.example.smartorder.entity.Store;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

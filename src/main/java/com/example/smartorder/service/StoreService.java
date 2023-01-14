@@ -1,7 +1,6 @@
 package com.example.smartorder.service;
 
 import com.example.smartorder.model.UpdateStoreOpenTime;
-import java.time.LocalDateTime;
 
 public interface StoreService {
 

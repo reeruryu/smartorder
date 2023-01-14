@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum ErrorCode {
 	BAD_REQUEST(400, "잘못된 요청입니다."),
 	END_FASTER_THAN_START(400, "시작 시간이 마감 시간보다 더 빨리야 합니다."),
+	USER_NOT_CEO(400, "점주 아이디가 아닙니다."),
 
 
 	UNAUTHORIZED(401, "UNAUTHORIZED"),
@@ -19,6 +20,7 @@ public enum ErrorCode {
 	NOT_FOUND_USER(404, "회원 정보가 존재하지 않습니다."),
 	NOT_FOUND_STORE(404, "해당하는 가게가 없습니다."),
 	NOT_FOUND_CATEGORY(404, "해당하는 카테고리가 없습니다."),
+	NOT_FOUND_MENU(404, "해당하는 메뉴가 없습니다."),
 	NOT_FOUND_STOREMENU(404, "해당하는 가게 메뉴가 없습니다."),
 	NOT_FOUND_CART(404, "해당하는 장바구니가 없습니다."),
 	NOT_FOUND_CARTMENU(404, "해당하는 장바구니 메뉴가 없습니다."),
@@ -45,6 +47,9 @@ public enum ErrorCode {
 	// 409
 	ALREADY_USERID_EXISTS(409, "이미 사용 중인 아이디입니다."),
 	ALREADY_AUTH_EMAIL(409, "이미 이메일 인증을 완료한 계정입니다."),
+	ALREADY_CATEGORY_NAME_EXISTS(409, "중복된 카테고리명입니다."),
+	ALREADY_MENU_NAME_EXISTS(409, "중복된 메뉴명입니다."),
+	ALREADY_STORE_NAME_EXISTS(409, "중복된 가게명입니다."),
 
 
 

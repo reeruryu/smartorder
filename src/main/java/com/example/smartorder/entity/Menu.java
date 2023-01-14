@@ -30,8 +30,8 @@ public class Menu extends BaseEntity {
 	private long menuPrice;
 	private int sortValue;
 
-	private String imagePath;
-
 	private String description;
+
+	//	private String imagePath;
 
 }

@@ -33,8 +33,8 @@ public class GlobalExceptionHandler {
 		return ApiResponse.fail(e.getErrorCode());
 	}
 
-	@ExceptionHandler(ValidationException.class)
-	public ApiResponse<String> handleException(ValidationException e) {
+	@ExceptionHandler(AdminException.class)
+	public ApiResponse<String> handleException(AdminException e) {
 		log.error("{} is occured", e.getErrorCode());
 
 		return ApiResponse.fail(e.getErrorCode());

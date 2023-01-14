@@ -1,7 +1,6 @@
 package com.example.smartorder.service;
 
 import com.example.smartorder.dto.CartMenuDto;
-import com.example.smartorder.model.OrderCartMenu;
 import com.example.smartorder.model.AddCartMenu;
 import com.example.smartorder.model.UpdateCartMenu;
 import java.util.List;

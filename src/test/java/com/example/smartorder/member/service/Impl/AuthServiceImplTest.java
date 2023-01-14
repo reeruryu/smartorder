@@ -2,9 +2,9 @@ package com.example.smartorder.member.service.Impl;
 
 import static org.mockito.ArgumentMatchers.any;
 
-import com.example.smartorder.component.MailComponents;
+import com.example.smartorder.common.component.MailComponents;
 import com.example.smartorder.repository.MemberRepository;
-import com.example.smartorder.service.Impl.AuthServiceImpl;
+import com.example.smartorder.service.auth.Impl.AuthServiceImpl;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
