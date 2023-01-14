@@ -13,4 +13,5 @@ public interface StoreMenuRepository extends JpaRepository<StoreMenu, Long> {
 	void deleteAllByMenu(Menu menu);
 	List<StoreMenu> findAllBySaleState(SaleState saleState);
 
+
 }

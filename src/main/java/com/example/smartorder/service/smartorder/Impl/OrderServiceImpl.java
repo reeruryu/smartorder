@@ -1,4 +1,4 @@
-package com.example.smartorder.service.Impl;
+package com.example.smartorder.service.smartorder.Impl;
 
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_ORDER;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_STORE;
@@ -8,21 +8,19 @@ import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STORE;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 import static com.example.smartorder.common.error.ErrorCode.ORDER_ALREADY_CANCEL;
 import static com.example.smartorder.type.OrderState.BEFORE_COOKING;
-import static com.example.smartorder.type.PayState.BEFORE_PAY;
 import static com.example.smartorder.type.PayState.PAY_CANCEL;
 
-import com.example.smartorder.common.exception.NotFoundException;
+import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.OrderDto;
 import com.example.smartorder.dto.OrderHistDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Orders;
 import com.example.smartorder.entity.Store;
-import com.example.smartorder.model.OrderCancel;
-import com.example.smartorder.model.OrderCeoCancel;
+import com.example.smartorder.model.OrderParam;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.OrderRepository;
 import com.example.smartorder.repository.StoreRepository;
-import com.example.smartorder.service.OrderService;
+import com.example.smartorder.service.smartorder.OrderService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -39,14 +37,8 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Long order(OrderDto orderDto) {
+		Orders order = orderDto.toEntity();
 
-		Orders order = Orders.builder()
-			.member(orderDto.getMember())
-			.store(orderDto.getStore())
-			.orderMenu(orderDto.getOrderMenu())
-			.orderPrice(orderDto.getOrderPrice())
-			.payState(BEFORE_PAY)
-			.build();
 		orderRepository.save(order);
 
 		return order.getId();
@@ -65,41 +57,24 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public Page<OrderHistDto> getCeoOrderHist(Pageable pageable, LocalDate startDate,
-		LocalDate endDate, Long storeId, String userId) {
-		Member member = getMember(userId);
-		Store store = getStore(storeId);
-
-		// 본인 매장이 아닌 경우
-		if (!member.equals(store.getMember())) {
-			throw new NotFoundException(CANNOT_ACCESS_STORE);
-		}
-
-		Page<Orders> orderHist = orderRepository.findByStoreAndRegDtBetween(store,
-			startDate.atTime(0,0,0), endDate.atTime(23,59,59), pageable);
-
-		return orderHist.map(OrderHistDto::of);
-	}
-
-	@Override
-	public Long orderCancel(OrderCancel parameter, String userId) {
+	public Long orderCancel(OrderParam.Cancel parameter, String userId) {
 
 		Member member = getMember(userId);
 		Orders order = getOrder(parameter.getOrderId());
 
 		if (!member.equals(order.getMember())) {
-			throw new NotFoundException(CANNOT_ACCESS_ORDER);
+			throw new CustomException(CANNOT_ACCESS_ORDER);
 		}
 
 		if (order.isOrderCancel()) {
-			throw new NotFoundException(ORDER_ALREADY_CANCEL);
+			throw new CustomException(ORDER_ALREADY_CANCEL);
 		}
 
 		if (BEFORE_COOKING != order.getOrderState()) {
-			throw new NotFoundException(CANNOT_CANCEL_ORDER);
+			throw new CustomException(CANNOT_CANCEL_ORDER);
 		}
 
-		// 결제 전이면 끝, 결제완료면 취소 진행
+		// TODO 결제 전이면 끝, 결제완료면 취소 진행
 
 		order.setOrderCancel(true);
 		order.setOrderCancelReason(parameter.getOrderCancelReason());
@@ -109,27 +84,45 @@ public class OrderServiceImpl implements OrderService {
 		return order.getId();
 	}
 
+
 	@Override
-	public Long orderCeoCancel(OrderCeoCancel parameter, String userId) {
+	public Page<OrderHistDto> getCeoOrderHist(Pageable pageable, LocalDate startDate,
+		LocalDate endDate, Long storeId, String userId) {
+		Member member = getMember(userId);
+		Store store = getStore(storeId);
+
+		// 본인 매장이 아닌 경우
+		if (!member.equals(store.getMember())) {
+			throw new CustomException(CANNOT_ACCESS_STORE);
+		}
+
+		Page<Orders> orderHist = orderRepository.findByStoreAndRegDtBetween(store,
+			startDate.atTime(0,0,0), endDate.atTime(23,59,59), pageable);
+
+		return orderHist.map(OrderHistDto::of);
+	}
+
+
+	@Override
+	public Long orderCeoCancel(OrderParam.CeoCancel parameter, String userId) {
 
 		Member member = getMember(userId);
 		Store store = getStore(parameter.getStoreId());
 		Orders order = getOrder(parameter.getOrderId());
 
 		if (!member.equals(store.getMember())) {
-			throw new NotFoundException(CANNOT_ACCESS_STORE);
+			throw new CustomException(CANNOT_ACCESS_STORE);
 		}
 
 		if (!store.equals(order.getStore())) {
-			throw new NotFoundException(CANNOT_ACCESS_ORDER);
+			throw new CustomException(CANNOT_ACCESS_ORDER);
 		}
 
 		if (order.isOrderCancel()) {
-			throw new NotFoundException(ORDER_ALREADY_CANCEL);
+			throw new CustomException(ORDER_ALREADY_CANCEL);
 		}
 
-		// order.getMember()
-		//  -> 고객 결제 취소 진행
+		// TODO 고객 결제 취소 진행
 
 		order.setPayState(PAY_CANCEL);
 		order.setOrderCancel(true);
@@ -141,17 +134,17 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	private Member getMember(String userId) {
-		return memberRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
+		return memberRepository.findByUserId(userId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 	}
 
 	private Store getStore(Long storeId) {
 		return storeRepository.findById(storeId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_STORE));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
 	}
 
 	private Orders getOrder(Long orderId) {
 		return orderRepository.findById(orderId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_ORDER));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_ORDER));
 	}
 }

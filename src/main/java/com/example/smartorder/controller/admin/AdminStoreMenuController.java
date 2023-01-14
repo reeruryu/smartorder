@@ -1,35 +1,33 @@
 package com.example.smartorder.controller.admin;
 
 import com.example.smartorder.common.dto.ApiResponse;
-import com.example.smartorder.model.CreateAllStoreMenu;
-import com.example.smartorder.model.CreateNewStoreMenu;
-import com.example.smartorder.service.StoreMenuService;
+import com.example.smartorder.model.AdminStoreMenu;
+import com.example.smartorder.service.admin.AdminStoreMenuService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/admin/store-menu")
 public class AdminStoreMenuController {
-	private final StoreMenuService storeMenuService;
+	private final AdminStoreMenuService adminStoreMenuService;
 
-	@PostMapping("/ceo/create/menus") // 모든 메뉴 첫 등록 시
-	public ApiResponse createAllStoreMenu(@Valid @RequestBody CreateAllStoreMenu request,
-		Errors errors) { // 가게 아이디
+	@PostMapping("/add/{storeId}.do") // 새로운 가게 모든 메뉴 첫 등록 시
+	public ApiResponse addAllStoreMenu(Long storeId) {
 
-		storeMenuService.createAllStoreMenu(request.getStoreId());
+		adminStoreMenuService.addAllStoreMenu(storeId);
 
 		return ApiResponse.OK();
 	}
 
-	@PostMapping("/ceo/create/menu") // 신 메뉴 출시
-	public ApiResponse createNewStoreMenu(@Valid @RequestBody CreateNewStoreMenu request,
-		Errors errors) { // 가게 아이디
+	@PostMapping("/add-new.do") // 신 메뉴 출시
+	public ApiResponse addNewStoreMenu(@RequestBody @Valid AdminStoreMenu.AddNew parameter) {
 
-		storeMenuService.createNewStoreMenu(request.getMenuIdList());
+		adminStoreMenuService.addNewStoreMenu(parameter.getMenuIdList());
 
 		return ApiResponse.OK();
 	}

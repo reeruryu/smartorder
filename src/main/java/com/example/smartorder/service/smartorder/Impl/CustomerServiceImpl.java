@@ -1,10 +1,10 @@
-package com.example.smartorder.service.Impl;
+package com.example.smartorder.service.smartorder.Impl;
 
 
 import com.example.smartorder.dto.StoreDto;
 import com.example.smartorder.mapper.StoreMapper;
 import com.example.smartorder.repository.StoreRepository;
-import com.example.smartorder.service.CustomerService;
+import com.example.smartorder.service.smartorder.CustomerService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -28,7 +28,7 @@ public class AdminMemberController {
 	private final AdminMemberService adminMemberService;
 
 	@GetMapping("/list.do")
-	public ApiResponse<Page<MemberDto>> list(@RequestParam String userId,
+	public ApiResponse list(@RequestParam String userId,
 		@PageableDefault(size = 10, sort = "regDt", direction = Direction.DESC) Pageable pageable) {
 
 		Page<MemberDto> list = adminMemberService.list(userId, pageable);
@@ -36,13 +36,8 @@ public class AdminMemberController {
 		return ApiResponse.OK(list);
 	}
 	@PutMapping("/update-role/{id}.do")
-	public ApiResponse status(@NotNull @PathVariable Long id,
-		AdminMember.UpdateRole parameter, BindingResult bindingResult) {
-
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	public ApiResponse status(@PathVariable Long id,
+		AdminMember.UpdateRole parameter) {
 
 		adminMemberService.updateRole(id, parameter.getUserRole());
 

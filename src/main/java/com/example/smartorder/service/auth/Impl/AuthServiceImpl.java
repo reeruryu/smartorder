@@ -14,7 +14,7 @@ import static com.example.smartorder.type.UserStatus.STATUS_STOP;
 import static com.example.smartorder.type.UserStatus.STATUS_WITHDRAW;
 
 import com.example.smartorder.common.component.MailComponents;
-import com.example.smartorder.common.exception.MemberException;
+import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.AuthDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.model.Auth;
@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Member member = memberRepository.findByUserId(username)
-			.orElseThrow(() -> new MemberException(NOT_FOUND_USER));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
 		List<GrantedAuthority> grantedAuthorities = getGrantedAuthorities(member);
 
@@ -56,12 +56,12 @@ public class AuthServiceImpl implements AuthService {
 
 		boolean exists = memberRepository.existsByUserId(parameter.getUserId());
 		if (exists) {
-			throw new MemberException(ALREADY_USERID_EXISTS);
+			throw new CustomException(ALREADY_USERID_EXISTS);
 		}
 
 		String uuid = UUID.randomUUID().toString();
 		if (!sendAuthMail(parameter.getUserId(), uuid)) {
-			throw new MemberException(FAIL_SEND_MAIL);
+			throw new CustomException(FAIL_SEND_MAIL);
 		}
 
 		String encPassword = PasswordUtils.encPassword(parameter.getPw());
@@ -71,10 +71,10 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public AuthDto login(Auth.Login parameter) {
 		Member member = memberRepository.findByUserId(parameter.getUserId())
-			.orElseThrow(() -> new MemberException(NOT_FOUND_USER));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
 		if (!PasswordUtils.equals(parameter.getPw(), member.getPw())) {
-			throw new MemberException(NOT_FOUND_USER);
+			throw new CustomException(NOT_FOUND_USER);
 		}
 
 		checkUserStatus(member);
@@ -91,10 +91,10 @@ public class AuthServiceImpl implements AuthService {
 	@Override
 	public void emailAuth(String uuid) {
 		Member member = memberRepository.findByEmailAuthKey(uuid)
-			.orElseThrow(() -> new MemberException(NOT_FOUND_USER));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
 		if (member.getUserStatus() != STATUS_EMAIL_REQ) {
-			throw new MemberException(ALREADY_AUTH_EMAIL);
+			throw new CustomException(ALREADY_AUTH_EMAIL);
 		}
 
 		member.setEmailAuthDt(LocalDateTime.now());
@@ -112,15 +112,15 @@ public class AuthServiceImpl implements AuthService {
 
 	private static void checkUserStatus(Member member) {
 		if (member.getUserStatus() == STATUS_EMAIL_REQ) {
-			throw new MemberException(USER_NOT_EMAIL_AUTH);
+			throw new CustomException(USER_NOT_EMAIL_AUTH);
 		}
 
 		if (member.getUserStatus() == STATUS_STOP) {
-			throw new MemberException(USER_STATUS_STOP);
+			throw new CustomException(USER_STATUS_STOP);
 		}
 
 		if (member.getUserStatus() == STATUS_WITHDRAW) {
-			throw new MemberException(USER_STATUS_WITHDRAW);
+			throw new CustomException(USER_STATUS_WITHDRAW);
 		}
 	}
 

@@ -16,7 +16,7 @@ public interface AdminMenuService {
 	/**
 	 * 메뉴를 추가합니다.
 	 */
-	void add(Long menuId, Add parameter);
+	void add(Add parameter);
 
 	/**
 	 * 메뉴를 변경합니다.

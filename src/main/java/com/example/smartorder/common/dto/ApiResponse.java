@@ -9,12 +9,13 @@ import lombok.Getter;
 import org.springframework.validation.ObjectError;
 
 @Getter
-public class ApiResponse<T> {
+public class ApiResponse {
 
 	private static int SUCCESS = 200;
 
 	private ApiHeader header;
 	private ApiBody body;
+
 
 	public ApiResponse(ApiHeader header) {
 		this.header = header;
@@ -33,26 +34,30 @@ public class ApiResponse<T> {
 	}
 
 	// OK - 반환할 데이터가 있는 응답
-	public static <T> ApiResponse<T> OK(T data) {
-		return new ApiResponse<>(new ApiHeader(SUCCESS, "SUCCESS")
+	public static <T> ApiResponse OK(T data) {
+		return new ApiResponse(new ApiHeader(SUCCESS, "SUCCESS")
 			, new ApiBody(data, null));
 	}
 
 	// fail - 에러 코드 메세지 반환
-	public static <T> ApiResponse<T> fail(ErrorCode errorCode) {
-		return new ApiResponse<>(new ApiHeader(errorCode.getCode(),
+	public static ApiResponse fail(ErrorCode errorCode) {
+		return new ApiResponse(new ApiHeader(errorCode.getCode(),
 			errorCode.name()), new ApiBody(null, errorCode.getMessage()));
 	}
 
 	// fail - validation 메세지 반환
-	public static <T> ApiResponse<T> fail(List<ObjectError> errors) {
+	public static ApiResponse fail(List<ObjectError> errors) {
 
 		List<String> errorMessage = errors.stream()
 			.map(e -> e.getDefaultMessage())
 			.collect(Collectors.toList());
 
-		return new ApiResponse<>(new ApiHeader(BAD_REQUEST.getCode(), "BAD_REQUEST"),
+		return new ApiResponse(new ApiHeader(BAD_REQUEST.getCode(), "BAD_REQUEST"),
 			new ApiBody(null, errorMessage));
 	}
 
+	public static ApiResponse fail(String msg) {
+		return new ApiResponse(new ApiHeader(BAD_REQUEST.getCode(), "BAD_REQUEST"),
+			new ApiBody(null, msg));
+	}
 }

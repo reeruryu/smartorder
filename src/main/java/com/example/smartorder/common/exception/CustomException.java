@@ -10,11 +10,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AdminException extends RuntimeException {
+public class CustomException extends RuntimeException {
 	private ErrorCode errorCode;
 	private String errorMessage;
 
-	public AdminException(ErrorCode errorCode) {
+	public CustomException(ErrorCode errorCode) {
 		this.errorCode = errorCode;
 		this.errorMessage = errorCode.getMessage();
 	}

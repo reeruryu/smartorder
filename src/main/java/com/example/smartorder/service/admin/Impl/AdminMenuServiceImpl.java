@@ -1,10 +1,11 @@
 package com.example.smartorder.service.admin.Impl;
 
+import static com.example.smartorder.common.error.ErrorCode.ALREADY_CATEGORY_NAME_EXISTS;
 import static com.example.smartorder.common.error.ErrorCode.ALREADY_MENU_NAME_EXISTS;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_CATEGORY;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_MENU;
 
-import com.example.smartorder.common.exception.AdminException;
+import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.MenuDto;
 import com.example.smartorder.entity.Category;
 import com.example.smartorder.entity.Menu;
@@ -14,6 +15,7 @@ import com.example.smartorder.repository.MenuRepository;
 import com.example.smartorder.repository.StoreMenuRepository;
 import com.example.smartorder.service.admin.AdminMenuService;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +38,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
 		} else {
 			Category category = categoryRepository.findById(categoryId)
-				.orElseThrow(() -> new AdminException(NOT_FOUND_CATEGORY));
+				.orElseThrow(() -> new CustomException(NOT_FOUND_CATEGORY));
 
 			menuList = menuRepository.findAllByCategoryId(categoryId, pageable);
 		}
@@ -45,27 +47,31 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 	}
 
 	@Override
-	public void add(Long menuId, Add parameter) {
-		Menu menu = menuRepository.findByMenuName(parameter.getMenuName())
-			.orElseThrow(() -> new AdminException(ALREADY_MENU_NAME_EXISTS));
-
+	public void add(Add parameter) {
 		Category category = categoryRepository.findById(parameter.getCategoryId())
-			.orElseThrow(() -> new AdminException(NOT_FOUND_CATEGORY));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_CATEGORY));
+
+		Optional<Menu> menu = menuRepository.findByMenuName(parameter.getMenuName());
+		if (menu.isPresent()) {
+			throw new CustomException(ALREADY_MENU_NAME_EXISTS);
+		}
 
 		menuRepository.save(parameter.toEntity(category));
-
 	}
 
 	@Override
 	public void update(Long menuId, Add parameter) {
 		Menu menu = menuRepository.findById(menuId)
-			.orElseThrow(() -> new AdminException(NOT_FOUND_MENU));
-
-		Menu menu2 = menuRepository.findByMenuName(parameter.getMenuName())
-			.orElseThrow(() -> new AdminException(ALREADY_MENU_NAME_EXISTS));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_MENU));
 
 		Category category = categoryRepository.findById(parameter.getCategoryId())
-			.orElseThrow(() -> new AdminException(NOT_FOUND_CATEGORY));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_CATEGORY));
+
+		Optional<Menu> optionalMenu
+			= menuRepository.existsByMenuNameExceptId(parameter.getMenuName(), menuId);
+		if (optionalMenu.isPresent()) {
+			throw new CustomException(ALREADY_MENU_NAME_EXISTS);
+		}
 
 		menu.setCategory(category);
 		menu.setMenuName(parameter.getMenuName());
@@ -80,7 +86,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 
 		for (Long id: idList) {
 			Menu menu = menuRepository.findById(id)
-					.orElseThrow(() -> new AdminException(NOT_FOUND_MENU));
+					.orElseThrow(() -> new CustomException(NOT_FOUND_MENU));
 
 			// Store에 등록된 Menu 지우고
 			storeMenuRepository.deleteAllByMenu(menu);

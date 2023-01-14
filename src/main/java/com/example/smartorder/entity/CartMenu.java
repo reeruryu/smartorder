@@ -31,12 +31,12 @@ public class CartMenu extends BaseEntity {
 	private int menuCount;
 
 	public static CartMenu createCartMenu(Cart cart, StoreMenu storeMenu, int count) {
-		CartMenu cartMenu = new CartMenu();
-		cartMenu.setCart(cart);
-		cartMenu.setStoreMenu(storeMenu);
-		cartMenu.setMenuCount(count);
 
-		return cartMenu;
+		return CartMenu.builder()
+			.cart(cart)
+			.storeMenu(storeMenu)
+			.menuCount(count)
+			.build();
 	}
 
 	public void addCount(int count) {

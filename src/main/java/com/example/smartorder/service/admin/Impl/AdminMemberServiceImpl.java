@@ -2,7 +2,7 @@ package com.example.smartorder.service.admin.Impl;
 
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 
-import com.example.smartorder.common.exception.AdminException;
+import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.MemberDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.repository.MemberRepository;
@@ -34,7 +34,7 @@ public class AdminMemberServiceImpl implements AdminMemberService {
 	@Override
 	public void updateRole(Long id, UserRole userRole) {
 		Member member = memberRepository.findById(id)
-			.orElseThrow(() -> new AdminException(NOT_FOUND_USER));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
 		member.setUserRole(userRole);
 		memberRepository.save(member);

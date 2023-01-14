@@ -39,7 +39,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/login")
-	public ApiResponse<String> login(@RequestBody Auth.Login parameter,
+	public ApiResponse login(@Valid @RequestBody Auth.Login parameter,
 		BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {

@@ -1,4 +1,4 @@
-package com.example.smartorder.service;
+package com.example.smartorder.service.smartorder;
 
 import com.example.smartorder.dto.StoreDto;
 import java.util.List;

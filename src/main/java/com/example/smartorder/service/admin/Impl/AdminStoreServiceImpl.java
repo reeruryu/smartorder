@@ -6,7 +6,7 @@ import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STORE;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 import static com.example.smartorder.common.error.ErrorCode.USER_NOT_CEO;
 
-import com.example.smartorder.common.exception.AdminException;
+import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.AdminStoreDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Store;
@@ -41,14 +41,14 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 
 		Optional<Store> optionalStore = storeRepository.findByStoreName(parameter.getStoreName());
 		if (optionalStore.isPresent()) {
-			throw new AdminException(ALREADY_STORE_NAME_EXISTS);
+			throw new CustomException(ALREADY_STORE_NAME_EXISTS);
 		}
 
-		Member member = memberRepository.findById(parameter.getUserId())
-			.orElseThrow(() -> new AdminException(NOT_FOUND_USER));
+		Member member = memberRepository.findByUserId(parameter.getUserId())
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
 		if (UserRole.ROLE_CEO != member.getUserRole()) {
-			throw new AdminException(USER_NOT_CEO);
+			throw new CustomException(USER_NOT_CEO);
 		}
 
 		// TODO 입력 받은 주소 -> 위도 경도 불러와서 저장
@@ -60,20 +60,20 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 	public void update(Long storeId, AdminStore.Add parameter) {
 
 		Store store = storeRepository.findById(storeId)
-			.orElseThrow(() -> new AdminException(NOT_FOUND_STORE));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
 
 		Optional<Store> optionalStore = storeRepository
 			.existsByStoreNameExceptId(parameter.getStoreName(), storeId);
 
 		if (optionalStore.isPresent()) {
-			throw new AdminException(ALREADY_STORE_NAME_EXISTS);
+			throw new CustomException(ALREADY_STORE_NAME_EXISTS);
 		}
 
-		Member member = memberRepository.findById(parameter.getUserId())
-			.orElseThrow(() -> new AdminException(NOT_FOUND_USER));
+		Member member = memberRepository.findByUserId(parameter.getUserId())
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
 		if (UserRole.ROLE_CEO != member.getUserRole()) {
-			throw new AdminException(USER_NOT_CEO);
+			throw new CustomException(USER_NOT_CEO);
 		}
 
 		// TODO 입력 받은 주소 -> 위도 경도 불러와서 저장
@@ -90,7 +90,7 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 	public void del(List<Long> idList) {
 		for (Long id: idList) {
 			Store store = storeRepository.findById(id)
-				.orElseThrow(() -> new AdminException(NOT_FOUND_STORE));
+				.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
 
 			storeRepository.deleteById(id);
 

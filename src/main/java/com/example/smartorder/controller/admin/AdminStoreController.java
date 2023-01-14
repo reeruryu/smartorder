@@ -28,8 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminStoreController {
 
 	private final AdminStoreService adminStoreService;
+
 	@GetMapping("/list.do")
-	public ApiResponse<Page<AdminStoreDto>> list(
+	public ApiResponse list(
 		@PageableDefault(size = 10, sort = "regDt", direction = Direction.DESC) Pageable pageable) {
 
 		Page<AdminStoreDto> storeList = adminStoreService.list(pageable);
@@ -38,36 +39,24 @@ public class AdminStoreController {
 	}
 
 	@PostMapping("/add.do")
-	public ApiResponse add(@Valid @RequestBody AdminStore.Add parameter, BindingResult bindingResult) {
-
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	public ApiResponse add(@RequestBody @Valid AdminStore.Add parameter) {
 
 		adminStoreService.add(parameter);
+
 		return ApiResponse.OK();
 	}
 
 	@GetMapping("/update/{storeId}.do")
-	public ApiResponse update(@NotNull @PathVariable Long storeId,
-		@Valid @RequestBody AdminStore.Add parameter, BindingResult bindingResult) {
-
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	public ApiResponse update(@PathVariable Long storeId,
+		@RequestBody @Valid AdminStore.Add parameter) {
 
 		adminStoreService.update(storeId, parameter);
+
 		return ApiResponse.OK();
 	}
 
-	@DeleteMapping("/delete/{storeId}.do")
-	public ApiResponse del(@RequestBody AdminStore.Del parameter, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	@DeleteMapping("/delete.do")
+	public ApiResponse del(@RequestBody @Valid AdminStore.Del parameter) {
 
 		adminStoreService.del(parameter.getIdList());
 

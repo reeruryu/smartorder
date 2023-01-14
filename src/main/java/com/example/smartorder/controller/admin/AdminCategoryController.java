@@ -6,10 +6,7 @@ import com.example.smartorder.model.AdminCategory;
 import com.example.smartorder.service.admin.AdminCategoryService;
 import java.util.List;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +25,7 @@ public class AdminCategoryController {
 	private final AdminCategoryService adminCategoryService;
 
 	@GetMapping("/list.do")
-	public ApiResponse<List<CategoryDto>> list() {
+	public ApiResponse list() {
 
 		List<CategoryDto> list = adminCategoryService.list();
 
@@ -36,13 +33,7 @@ public class AdminCategoryController {
 	}
 
 	@PostMapping("/add.do")
-	public ApiResponse add(@Valid @RequestBody AdminCategory.Add parameter,
-		BindingResult bindingResult) {
-
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	public ApiResponse add(@RequestBody @Valid AdminCategory.Add parameter) {
 
 		adminCategoryService.add(parameter);
 
@@ -50,14 +41,9 @@ public class AdminCategoryController {
 	}
 
 	@PutMapping("/update/{id}.do")
-	public ApiResponse update(@NotNull @PathVariable Long id,
-		@NotNull @RequestParam String categoryName, @RequestParam int sortValue,
-		BindingResult bindingResult) {
-
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	public ApiResponse update(@PathVariable Long id,
+		@RequestParam String categoryName,
+		@RequestParam(required = false, defaultValue = "0") int sortValue) {
 
 		adminCategoryService.update(id, categoryName, sortValue);
 
@@ -65,13 +51,7 @@ public class AdminCategoryController {
 	}
 
 	@DeleteMapping("/delete/{id}.do")
-	public ApiResponse del(@NotNull @PathVariable Long id,
-		BindingResult bindingResult) {
-
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	public ApiResponse del(@PathVariable Long id) {
 
 		adminCategoryService.del(id);
 

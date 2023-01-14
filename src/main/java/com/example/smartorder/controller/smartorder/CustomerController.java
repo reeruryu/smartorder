@@ -1,10 +1,9 @@
-package com.example.smartorder.controller;
+package com.example.smartorder.controller.smartorder;
 
 import com.example.smartorder.common.dto.ApiResponse;
 import com.example.smartorder.dto.StoreDto;
-import com.example.smartorder.service.CustomerService;
+import com.example.smartorder.service.smartorder.CustomerService;
 import java.util.List;
-import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +17,8 @@ public class CustomerController {
 	private final CustomerService customerService;
 
 	@GetMapping("/store/{userId}")
-	public ApiResponse<List<StoreDto>> getNearStoreList(
-		@NotNull @PathVariable String userId,
+	public ApiResponse getNearStoreList(
+		@PathVariable String userId,
 		@RequestParam double lat, @RequestParam double lnt) {
 
 		List<StoreDto> list = customerService.getNearStoreList(userId, lat, lnt);

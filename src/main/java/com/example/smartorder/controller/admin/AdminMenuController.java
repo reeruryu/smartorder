@@ -30,10 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminMenuController {
 
 	private final AdminMenuService adminMenuService;
-	private final AdminCategoryService adminCategoryService;
 
 	@GetMapping("/list.do")
-	public ApiResponse<Page<MenuDto>> list(@RequestParam Long categoryId,
+	public ApiResponse list(@RequestParam(required = false) Long categoryId,
 		@PageableDefault(size = 10, sort = "sortValue", direction = Direction.ASC) Pageable pageable) {
 
 		Page<MenuDto> menuList = adminMenuService.list(categoryId, pageable);
@@ -41,36 +40,25 @@ public class AdminMenuController {
 		return ApiResponse.OK(menuList);
 	}
 
-	@PostMapping("/add.do/{menuId}")
-	public ApiResponse add(@PathVariable Long menuId, @Valid @RequestBody AdminMenu.Add parameter,
-		BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	@PostMapping("/add.do")
+	public ApiResponse add(@RequestBody @Valid AdminMenu.Add parameter) {
 
-		adminMenuService.add(menuId, parameter);
+		adminMenuService.add(parameter);
+
 		return ApiResponse.OK();
 	}
 
 	@PutMapping("/update.do/{menuId}")
-	public ApiResponse update(@PathVariable Long menuId, @Valid @RequestBody AdminMenu.Add parameter,
-		BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	public ApiResponse update(@PathVariable Long menuId,
+		@RequestBody @Valid AdminMenu.Add parameter) {
 
 		adminMenuService.update(menuId, parameter);
+
 		return ApiResponse.OK();
 	}
 
 	@DeleteMapping("/delete.do")
-	public ApiResponse del(@RequestBody AdminMenu.Del parameter, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			List<ObjectError> errors = bindingResult.getAllErrors();
-			return ApiResponse.fail(errors);
-		}
+	public ApiResponse del(@RequestBody @Valid AdminMenu.Del parameter) {
 
 		adminMenuService.del(parameter.getIdList());
 

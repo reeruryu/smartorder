@@ -1,4 +1,4 @@
-package com.example.smartorder.service.Impl;
+package com.example.smartorder.service.smartorder.Impl;
 
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_CART;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_BUY_STOREMENU;
@@ -12,7 +12,7 @@ import static com.example.smartorder.common.error.ErrorCode.STORE_NOT_OPEN;
 import static com.example.smartorder.type.SaleState.ON_SALE;
 
 import com.example.smartorder.common.error.ErrorCode;
-import com.example.smartorder.common.exception.NotFoundException;
+import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.CartMenuDto;
 import com.example.smartorder.dto.OrderDto;
 import com.example.smartorder.dto.OrderMenuDto;
@@ -22,15 +22,14 @@ import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Store;
 import com.example.smartorder.entity.StoreMenu;
 import com.example.smartorder.mapper.CartMenuMapper;
-import com.example.smartorder.model.AddCartMenu;
-import com.example.smartorder.model.UpdateCartMenu;
+import com.example.smartorder.model.CartParam;
 import com.example.smartorder.repository.CartMenuRepository;
 import com.example.smartorder.repository.CartRepository;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.StoreMenuRepository;
 import com.example.smartorder.repository.StoreRepository;
-import com.example.smartorder.service.CartService;
-import com.example.smartorder.service.OrderService;
+import com.example.smartorder.service.smartorder.CartService;
+import com.example.smartorder.service.smartorder.OrderService;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class CartServiceImpl implements CartService {
 	private final OrderService orderService; // 주문 ?
 
 	@Override
-	public void addCartMenu(AddCartMenu parameter, String userId) { // storemenuid, menucnt
+	public void addCartMenu(CartParam.Add parameter, String userId) {
 
 		// 유저 없을 시
 		Member member = getMember(userId);
@@ -74,14 +73,9 @@ public class CartServiceImpl implements CartService {
 		if (cartMenuList.size() > 0) {
 			CartMenu cartOneMenu = cartMenuList.get(0);
 			if (!cartOneMenu.getStoreMenu().getStore().equals(storeMenu.getStore())) {
-				throw new NotFoundException(ErrorCode.NOT_SAME_STORE);
+				throw new CustomException(ErrorCode.NOT_SAME_STORE);
 			}
 		}
-
-		/*		// 가게 validate 검사
-		Store store = storeRepository.findById(storeMenu.getStore().getId())
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_STORE));
-		// 운영 중인지 검사하기*/
 
 		// 카트 메뉴 get
 		CartMenu cartMenu = cartMenuRepository.findByCartAndStoreMenu(cart, storeMenu);
@@ -112,7 +106,7 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public void updateCartMenu(UpdateCartMenu parameter, String userId) {
+	public void updateCartMenu(CartParam.Update parameter, String userId) {
 
 		// 유저 없을 시
 		Member member = getMember(userId);
@@ -138,19 +132,17 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public Long orderCartMenu(Long cartId, String userId) {
 
-		// 유저
 		Member member = getMember(userId);
 
-		// 카트
 		Cart cart = cartRepository.findByMember(member);
 		if (cart == null) {
-			throw new NotFoundException(NOT_FOUND_CART);
+			throw new CustomException(NOT_FOUND_CART);
 		}
 
 		// 카트 메뉴
 		List<CartMenu> cartMenuList = cartMenuRepository.findAllByCart(cart);
 		if (CollectionUtils.isEmpty(cartMenuList)) {
-			throw new NotFoundException(CART_EMPTY);
+			throw new CustomException(CART_EMPTY);
 		}
 
 		// 가게 메뉴
@@ -173,7 +165,7 @@ public class CartServiceImpl implements CartService {
 		// 가게
 		Store store = validateStore(storeMenu.getStore().getId());
 
-		// 주문하기 (회원, 가게, 주문 메뉴, 총 금액, 결제 상태, 주문 상태,
+		// 주문하기
 		Long orderId = orderService.order(OrderDto.builder()
 													.member(member)
 													.store(store)
@@ -190,19 +182,19 @@ public class CartServiceImpl implements CartService {
 	}
 
 	private Member getMember(String userId) {
-		Member member = memberRepository.findById(userId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_USER));
+		Member member = memberRepository.findByUserId(userId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 		return member;
 	}
 
 	private StoreMenu validateStoreMenu(Long storeMenuId) {
 		// 가게 메뉴 없을 시
 		StoreMenu storeMenu = storeMenuRepository.findById(storeMenuId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_STOREMENU));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STOREMENU));
 
 		// 가게 메뉴가 구매가 불가능할 시
 		if (storeMenu.isHiddenYn() || ON_SALE != storeMenu.getSaleState()) {
-			throw new NotFoundException(CANNOT_BUY_STOREMENU);
+			throw new CustomException(CANNOT_BUY_STOREMENU);
 		}
 
 		return storeMenu;
@@ -211,11 +203,11 @@ public class CartServiceImpl implements CartService {
 	private CartMenu validateCartMenu(Long cartMenuId, Member member) {
 		// 카트 메뉴 있는지
 		CartMenu cartMenu = cartMenuRepository.findById(cartMenuId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_CARTMENU));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_CARTMENU));
 
 		// 유저의 장바구니인지
 		if (!member.equals(cartMenu.getCart().getMember())) {
-			throw new NotFoundException(CANNOT_ACCESS_CART);
+			throw new CustomException(CANNOT_ACCESS_CART);
 		}
 		return cartMenu;
 	}
@@ -223,25 +215,24 @@ public class CartServiceImpl implements CartService {
 	// 주문 시 가게  openYn, 운영 요일, 시간 check
 	private Store validateStore(Long storeId) {
 		Store store = storeRepository.findById(storeId)
-			.orElseThrow(() -> new NotFoundException(NOT_FOUND_STORE));
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
 
 		if (!store.isOpenYn()) {
 			log.info("isOpenYn()");
-			throw new NotFoundException(STORE_NOT_OPEN);
+			throw new CustomException(STORE_NOT_OPEN);
 		}
 
 		if(!store.isOpenDay(LocalDateTime.now())) {
 			log.info("isOpenDay()");
-			throw new NotFoundException(STORE_NOT_OPEN);
+			throw new CustomException(STORE_NOT_OPEN);
 		}
 
 		if(!store.isOpenTime(LocalTime.now())) {
 			log.info("isOpenTime()");
-			throw new NotFoundException(STORE_NOT_OPEN);
+			throw new CustomException(STORE_NOT_OPEN);
 		}
 
 		return store;
 	}
-
 
 }
