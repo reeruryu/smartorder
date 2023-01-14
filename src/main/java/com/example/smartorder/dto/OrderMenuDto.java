@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class OrderMenuDto {
 
 	String menuName;
-	double menuPrice;
+	long menuPrice;
 	int menuCount;
 
 }

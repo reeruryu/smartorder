@@ -12,10 +12,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Orders, Long> {
-//	@Query(value = "select distinct o " +
-//		"from Orders o " +
-//		"where o.member.userId = :userId " +
-//		"and o.regDt between :startDate and :endDate", countQuery = "select count(o) from Orders o")
 	Page<Orders> findByMemberAndRegDtBetween(Member member, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
 
 	@Query(value = "select distinct o " +

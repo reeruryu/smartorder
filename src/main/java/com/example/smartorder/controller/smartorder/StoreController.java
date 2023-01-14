@@ -27,7 +27,7 @@ public class StoreController {
 		return ApiResponse.OK();
 	}
 
-	@PutMapping("/{storeId}/openTime") //
+	@PutMapping("/{storeId}/openTime")
 	public ApiResponse updateStoreOpenTime(@PathVariable Long storeId,
 		@RequestBody @Valid StoreParam.OpenTime parameter, Principal principal) {
 

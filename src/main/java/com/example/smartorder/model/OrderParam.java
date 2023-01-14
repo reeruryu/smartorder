@@ -16,13 +16,13 @@ public class OrderParam {
 
 	@Data
 	public static class CeoCancel {
-		@NotNull@NotNull(message = "주문 id를 입력해 주세요.")
+		@NotNull(message = "주문 id를 입력해 주세요.")
 		Long orderId;
 
-		@NotNull@NotNull(message = "가게 id를 입력해 주세요.")
+		@NotNull(message = "가게 id를 입력해 주세요.")
 		Long storeId;
 
-		@NotNull@NotNull(message = "주문 취소 사유를 입력해 주세요.")
+		@NotNull(message = "주문 취소 사유를 입력해 주세요.")
 		String orderCancelReason;
 	}
 

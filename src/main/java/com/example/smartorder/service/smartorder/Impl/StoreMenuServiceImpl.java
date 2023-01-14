@@ -9,6 +9,7 @@ import static com.example.smartorder.type.SaleState.ON_SALE;
 import static com.example.smartorder.type.SaleState.SOLDOUT_FOR_ONE_DAY;
 
 import com.example.smartorder.common.exception.CustomException;
+import com.example.smartorder.dto.FrontStoreMenuDto;
 import com.example.smartorder.dto.StoreMenuDto;
 import com.example.smartorder.entity.Category;
 import com.example.smartorder.entity.Member;
@@ -25,6 +26,8 @@ import com.example.smartorder.type.SaleState;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -94,5 +97,29 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 		}
 		storeMenuRepository.saveAll(storeMenuList);
 
+	}
+
+	@Override
+	public Page<FrontStoreMenuDto> frontStoreMenu(Long storeId, Long categoryId,
+		Pageable pageable, String userId) {
+
+		Member member = memberRepository.findByUserId(userId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+		Store store = storeRepository.findById(storeId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
+
+		Page<StoreMenu> storeMenus;
+		if (categoryId == null) {
+			storeMenus = storeMenuRepository.findByStoreIdExceptHiddenYnTrue(storeId, pageable);
+		} else {
+			Category category = categoryRepository.findById(categoryId)
+				.orElseThrow(() -> new CustomException(NOT_FOUND_CATEGORY));
+
+			storeMenus = storeMenuRepository.findByCategoryIdAndStoreIdExceptHiddenYnTrue(
+				categoryId, storeId, pageable);
+		}
+
+		return storeMenus.map(FrontStoreMenuDto::of);
 	}
 }

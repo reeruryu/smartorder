@@ -14,7 +14,7 @@ public class StoreMenuDto {
 
 	Long id;
 	String menuName;
-	double menuPrice;
+	long menuPrice;
 
 	SaleState saleState;
 	boolean hiddenYn;

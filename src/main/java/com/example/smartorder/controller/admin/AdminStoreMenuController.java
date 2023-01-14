@@ -5,6 +5,7 @@ import com.example.smartorder.model.AdminStoreMenu;
 import com.example.smartorder.service.admin.AdminStoreMenuService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ public class AdminStoreMenuController {
 	private final AdminStoreMenuService adminStoreMenuService;
 
 	@PostMapping("/add/{storeId}.do") // 새로운 가게 모든 메뉴 첫 등록 시
-	public ApiResponse addAllStoreMenu(Long storeId) {
+	public ApiResponse addAllStoreMenu(@PathVariable Long storeId) {
 
 		adminStoreMenuService.addAllStoreMenu(storeId);
 

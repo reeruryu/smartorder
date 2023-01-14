@@ -1,8 +1,11 @@
 package com.example.smartorder.service.smartorder;
 
+import com.example.smartorder.dto.FrontStoreMenuDto;
 import com.example.smartorder.dto.StoreMenuDto;
 import com.example.smartorder.model.StoreMenuParam;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StoreMenuService {
 
@@ -21,4 +24,10 @@ public interface StoreMenuService {
 	 * 모두 오전 12시 마다 판매 중으로 변경합니다.
 	 */
 	void updateSaleState();
+
+	/**
+	 * 고객(front)에 가게 메뉴를 보여줍니다.
+	 * (숨김 메뉴는 보이지 않습니다.)
+	 */
+	Page<FrontStoreMenuDto> frontStoreMenu(Long storeId, Long categoryId, Pageable pageable, String userId);
 }
