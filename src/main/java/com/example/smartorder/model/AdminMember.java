@@ -1,6 +1,6 @@
 package com.example.smartorder.model;
 
-import com.example.smartorder.common.valid.EnumTypeValid;
+import com.example.smartorder.type.valid.EnumTypeValid;
 import com.example.smartorder.type.UserRole;
 import javax.validation.constraints.NotNull;
 import lombok.Data;

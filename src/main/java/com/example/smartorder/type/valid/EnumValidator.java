@@ -1,4 +1,4 @@
-package com.example.smartorder.common.valid;
+package com.example.smartorder.type.valid;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

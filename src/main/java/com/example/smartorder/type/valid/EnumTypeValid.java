@@ -1,4 +1,4 @@
-package com.example.smartorder.common.valid;
+package com.example.smartorder.type.valid;
 
 import static java.lang.annotation.ElementType.FIELD;
 

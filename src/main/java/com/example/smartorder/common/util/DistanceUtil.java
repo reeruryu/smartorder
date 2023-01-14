@@ -1,4 +1,4 @@
-package com.example.smartorder.util;
+package com.example.smartorder.common.util;
 
 public class DistanceUtil {
 

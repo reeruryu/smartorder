@@ -21,7 +21,7 @@ import com.example.smartorder.model.Auth;
 import com.example.smartorder.model.CustomUserDetails;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.service.auth.AuthService;
-import com.example.smartorder.util.PasswordUtils;
+import com.example.smartorder.common.util.PasswordUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
