@@ -9,7 +9,7 @@ public class StoreParam {
 
 	@Data
 	public static class OpenDay {
-		@NotNull
+		@NotNull(message = "요일을 선택해 주세요.")
 		String openDayList;
 
 	}
