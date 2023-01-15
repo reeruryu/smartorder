@@ -51,8 +51,8 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 		Category category = categoryRepository.findById(parameter.getCategoryId())
 			.orElseThrow(() -> new CustomException(NOT_FOUND_CATEGORY));
 
-		Optional<Menu> menu = menuRepository.findByMenuName(parameter.getMenuName());
-		if (menu.isPresent()) {
+		boolean result = menuRepository.existsByMenuName(parameter.getMenuName());
+		if (result) {
 			throw new CustomException(ALREADY_MENU_NAME_EXISTS);
 		}
 

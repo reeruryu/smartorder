@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
-	Optional<Menu> findByMenuName(String menuName);
+	boolean existsByMenuName(String menuName);
 	List<Menu> findAllByCategoryId(Long categoryId);
 	Page<Menu> findAllByCategoryId(Long categoryId, Pageable pageable);
 	List<Menu> findByIdIn(List<Long> idList);

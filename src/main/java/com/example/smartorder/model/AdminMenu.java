@@ -6,9 +6,15 @@ import java.util.List;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class AdminMenu {
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	@Data
 	public static class Add { // update와 같아서 같이 쓰임
 
@@ -37,6 +43,9 @@ public class AdminMenu {
 		}
 	}
 
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	@Data
 	public static class Del {
 
