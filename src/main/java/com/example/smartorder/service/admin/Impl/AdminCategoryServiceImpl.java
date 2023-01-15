@@ -60,6 +60,9 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
 	@Override
 	public void del(Long id) {
+		Category category = categoryRepository.findById(id)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_CATEGORY));
+
 		List<Menu> menuList = menuRepository.findAllByCategoryId(id);
 
 		if (!CollectionUtils.isEmpty(menuList)) {
