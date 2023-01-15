@@ -1,7 +1,5 @@
 package com.example.smartorder.service.admin.Impl;
 
-//import static org.junit.jupiter.api.Assertions.*;
-
 import static com.example.smartorder.type.UserRole.ROLE_CEO;
 import static com.example.smartorder.type.UserRole.ROLE_USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
