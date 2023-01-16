@@ -88,13 +88,9 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 
 	@Override
 	public void del(List<Long> idList) {
-		for (Long id: idList) {
-			Store store = storeRepository.findById(id)
-				.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
 
-			storeRepository.deleteById(id);
+		storeRepository.deleteAllByStoreIdIn(idList);
 
-		}
 	}
 
 }

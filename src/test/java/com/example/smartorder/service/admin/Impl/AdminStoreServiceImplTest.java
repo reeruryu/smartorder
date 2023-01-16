@@ -329,40 +329,17 @@ class AdminStoreServiceImplTest {
 	@DisplayName("매장 삭제 성공")
 	void delSuccess() {
 		// given
-		Store store = Store.builder()
-			.storeName("잠실점").build();
 		List<Long> req = new ArrayList<>(Arrays.asList(1L, 2L, 3L));
 
-		given(storeRepository.findById(anyLong()))
-			.willReturn(Optional.of(store));
-		ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
+		ArgumentCaptor<List> captor = ArgumentCaptor.forClass(List.class);
 
 		// when
 		storeService.del(req);
 
 		// then
-		verify(storeRepository, times(3))
-			.deleteById(captor.capture());
+		verify(storeRepository, times(1))
+			.deleteAllByStoreIdIn(captor.capture());
 
 	}
 
-	@Test
-	@DisplayName("매장 삭제 실패 - 해당 가게 없음")
-	void delFail_notFoundStore() {
-		// given
-		List<Long> req = new ArrayList<>(Arrays.asList(1L));
-
-		given(storeRepository.findById(anyLong()))
-			.willReturn(Optional.empty());
-		ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
-
-		// when
-		CustomException exception = assertThrows(CustomException.class,
-			() -> storeService.del(req));
-
-		// then
-		verify(storeRepository, times(0))
-			.deleteById(captor.capture());
-		assertEquals(NOT_FOUND_STORE, exception.getErrorCode());
-	}
 }
