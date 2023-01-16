@@ -1,11 +1,13 @@
 package com.example.smartorder.repository;
 
 import com.example.smartorder.entity.Store;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,5 +20,9 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 		+ "where s.storeName = :storeName "
 		+ "and s.id <> :storeId")
 	Optional<Store> existsByStoreNameExceptId(String storeName, Long storeId);
+
+	@Query(value = "delete from Store s "
+		+ "where s.id in :ids")
+	void deleteAllByStoreIdIn(@Param("ids") List<Long> idList);
 
 }

@@ -2,9 +2,16 @@ package com.example.smartorder.model;
 
 import com.example.smartorder.entity.Category;
 import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class AdminCategory {
+
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
 	@Data
 	public static class Add {
 

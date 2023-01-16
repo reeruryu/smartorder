@@ -6,7 +6,6 @@ import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_CATEGORY;
 import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.CategoryDto;
 import com.example.smartorder.entity.Category;
-import com.example.smartorder.entity.Menu;
 import com.example.smartorder.model.AdminCategory.Add;
 import com.example.smartorder.repository.CategoryRepository;
 import com.example.smartorder.repository.MenuRepository;
@@ -16,7 +15,6 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 @RequiredArgsConstructor
 @Service
@@ -60,14 +58,12 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
 	@Override
 	public void del(Long id) {
-		List<Menu> menuList = menuRepository.findAllByCategoryId(id);
 
-		if (!CollectionUtils.isEmpty(menuList)) {
-			for (Menu menu: menuList) {
-				menuRepository.deleteById(menu.getId());
-			}
-		}
-		categoryRepository.deleteById(id);
+		// 해당 카테고리의 메뉴 삭제
+		menuRepository.deleteAllByCategoryId(id);
+
+		// 해당 카테고리 삭제
+		categoryRepository.deleteByCategoryId(id);
 
 	}
 }

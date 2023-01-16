@@ -6,11 +6,17 @@ import com.example.smartorder.type.UserStatus;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class Auth {
 
 	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class Register {
 
 		@NotBlank(message = "이메일 주소를 입력하세요.")
@@ -41,6 +47,9 @@ public class Auth {
 	}
 
 	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
 	public static class Login {
 
 		@NotBlank(message = "이메일 주소를 입력하세요.")

@@ -5,10 +5,16 @@ import com.example.smartorder.entity.Store;
 import java.util.List;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class AdminStore {
 
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
 	@Data
 	public static class Add { // update와 같아서 같이 쓰임
 
@@ -39,6 +45,9 @@ public class AdminStore {
 
 	}
 
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
 	@Data
 	public static class Del {
 		@NotNull(message = "삭제할 가게를 선택해 주세요.")
