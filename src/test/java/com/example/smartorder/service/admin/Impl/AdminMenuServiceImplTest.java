@@ -328,43 +328,16 @@ class AdminMenuServiceImplTest {
 	@DisplayName("메뉴 삭제 성공")
 	void delSuccess() {
 		// given
-		Menu menu = Menu.builder()
-			.menuName("아메리카노").build();
 		List<Long> req = new ArrayList<>(Arrays.asList(1L, 2L, 3L));
 
-		given(menuRepository.findById(anyLong()))
-			.willReturn(Optional.of(menu));
-		ArgumentCaptor<Menu> captor = ArgumentCaptor.forClass(Menu.class);
-		ArgumentCaptor<Long> captor2 = ArgumentCaptor.forClass(Long.class);
+		ArgumentCaptor<List<Long>> captor = ArgumentCaptor.forClass(List.class);
 
 		// when
 		menuService.del(req);
 
 		// then
-		verify(storeMenuRepository, times(3))
-			.deleteAllByMenu(captor.capture());
-		verify(menuRepository, times(3))
-			.deleteById(captor2.capture());
-
+		verify(menuRepository, times(1))
+			.deleteAllByMenuIdIn(captor.capture());
 	}
 
-	@Test
-	@DisplayName("메뉴 삭제 실패 - 해당 메뉴 존재하지 않음")
-	void delFail() {
-		// given
-		Menu menu = Menu.builder()
-			.menuName("아메리카노").build();
-		List<Long> req = new ArrayList<>(Arrays.asList(1L));
-
-		given(menuRepository.findById(anyLong()))
-			.willReturn(Optional.empty());
-
-		// when
-		CustomException exception = assertThrows(CustomException.class,
-			() -> menuService.del(req));
-
-		// then
-		assertEquals(NOT_FOUND_MENU, exception.getErrorCode());
-
-	}
 }

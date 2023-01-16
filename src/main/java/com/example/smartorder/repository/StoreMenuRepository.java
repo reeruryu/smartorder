@@ -1,8 +1,8 @@
 package com.example.smartorder.repository;
 
-import com.example.smartorder.entity.Menu;
 import com.example.smartorder.entity.StoreMenu;
 import com.example.smartorder.type.SaleState;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +14,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StoreMenuRepository extends JpaRepository<StoreMenu, Long> {
 
-	void deleteAllByMenu(Menu menu);
-	List<StoreMenu> findAllBySaleState(SaleState saleState);
-
+	@Query(value = "delete from StoreMenu sm "
+		+ "where sm.menu.id in :ids")
+	void deleteAllByMenuIdIn(@Param("ids") List<Long> idList);
+	
 	@Query(value = "select sm from StoreMenu sm "
 		+ "where sm.store.id = :storeId "
 		+ "and sm.hiddenYn = false")

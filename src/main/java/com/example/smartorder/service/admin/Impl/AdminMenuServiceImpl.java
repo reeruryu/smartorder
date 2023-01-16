@@ -84,16 +84,10 @@ public class AdminMenuServiceImpl implements AdminMenuService {
 	@Override
 	public void del(List<Long> idList) {
 
-		for (Long id: idList) {
-			Menu menu = menuRepository.findById(id)
-					.orElseThrow(() -> new CustomException(NOT_FOUND_MENU));
+		// Store에 등록된 Menu 지우고
+		storeMenuRepository.deleteAllByMenuIdIn(idList);
 
-			// Store에 등록된 Menu 지우고
-			storeMenuRepository.deleteAllByMenu(menu);
-
-			// Menu 최종 지우기
-			menuRepository.deleteById(id);
-
-		}
+		// Menu 최종 지우기
+		menuRepository.deleteAllByMenuIdIn(idList);
 	}
 }

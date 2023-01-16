@@ -20,4 +20,8 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
 		+ "and m.id <> :menuId")
 	Optional<Menu> existsByMenuNameExceptId(String menuName, Long menuId);
 
+	@Query(value = "delete from Menu m "
+		+ "where m.id in :idList")
+	void deleteAllByMenuIdIn(List<Long> idList);
+
 }
