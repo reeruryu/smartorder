@@ -36,12 +36,22 @@ public class StoreMenuController {
 
 		return ApiResponse.OK(storeMenuList);
 	}
-	@PutMapping("/ceo/store-menu/{storeId}")
-	public ApiResponse updateStoreMenu(
+	@PutMapping("/ceo/store-menu/hidden/{storeId}")
+	public ApiResponse updateHiddenYn(
 		@PathVariable Long storeId, @RequestParam Long storeMenuId,
-		@RequestBody StoreMenuParam.Update parameter, Principal principal) {
+		@RequestBody StoreMenuParam.UpdateHiddenYn parameter, Principal principal) {
 
-		storeMenuService.updateStoreMenu(storeId, storeMenuId, parameter, principal.getName());
+		storeMenuService.updateHiddenYn(storeId, storeMenuId, parameter.isHiddenYn(), principal.getName());
+
+		return ApiResponse.OK();
+	}
+
+	@PutMapping("/ceo/store-menu/saleState/{storeId}")
+	public ApiResponse updateSaleState(
+		@PathVariable Long storeId, @RequestParam Long storeMenuId,
+		@RequestBody StoreMenuParam.UpdateSaleState parameter, Principal principal) {
+
+		storeMenuService.updateSaleState(storeId, storeMenuId, parameter.getSaleState(), principal.getName());
 
 		return ApiResponse.OK();
 	}
