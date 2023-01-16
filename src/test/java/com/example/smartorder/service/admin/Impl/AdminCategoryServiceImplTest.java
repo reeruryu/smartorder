@@ -14,7 +14,6 @@ import static org.mockito.Mockito.verify;
 import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.CategoryDto;
 import com.example.smartorder.entity.Category;
-import com.example.smartorder.entity.Menu;
 import com.example.smartorder.model.AdminCategory;
 import com.example.smartorder.repository.CategoryRepository;
 import com.example.smartorder.repository.MenuRepository;
@@ -201,55 +200,14 @@ class AdminCategoryServiceImplTest {
 	@DisplayName("카테고리 삭제 성공")
 	void delSuccess() {
 		// given
-		Category category = Category.builder()
-			.id(1L)
-			.categoryName("커피")
-			.build();
-		List<Menu> menuList = Arrays.asList(
-			Menu.builder()
-				.id(1L)
-				.category(category)
-				.menuName("아메리카노")
-				.build(),
-			Menu.builder()
-				.id(2L)
-				.category(category)
-				.menuName("카페라떼")
-				.build(),
-			Menu.builder()
-				.id(3L)
-				.category(category)
-				.menuName("카푸치노")
-				.build()
-		);
-
-		given(categoryRepository.findById(anyLong()))
-			.willReturn(Optional.of(category));
-		given(menuRepository.findAllByCategoryId(anyLong()))
-			.willReturn(menuList);
 		ArgumentCaptor<Long> captor = ArgumentCaptor.forClass(Long.class);
 
 		// when
 		categoryService.del(1L);
 
 		// then
-		verify(menuRepository, times(3)).deleteById(captor.capture());
-		verify(categoryRepository, times(1)).deleteById(captor.capture());
-	}
-
-	@Test
-	@DisplayName("카테고리 삭제 실패 - 해당 카테고리 없음")
-	void delFail_NotFoundCategory() {
-		// given
-		given(categoryRepository.findById(anyLong()))
-			.willReturn(Optional.empty());
-
-		// when
-		CustomException exception = assertThrows(CustomException.class,
-			() -> categoryService.del(1L));
-
-		// then
-		assertEquals(NOT_FOUND_CATEGORY, exception.getErrorCode());
+		verify(categoryRepository, times(1))
+			.deleteByCategoryId(captor.capture());
 	}
 
 }

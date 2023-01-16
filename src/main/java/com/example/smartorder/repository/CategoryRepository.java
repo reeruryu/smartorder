@@ -13,4 +13,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 		+ "where c.categoryName = :categoryName "
 		+ "and c.id <> :categoryId")
 	Optional<Category> existsByCategoryNameExceptId(String categoryName, Long categoryId);
+
+	@Query(value = "delete from Category c "
+		+ "where c.id = :id")
+	void deleteByCategoryId(Long id);
 }
