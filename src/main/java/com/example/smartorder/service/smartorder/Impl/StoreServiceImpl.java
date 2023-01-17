@@ -54,12 +54,12 @@ public class StoreServiceImpl implements StoreService {
 	}
 
 	@Override
-	public void updateStoreOpenYn(Long storeId, boolean openYn, String userId) {
+	public void updateStoreOpen(Long storeId, boolean open, String userId) {
 		Store store = getOrElseThrow(storeId);
 
 		checkStoreCeo(userId, store);
 
-		store.setOpenYn(openYn);
+		store.setOpen(open);
 		storeRepository.save(store);
 
 	}

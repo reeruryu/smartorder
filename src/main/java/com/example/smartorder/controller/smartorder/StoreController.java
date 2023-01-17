@@ -36,11 +36,11 @@ public class StoreController {
 		return ApiResponse.OK();
 	}
 
-	@PutMapping("/{storeId}/openYn")
-	public ApiResponse updateStoreOpenYn(@PathVariable Long storeId,
-		@RequestBody @Valid StoreParam.OpenYn parameter, Principal principal) {
+	@PutMapping("/{storeId}/open")
+	public ApiResponse updateStoreOpen(@PathVariable Long storeId,
+		@RequestBody @Valid StoreParam.Open parameter, Principal principal) {
 
-		storeService.updateStoreOpenYn(storeId, parameter.isOpenYn(), principal.getName());
+		storeService.updateStoreOpen(storeId, parameter.isOpen(), principal.getName());
 
 		return ApiResponse.OK();
 	}

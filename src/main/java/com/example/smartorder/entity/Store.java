@@ -46,7 +46,7 @@ public class Store extends BaseEntity {
 
 	private String openDay; // ex) 0,2,3,6 (0 = Monday, 1 = Tuesday,..... 6 = Sunday)
 
-	private boolean openYn;
+	private boolean open; // 수동으로 중단 용도
 
 	public boolean isOpenDay(LocalDateTime now) {
 		int todayDay = LocalDateTime.now().getDayOfWeek().getValue();

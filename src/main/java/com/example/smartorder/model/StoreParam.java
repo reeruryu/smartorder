@@ -3,6 +3,7 @@ package com.example.smartorder.model;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 public class StoreParam {
@@ -14,6 +15,7 @@ public class StoreParam {
 
 	}
 
+	@AllArgsConstructor
 	@Data
 	public static class OpenTime {
 		@Min(0) @Max(23)
@@ -29,9 +31,9 @@ public class StoreParam {
 	}
 
 	@Data
-	public static class OpenYn {
+	public static class Open {
 
-		boolean openYn;
+		boolean open;
 
 	}
 

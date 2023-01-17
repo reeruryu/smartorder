@@ -17,5 +17,5 @@ public interface StoreService {
 	/**
 	 * 가게 open 여부를 변경합니다.
 	 */
-	public void updateStoreOpenYn(Long storeId, boolean openYn, String userId);
+	public void updateStoreOpen(Long storeId, boolean open, String userId);
 }

@@ -212,13 +212,13 @@ public class CartServiceImpl implements CartService {
 		return cartMenu;
 	}
 
-	// 주문 시 가게  openYn, 운영 요일, 시간 check
+	// 주문 시 가게  open, 운영 요일, 시간 check
 	private Store validateStore(Long storeId) {
 		Store store = storeRepository.findById(storeId)
 			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
 
-		if (!store.isOpenYn()) {
-			log.info("isOpenYn()");
+		if (!store.isOpen()) {
+			log.info("isOpen()");
 			throw new CustomException(STORE_NOT_OPEN);
 		}
 
