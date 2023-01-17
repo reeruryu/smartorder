@@ -193,7 +193,7 @@ public class CartServiceImpl implements CartService {
 			.orElseThrow(() -> new CustomException(NOT_FOUND_STOREMENU));
 
 		// 가게 메뉴가 구매가 불가능할 시
-		if (storeMenu.isHiddenYn() || ON_SALE != storeMenu.getSaleState()) {
+		if (storeMenu.isHidden() || ON_SALE != storeMenu.getSaleState()) {
 			throw new CustomException(CANNOT_BUY_STOREMENU);
 		}
 

@@ -8,8 +8,8 @@ import lombok.Data;
 public class StoreMenuParam {
 
 	@Data
-	public static class UpdateHiddenYn {
-		boolean hiddenYn;
+	public static class UpdateHidden {
+		boolean hidden;
 	}
 
 	@Data

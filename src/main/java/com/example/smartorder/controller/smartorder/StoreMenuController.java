@@ -37,11 +37,11 @@ public class StoreMenuController {
 		return ApiResponse.OK(storeMenuList);
 	}
 	@PutMapping("/ceo/store-menu/hidden/{storeId}")
-	public ApiResponse updateHiddenYn(
+	public ApiResponse updateHidden(
 		@PathVariable Long storeId, @RequestParam Long storeMenuId,
-		@RequestBody StoreMenuParam.UpdateHiddenYn parameter, Principal principal) {
+		@RequestBody StoreMenuParam.UpdateHidden parameter, Principal principal) {
 
-		storeMenuService.updateHiddenYn(storeId, storeMenuId, parameter.isHiddenYn(), principal.getName());
+		storeMenuService.updateHidden(storeId, storeMenuId, parameter.isHidden(), principal.getName());
 
 		return ApiResponse.OK();
 	}

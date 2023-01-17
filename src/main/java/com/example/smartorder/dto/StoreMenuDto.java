@@ -17,6 +17,6 @@ public class StoreMenuDto {
 	long menuPrice;
 
 	SaleState saleState;
-	boolean hiddenYn;
+	boolean hidden;
 
 }

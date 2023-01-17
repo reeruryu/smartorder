@@ -20,14 +20,14 @@ public interface StoreMenuRepository extends JpaRepository<StoreMenu, Long> {
 
 	@Query(value = "select sm from StoreMenu sm "
 		+ "where sm.store.id = :storeId "
-		+ "and sm.hiddenYn = false")
-	Page<StoreMenu> findByStoreIdExceptHiddenYnTrue(@Param("storeId")Long storeId, Pageable pageable);
+		+ "and sm.hidden = false")
+	Page<StoreMenu> findByStoreIdExceptHiddenTrue(@Param("storeId")Long storeId, Pageable pageable);
 
 	@Query(value = "select sm from StoreMenu sm "
 		+ "where sm.menu.category.id = :categoryId "
 		+ "and sm.store.id = :storeId "
-		+ "and sm.hiddenYn = false")
-	Page<StoreMenu> findByCategoryIdAndStoreIdExceptHiddenYnTrue(
+		+ "and sm.hidden = false")
+	Page<StoreMenu> findByCategoryIdAndStoreIdExceptHiddenTrue(
 		@Param("categoryId") Long categoryId, @Param("storeId") Long storeId, Pageable pageable);
 
 	// 스프링 배치에 사용

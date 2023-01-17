@@ -17,7 +17,7 @@ public interface StoreMenuService {
 	/**
 	 * 가게의 메뉴 숨김 여부를 수정(설정)합니다.
 	 */
-	void updateHiddenYn(Long storeId, Long storeMenuId, boolean hiddenYn, String userId);
+	void updateHidden(Long storeId, Long storeMenuId, boolean hidden, String userId);
 
 	/**
 	 * 가게의 메뉴 판매 여부를 수정(설정)합니다.

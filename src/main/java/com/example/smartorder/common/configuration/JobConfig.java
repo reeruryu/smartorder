@@ -6,7 +6,6 @@ import static com.example.smartorder.type.SaleState.SOLDOUT_FOR_ONE_DAY;
 import com.example.smartorder.entity.StoreMenu;
 import com.example.smartorder.repository.StoreMenuRepository;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -21,7 +20,6 @@ import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
 import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Sort.Direction;
 
 @Configuration
 @RequiredArgsConstructor
@@ -58,7 +56,6 @@ public class JobConfig {
 			.methodName("findAllBySaleStateAndSoldOutDtBetween")
 			.arguments(SOLDOUT_FOR_ONE_DAY, oneDayAgo, oneDayAgo.minusMinutes(30))
 			.pageSize(10)
-			.sorts(Collections.singletonMap("soldOutDt", Direction.ASC))
 			.name("soldOutForOneDayReader")
 			.build();
 	}
