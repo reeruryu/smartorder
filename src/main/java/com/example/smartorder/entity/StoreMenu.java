@@ -36,6 +36,6 @@ public class StoreMenu extends BaseEntity {
 	private SaleState saleState;
 
 	private LocalDateTime soldOutDt; // 하루만 품절 설정 날짜
-	private boolean hiddenYn;
+	private boolean hidden; // 숨김 여부
 
 }

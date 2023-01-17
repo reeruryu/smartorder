@@ -35,7 +35,7 @@ public class AdminStoreMenuServiceImpl implements AdminStoreMenuService {
 					.menu(menu)
 					.store(store)
 					.saleState(ON_SALE)
-					.hiddenYn(false)
+					.hidden(false)
 					.build());
 			}
 		}
@@ -54,7 +54,7 @@ public class AdminStoreMenuServiceImpl implements AdminStoreMenuService {
 						.menu(menu)
 						.store(store)
 						.saleState(ON_SALE)
-						.hiddenYn(false)
+						.hidden(false)
 						.build());
 				}
 			}

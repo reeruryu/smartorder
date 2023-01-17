@@ -67,7 +67,7 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 	}
 
 	@Override
-	public void updateHiddenYn(Long storeId, Long storeMenuId,
+	public void updateHidden(Long storeId, Long storeMenuId,
 		boolean hidden, String userId) {
 
 		Store store = storeRepository.findById(storeId)
@@ -76,7 +76,7 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 		StoreMenu storeMenu = storeMenuRepository.findById(storeMenuId)
 			.orElseThrow(() -> new CustomException(NOT_FOUND_STOREMENU));
 
-		storeMenu.setHiddenYn(hidden);
+		storeMenu.setHidden(hidden);
 
 		storeMenuRepository.save(storeMenu);
 
@@ -113,12 +113,12 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 
 		Page<StoreMenu> storeMenus;
 		if (categoryId == null) {
-			storeMenus = storeMenuRepository.findByStoreIdExceptHiddenYnTrue(storeId, pageable);
+			storeMenus = storeMenuRepository.findByStoreIdExceptHiddenTrue(storeId, pageable);
 		} else {
 			Category category = categoryRepository.findById(categoryId)
 				.orElseThrow(() -> new CustomException(NOT_FOUND_CATEGORY));
 
-			storeMenus = storeMenuRepository.findByCategoryIdAndStoreIdExceptHiddenYnTrue(
+			storeMenus = storeMenuRepository.findByCategoryIdAndStoreIdExceptHiddenTrue(
 				categoryId, storeId, pageable);
 		}
 
