@@ -2,10 +2,16 @@ package com.example.smartorder.model;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 public class CartParam {
 
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	@Data
 	public static class Add {
 		@NotNull(message = "가게 메뉴를 선택하세요.")
@@ -16,6 +22,9 @@ public class CartParam {
 	}
 
 	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
 	public static class Update {
 		@Min(value = 1, message = "최소 1개 이상 담아주세요.")
 		int count;

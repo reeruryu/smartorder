@@ -1,5 +1,6 @@
 package com.example.smartorder.service.smartorder.Impl;
 
+import static com.example.smartorder.common.error.ErrorCode.*;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_CART;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_BUY_STOREMENU;
 import static com.example.smartorder.common.error.ErrorCode.CART_EMPTY;
@@ -21,7 +22,6 @@ import com.example.smartorder.entity.CartMenu;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Store;
 import com.example.smartorder.entity.StoreMenu;
-import com.example.smartorder.mapper.CartMenuMapper;
 import com.example.smartorder.model.CartParam;
 import com.example.smartorder.repository.CartMenuRepository;
 import com.example.smartorder.repository.CartRepository;
@@ -34,6 +34,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -49,8 +50,7 @@ public class CartServiceImpl implements CartService {
 	private final StoreMenuRepository storeMenuRepository;
 	private final StoreRepository storeRepository;
 
-	private final CartMenuMapper cartMenuMapper;
-	private final OrderService orderService; // 주문 ?
+	private final OrderService orderService; // 주문
 
 	@Override
 	public void addCartMenu(CartParam.Add parameter, String userId) {
@@ -73,7 +73,7 @@ public class CartServiceImpl implements CartService {
 		if (cartMenuList.size() > 0) {
 			CartMenu cartOneMenu = cartMenuList.get(0);
 			if (!cartOneMenu.getStoreMenu().getStore().equals(storeMenu.getStore())) {
-				throw new CustomException(ErrorCode.NOT_SAME_STORE);
+				throw new CustomException(NOT_SAME_STORE);
 			}
 		}
 
@@ -101,8 +101,8 @@ public class CartServiceImpl implements CartService {
 			return cartMenuList; // 빈 리스트 return
 		}
 
-		cartMenuList = cartMenuMapper.selectList(cart.getId());
-		return cartMenuList;
+		return cartMenuRepository.findAllByCart(cart)
+			.stream().map(CartMenuDto::of).collect(Collectors.toList());
 	}
 
 	@Override
