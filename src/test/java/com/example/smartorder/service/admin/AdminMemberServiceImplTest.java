@@ -1,4 +1,4 @@
-package com.example.smartorder.service.admin.Impl;
+package com.example.smartorder.service.admin;
 
 import static com.example.smartorder.type.UserRole.ROLE_CEO;
 import static com.example.smartorder.type.UserRole.ROLE_USER;

@@ -1,4 +1,4 @@
-package com.example.smartorder.service.admin.Impl;
+package com.example.smartorder.service.admin;
 
 import static com.example.smartorder.common.error.ErrorCode.ALREADY_CATEGORY_NAME_EXISTS;
 import static com.example.smartorder.common.error.ErrorCode.ALREADY_MENU_NAME_EXISTS;
