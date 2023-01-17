@@ -23,6 +23,7 @@ import com.example.smartorder.repository.StoreMenuRepository;
 import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.smartorder.StoreMenuService;
 import com.example.smartorder.type.SaleState;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -66,36 +67,37 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 	}
 
 	@Override
-	public void updateStoreMenu(Long storeId, Long storeMenuId,
-		StoreMenuParam.Update parameter, String userId) {
+	public void updateHiddenYn(Long storeId, Long storeMenuId,
+		boolean hidden, String userId) {
 
 		Store store = storeRepository.findById(storeId)
-			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE)); // 가게 없을 시 등록 안됨 에러
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
 
 		StoreMenu storeMenu = storeMenuRepository.findById(storeMenuId)
-			.orElseThrow(() -> new CustomException(NOT_FOUND_STOREMENU)); // 가게 메뉴 없을 시 등록 안됨 에러
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STOREMENU));
 
-		SaleState saleState = parameter.getSaleState();
-		storeMenu.setSaleState(saleState);
-		storeMenu.setHiddenYn(parameter.isHiddenYn());
+		storeMenu.setHiddenYn(hidden);
 
 		storeMenuRepository.save(storeMenu);
 
 	}
 
-	@Scheduled(cron = "0 0 0 * * *")
 	@Override
-	public void updateSaleState() {
+	public void updateSaleState(Long storeId, Long storeMenuId,
+		SaleState saleState, String userId) {
 
-		List<StoreMenu> storeMenuList =
-			storeMenuRepository.findAllBySaleState(SOLDOUT_FOR_ONE_DAY);
+		Store store = storeRepository.findById(storeId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
 
-		if (!CollectionUtils.isEmpty(storeMenuList)) {
-			for (StoreMenu storeMenu: storeMenuList) {
-				storeMenu.setSaleState(ON_SALE);
-			}
+		StoreMenu storeMenu = storeMenuRepository.findById(storeMenuId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STOREMENU));
+
+		storeMenu.setSaleState(saleState);
+		if (saleState == SOLDOUT_FOR_ONE_DAY) {
+			storeMenu.setSoldOutDt(LocalDateTime.now());
 		}
-		storeMenuRepository.saveAll(storeMenuList);
+
+		storeMenuRepository.save(storeMenu);
 
 	}
 

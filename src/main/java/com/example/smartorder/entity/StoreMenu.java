@@ -1,6 +1,7 @@
 package com.example.smartorder.entity;
 
 import com.example.smartorder.type.SaleState;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,7 +35,7 @@ public class StoreMenu extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	private SaleState saleState;
 
-//	private LocalDate soldoutDt;
+	private LocalDateTime soldOutDt; // 하루만 품절 설정 날짜
 	private boolean hiddenYn;
 
 }
