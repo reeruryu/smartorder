@@ -12,7 +12,7 @@ public interface StoreMenuService {
 	/**
 	 * 가게의 모든 메뉴를 보여줍니다.
 	 */
-	List<StoreMenuDto> listStoreMenu(Long storeId, Long categoryId, String userId);
+	List<StoreMenuDto> list(Long storeId, Long categoryId, String userId);
 
 	/**
 	 * 가게의 메뉴 숨김 여부를 수정(설정)합니다.
@@ -28,5 +28,5 @@ public interface StoreMenuService {
 	 * 고객(front)에 가게 메뉴를 보여줍니다.
 	 * (숨김 메뉴는 보이지 않습니다.)
 	 */
-	Page<FrontStoreMenuDto> frontStoreMenu(Long storeId, Long categoryId, Pageable pageable, String userId);
+	Page<FrontStoreMenuDto> front(Long storeId, Long categoryId, Pageable pageable, String userId);
 }

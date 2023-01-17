@@ -1,5 +1,6 @@
 package com.example.smartorder.repository;
 
+import com.example.smartorder.entity.Store;
 import com.example.smartorder.entity.StoreMenu;
 import com.example.smartorder.type.SaleState;
 import java.time.LocalDateTime;
@@ -13,6 +14,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StoreMenuRepository extends JpaRepository<StoreMenu, Long> {
+
+	@Query(value = "select sm from StoreMenu sm "
+		+ "where sm.menu.category = :categoryId "
+		+ "and sm.store.id = :storeId")
+	List<StoreMenu> findAllByCategoryIdAndStoreId(@Param("categoryId") Long categoryId, @Param("storeId")Long storeId);
 
 	@Query(value = "delete from StoreMenu sm "
 		+ "where sm.menu.id in :ids")
@@ -33,5 +39,7 @@ public interface StoreMenuRepository extends JpaRepository<StoreMenu, Long> {
 	// 스프링 배치에 사용
 	Page<StoreMenu> findAllBySaleStateAndSoldOutDtBetween(
 		SaleState saleState, LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+	List<StoreMenu> findAllByStore(Store store);
 
 }

@@ -5,7 +5,6 @@ import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_CATEGORY;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STORE;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STOREMENU;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
-import static com.example.smartorder.type.SaleState.ON_SALE;
 import static com.example.smartorder.type.SaleState.SOLDOUT_FOR_ONE_DAY;
 
 import com.example.smartorder.common.exception.CustomException;
@@ -15,8 +14,6 @@ import com.example.smartorder.entity.Category;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Store;
 import com.example.smartorder.entity.StoreMenu;
-import com.example.smartorder.mapper.StoreMenuMapper;
-import com.example.smartorder.model.StoreMenuParam;
 import com.example.smartorder.repository.CategoryRepository;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.StoreMenuRepository;
@@ -26,12 +23,11 @@ import com.example.smartorder.type.SaleState;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 @RequiredArgsConstructor
 @Service
@@ -41,28 +37,25 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 	private final StoreMenuRepository storeMenuRepository;
 	private final StoreRepository storeRepository;
 	private final CategoryRepository categoryRepository;
-	private final StoreMenuMapper storeMenuMapper;
-
 
 	@Override
-	public List<StoreMenuDto> listStoreMenu(Long storeId, Long categoryId, String userId) {
-		// user의 store가 아니면 throw new NOT_USER_STORE
-		Member member = memberRepository.findByUserId(userId)
-			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+	public List<StoreMenuDto> list(Long storeId, Long categoryId, String userId) {
 
-		Store store = storeRepository.findById(storeId)
-			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE)); // 가게 없을 시 등록 안됨 에러
+		Store store = validateStoreOwner(storeId, userId);
 
-		if (!Objects.equals(userId, store.getMember().getUserId())) {
-			throw new CustomException(CANNOT_ACCESS_STORE);
-		}
+		List<StoreMenu> storeMenuList;
+		if (categoryId == null) { // 스토어 메뉴 전체 보기
+			storeMenuList = storeMenuRepository.findAllByStore(store);
 
-		if (categoryId != null) {
+		} else { // 해당 카테고리 스토어 메뉴 보기
 			Category category = categoryRepository.findById(categoryId)
-				.orElseThrow(() -> new CustomException(NOT_FOUND_CATEGORY)); // 카테고리 없을 시
+				.orElseThrow(() -> new CustomException(NOT_FOUND_CATEGORY));
+
+			storeMenuList = storeMenuRepository.findAllByCategoryIdAndStoreId(categoryId, storeId);
 		}
 
-		return storeMenuMapper.selectList(storeId, categoryId);
+		return storeMenuList.stream().map(StoreMenuDto::of)
+			.collect(Collectors.toList());
 
 	}
 
@@ -70,8 +63,7 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 	public void updateHidden(Long storeId, Long storeMenuId,
 		boolean hidden, String userId) {
 
-		Store store = storeRepository.findById(storeId)
-			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
+		validateStoreOwner(storeId, userId);
 
 		StoreMenu storeMenu = storeMenuRepository.findById(storeMenuId)
 			.orElseThrow(() -> new CustomException(NOT_FOUND_STOREMENU));
@@ -86,8 +78,7 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 	public void updateSaleState(Long storeId, Long storeMenuId,
 		SaleState saleState, String userId) {
 
-		Store store = storeRepository.findById(storeId)
-			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
+		validateStoreOwner(storeId, userId);
 
 		StoreMenu storeMenu = storeMenuRepository.findById(storeMenuId)
 			.orElseThrow(() -> new CustomException(NOT_FOUND_STOREMENU));
@@ -102,7 +93,7 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 	}
 
 	@Override
-	public Page<FrontStoreMenuDto> frontStoreMenu(Long storeId, Long categoryId,
+	public Page<FrontStoreMenuDto> front(Long storeId, Long categoryId,
 		Pageable pageable, String userId) {
 
 		Member member = memberRepository.findByUserId(userId)
@@ -123,5 +114,19 @@ public class StoreMenuServiceImpl implements StoreMenuService {
 		}
 
 		return storeMenus.map(FrontStoreMenuDto::of);
+	}
+
+	private Store validateStoreOwner(Long storeId, String userId) {
+		Member member = memberRepository.findByUserId(userId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+		Store store = storeRepository.findById(storeId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_STORE));
+
+		if (!Objects.equals(userId, store.getMember().getUserId())) {
+			throw new CustomException(CANNOT_ACCESS_STORE);
+		}
+
+		return store;
 	}
 }

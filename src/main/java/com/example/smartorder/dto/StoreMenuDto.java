@@ -1,5 +1,6 @@
 package com.example.smartorder.dto;
 
+import com.example.smartorder.entity.StoreMenu;
 import com.example.smartorder.type.SaleState;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +19,15 @@ public class StoreMenuDto {
 
 	SaleState saleState;
 	boolean hidden;
+
+	public static StoreMenuDto of(StoreMenu storeMenu) {
+		return StoreMenuDto.builder()
+			.id(storeMenu.getId())
+			.menuName(storeMenu.getMenu().getMenuName())
+			.menuPrice(storeMenu.getMenu().getMenuPrice())
+			.saleState(storeMenu.getSaleState())
+			.hidden(storeMenu.isHidden())
+			.build();
+	}
 
 }

@@ -27,12 +27,12 @@ public class StoreMenuController {
 	private final StoreMenuService storeMenuService;
 
 	@GetMapping("/ceo/store-menu/{storeId}")
-	public ApiResponse listStoreMenu(@PathVariable Long storeId,
+	public ApiResponse list(@PathVariable Long storeId,
 		@RequestParam(required = false) Long categoryId,
 		Principal principal) {
 
 		List<StoreMenuDto> storeMenuList =
-			storeMenuService.listStoreMenu(storeId, categoryId, principal.getName());
+			storeMenuService.list(storeId, categoryId, principal.getName());
 
 		return ApiResponse.OK(storeMenuList);
 	}
@@ -57,7 +57,7 @@ public class StoreMenuController {
 	}
 
 	@GetMapping("/store-menu/{storeId}") // 고객용
-	public ApiResponse frontStoreMenu(@PathVariable Long storeId,
+	public ApiResponse front(@PathVariable Long storeId,
 		@RequestParam(required = false) Long categoryId,
 		@PageableDefault(size = 10) Pageable pageable,
 		Principal principal) {
@@ -66,7 +66,7 @@ public class StoreMenuController {
 		log.info(storeId + " ");
 
 		Page<FrontStoreMenuDto> storeMenuList =
-			storeMenuService.frontStoreMenu(storeId, categoryId, pageable, principal.getName());
+			storeMenuService.front(storeId, categoryId, pageable, principal.getName());
 
 		return ApiResponse.OK(storeMenuList);
 	}
