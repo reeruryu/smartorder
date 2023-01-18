@@ -1,5 +1,6 @@
 package com.example.smartorder.service.smartorder.Impl;
 
+import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_LOCATION;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 
 import com.example.smartorder.common.exception.CustomException;
@@ -39,7 +40,13 @@ public class LocationServiceImpl implements LocationService {
 		Member member = memberRepository.findByUserId(userId)
 			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
 
-		return locationMapper.selectNearList(member.getLat(), member.getLnt());
+		Double lat = member.getLat();
+		Double lnt = member.getLnt();
+		if (lat == null || lnt == null) {
+			throw new CustomException(NOT_FOUND_LOCATION);
+		}
+
+		return locationMapper.selectNearList(lat, lnt);
 
 	}
 

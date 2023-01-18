@@ -40,6 +40,7 @@ public enum ErrorCode {
 	NOT_FOUND_CART(404, "해당하는 장바구니가 없습니다."),
 	NOT_FOUND_CARTMENU(404, "해당하는 장바구니 메뉴가 없습니다."),
 	NOT_FOUND_ORDER(404, "해당하는 주문이 없습니다."),
+	NOT_FOUND_LOCATION(404, "위치 정보를 입력하세요."),
 
 
 	// 405 허용하지 않은 방법 Method Not Allowed
