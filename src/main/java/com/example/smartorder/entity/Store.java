@@ -38,8 +38,8 @@ public class Store extends BaseEntity {
 	private String addr;
 	private String addrDetail;
 
-	private double lat;
-	private double lnt;
+	private Double lat;
+	private Double lnt;
 
 	private LocalTime startTime;
 	private LocalTime endTime;
