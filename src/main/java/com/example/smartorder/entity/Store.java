@@ -2,8 +2,6 @@ package com.example.smartorder.entity;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -67,15 +65,6 @@ public class Store extends BaseEntity {
 		}
 
 		return true;
-	}
-
-	public List<Integer> getDayList() {
-		List<Integer> dayList = new ArrayList<>();
-		for (String s: this.openDay.split(",")) {
-			dayList.add(Integer.valueOf(s));
-		}
-
-		return dayList;
 	}
 
 }

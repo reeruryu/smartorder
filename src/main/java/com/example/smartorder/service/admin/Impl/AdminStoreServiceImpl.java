@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 		return stores.map(AdminStoreDto::of);
 	}
 
+	@CacheEvict(value = "location", allEntries = true)
 	@Override
 	public void add(AdminStore.Add parameter) {
 
@@ -63,6 +65,7 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 		storeRepository.save(parameter.toEntity(member, x, y));
 	}
 
+	@CacheEvict(value = "location", allEntries = true)
 	@Override
 	public void update(Long storeId, AdminStore.Add parameter) {
 

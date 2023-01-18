@@ -14,6 +14,7 @@ import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.smartorder.StoreService;
 import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class StoreServiceImpl implements StoreService {
 	private final StoreRepository storeRepository;
 	private final MemberRepository memberRepository;
 
+	@CacheEvict(value = "location", allEntries = true)
 	@Override
 	public void updateStoreOpenDay(Long storeId, String openDayList, String userId) {
 
@@ -35,6 +37,7 @@ public class StoreServiceImpl implements StoreService {
 		}
 	}
 
+	@CacheEvict(value = "location", allEntries = true)
 	@Override
 	public void updateStoreOpenTime(Long storeId, StoreParam.OpenTime parameter, String userId) {
 		Store store = getOrElseThrow(storeId);
@@ -53,6 +56,7 @@ public class StoreServiceImpl implements StoreService {
 		storeRepository.save(store);
 	}
 
+	@CacheEvict(value = "location", allEntries = true)
 	@Override
 	public void updateStoreOpen(Long storeId, boolean open, String userId) {
 		Store store = getOrElseThrow(storeId);
