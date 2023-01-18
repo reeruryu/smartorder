@@ -16,6 +16,7 @@ import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.MemberDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.repository.MemberRepository;
+import com.example.smartorder.service.admin.Impl.AdminMemberServiceImpl;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
