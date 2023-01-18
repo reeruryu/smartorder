@@ -3,11 +3,13 @@ package com.example.smartorder.service.smartorder.Impl;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_ORDER;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_STORE;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_CANCEL_ORDER;
+import static com.example.smartorder.common.error.ErrorCode.END_FASTER_THAN_START;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_ORDER;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STORE;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 import static com.example.smartorder.common.error.ErrorCode.ORDER_ALREADY_CANCEL;
 import static com.example.smartorder.type.OrderState.BEFORE_COOKING;
+import static com.example.smartorder.type.PayState.BEFORE_PAY;
 import static com.example.smartorder.type.PayState.PAY_CANCEL;
 
 import com.example.smartorder.common.exception.CustomException;
@@ -21,6 +23,7 @@ import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.OrderRepository;
 import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.smartorder.OrderService;
+import com.example.smartorder.type.OrderState;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Long order(OrderDto orderDto) {
+
 		Orders order = orderDto.toEntity();
 
 		orderRepository.save(order);
@@ -49,6 +53,8 @@ public class OrderServiceImpl implements OrderService {
 		LocalDate startDate, LocalDate endDate, String userId) {
 
 		Member member = getMember(userId);
+
+		validateDate(startDate, endDate);
 
 		Page<Orders> orderHist = orderRepository.findByMemberAndRegDtBetween(member,
 			startDate.atTime(0,0,0), endDate.atTime(23,59,59), pageable);
@@ -66,13 +72,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new CustomException(CANNOT_ACCESS_ORDER);
 		}
 
-		if (order.isOrderCancel()) {
-			throw new CustomException(ORDER_ALREADY_CANCEL);
-		}
-
-		if (BEFORE_COOKING != order.getOrderState()) {
-			throw new CustomException(CANNOT_CANCEL_ORDER);
-		}
+		validateOrder(order);
 
 		// TODO 결제 전이면 끝, 결제완료면 취소 진행
 
@@ -84,10 +84,10 @@ public class OrderServiceImpl implements OrderService {
 		return order.getId();
 	}
 
-
 	@Override
 	public Page<OrderHistDto> getCeoOrderHist(Pageable pageable, LocalDate startDate,
 		LocalDate endDate, Long storeId, String userId) {
+
 		Member member = getMember(userId);
 		Store store = getStore(storeId);
 
@@ -95,6 +95,8 @@ public class OrderServiceImpl implements OrderService {
 		if (!member.equals(store.getMember())) {
 			throw new CustomException(CANNOT_ACCESS_STORE);
 		}
+
+		validateDate(startDate, endDate);
 
 		Page<Orders> orderHist = orderRepository.findByStoreAndRegDtBetween(store,
 			startDate.atTime(0,0,0), endDate.atTime(23,59,59), pageable);
@@ -118,9 +120,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new CustomException(CANNOT_ACCESS_ORDER);
 		}
 
-		if (order.isOrderCancel()) {
-			throw new CustomException(ORDER_ALREADY_CANCEL);
-		}
+		validateOrder(order);
 
 		// TODO 고객 결제 취소 진행
 
@@ -146,5 +146,21 @@ public class OrderServiceImpl implements OrderService {
 	private Orders getOrder(Long orderId) {
 		return orderRepository.findById(orderId)
 			.orElseThrow(() -> new CustomException(NOT_FOUND_ORDER));
+	}
+
+	private void validateDate(LocalDate startDate, LocalDate endDate) {
+		if (startDate.isAfter(endDate)) {
+			throw new CustomException(END_FASTER_THAN_START);
+		}
+	}
+
+	private void validateOrder(Orders order) {
+		if (order.isOrderCancel()) {
+			throw new CustomException(ORDER_ALREADY_CANCEL);
+		}
+
+		if (BEFORE_COOKING != order.getOrderState()) {
+			throw new CustomException(CANNOT_CANCEL_ORDER);
+		}
 	}
 }

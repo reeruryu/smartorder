@@ -36,10 +36,6 @@ public class OrderController {
 		@PageableDefault(size = 10, sort = "regDt", direction = Direction.DESC) Pageable pageable,
 		Principal principal) {
 
-		if (startDate.isAfter(endDate)) {
-			throw new CustomException(END_FASTER_THAN_START);
-		}
-
 		Page<OrderHistDto> orderDtos = orderService.getOrderHist(pageable, startDate, endDate,
 			principal.getName());
 
@@ -55,7 +51,6 @@ public class OrderController {
 		return ApiResponse.OK(orderId);
 	}
 
-	// TODO  custom validator를 따로 만들어서 처리하기
 	@GetMapping("/ceo/order/{storeId}")
 	public ApiResponse getCeoOrderHist(
 		@PathVariable Long storeId,
@@ -64,9 +59,6 @@ public class OrderController {
 		@PageableDefault(size = 10, sort = "regDt", direction = Direction.DESC) Pageable pageable,
 		Principal principal) {
 
-		if (startDate.isAfter(endDate)) {
-			throw new CustomException(END_FASTER_THAN_START);
-		}
 
 		Page<OrderHistDto> orderDtos =
 			orderService.getCeoOrderHist(pageable, startDate, endDate, storeId, principal.getName());
