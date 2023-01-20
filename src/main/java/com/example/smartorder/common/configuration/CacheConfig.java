@@ -1,5 +1,8 @@
 package com.example.smartorder.common.configuration;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
@@ -26,17 +29,12 @@ public class CacheConfig {
 
 	@Bean // 캐시 적용시켜 사용하기 위해 생성
 	public CacheManager redisCacheManager(RedisConnectionFactory redisConnectionFactory) {
-		RedisCacheConfiguration conf
-			= RedisCacheConfiguration.defaultCacheConfig() // 직렬화 해주기
-			.serializeKeysWith(RedisSerializationContext.SerializationPair
-				.fromSerializer(new StringRedisSerializer()))
-			.serializeValuesWith(RedisSerializationContext.SerializationPair
-				.fromSerializer(new GenericJackson2JsonRedisSerializer()));
 
 		return RedisCacheManager.RedisCacheManagerBuilder
-					.fromConnectionFactory(redisConnectionFactory) // 커넥션 설정 정보
-					.cacheDefaults(conf)
-					.build();
+			.fromConnectionFactory(redisConnectionFactory) // 커넥션 설정 정보
+			.cacheDefaults(defaultConf())
+			.withInitialCacheConfigurations(confMap())
+			.build();
 	}
 
 	@Bean // 레디스와 연결하기 위한 팩토리 설정
@@ -45,8 +43,25 @@ public class CacheConfig {
 		RedisStandaloneConfiguration conf = new RedisStandaloneConfiguration();
 		conf.setHostName(this.host);
 		conf.setPort(this.port);
-//		conf.setPassword(); // 설정 안함
+
 		return new LettuceConnectionFactory(conf);
+	}
+
+	private RedisCacheConfiguration defaultConf() {
+		RedisCacheConfiguration conf
+			= RedisCacheConfiguration.defaultCacheConfig() // 직렬화 해주기
+			.serializeKeysWith(RedisSerializationContext.SerializationPair
+				.fromSerializer(new StringRedisSerializer()))
+			.serializeValuesWith(RedisSerializationContext.SerializationPair
+				.fromSerializer(new GenericJackson2JsonRedisSerializer()))
+			.entryTtl(Duration.ofMinutes(1)); // withInitialCacheConfigurations 에서 관리되지 않는 cacheName 이라면 모두 cacheDefaults 설정대로 동작
+		return conf;
+	}
+
+	private Map<String, RedisCacheConfiguration> confMap() {
+		Map<String, RedisCacheConfiguration> cacheConfigurations = new HashMap<>();
+		cacheConfigurations.put("location", defaultConf().entryTtl(Duration.ofMinutes(30L)));
+		return cacheConfigurations;
 	}
 
 }

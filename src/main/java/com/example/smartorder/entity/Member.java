@@ -43,4 +43,7 @@ public class Member extends BaseEntity {
 
 	private LocalDateTime wdDt; // 탈퇴날짜
 
+	private Double lat;
+	private Double lnt;
+
 }

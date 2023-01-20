@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-quartz'
     implementation 'com.vladmihalcea:hibernate-types-52:2.9.13'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-//    implementation 'com.google.code.geocoder-java:geocoder-java:0.16'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

@@ -33,13 +33,15 @@ public class AdminStore {
 		@NotBlank(message = "상세주소를 입력해 주세요.")
 		String addrDetail;
 
-		public Store toEntity(Member member) {
+		public Store toEntity(Member member, Double x, Double y) {
 			return Store.builder()
 				.member(member)
 				.storeName(this.storeName)
 				.zipcode(this.zipcode)
 				.addr(this.addr)
 				.addrDetail(this.addrDetail)
+				.lat(x)
+				.lnt(y)
 				.build();
 		}
 

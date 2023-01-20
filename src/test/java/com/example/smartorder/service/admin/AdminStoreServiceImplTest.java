@@ -15,13 +15,16 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import com.example.smartorder.common.component.LocationComponents;
 import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.AdminStoreDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Store;
 import com.example.smartorder.model.AdminStore;
+import com.example.smartorder.model.KakaoApi;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.StoreRepository;
+import com.example.smartorder.service.admin.Impl.AdminStoreServiceImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,6 +50,9 @@ class AdminStoreServiceImplTest {
 
 	@Mock
 	private MemberRepository memberRepository;
+
+	@Mock
+	private LocationComponents locationComponents;
 
 	@InjectMocks
 	private AdminStoreServiceImpl storeService;
@@ -98,12 +104,17 @@ class AdminStoreServiceImplTest {
 		AdminStore.Add req = AdminStore.Add.builder()
 			.userId("h2ju1004@gmail.com")
 			.storeName("잠실점")
+			.addr("송파구 올림픽로 435")
 			.build();
+		KakaoApi.Documents documents = KakaoApi.Documents.builder()
+			.x("123.378").y("243.467").build();
 
 		given(storeRepository.findByStoreName(anyString()))
 			.willReturn(Optional.empty());
 		given(memberRepository.findByUserId(anyString()))
 			.willReturn(Optional.of(member));
+		given(locationComponents.getKakaoApiDouments(anyString()))
+			.willReturn(documents);
 		ArgumentCaptor<Store> captor = ArgumentCaptor.forClass(Store.class);
 
 		// when
@@ -114,6 +125,9 @@ class AdminStoreServiceImplTest {
 		assertEquals("ceo@naver.com", captor.getValue().getMember().getUserId());
 		assertEquals(ROLE_CEO, captor.getValue().getMember().getUserRole());
 		assertEquals("잠실점", captor.getValue().getStoreName());
+		assertEquals(123.378, captor.getValue().getLat());
+		assertEquals(243.467, captor.getValue().getLnt());
+
 	}
 
 	@Test
@@ -202,7 +216,10 @@ class AdminStoreServiceImplTest {
 		AdminStore.Add req = AdminStore.Add.builder()
 			.userId("h2ju1004@gmail.com")
 			.storeName("잠실역점")
+			.addr("송파구 올림픽로 435")
 			.build();
+		KakaoApi.Documents documents = KakaoApi.Documents.builder()
+			.x("123.378").y("243.467").build();
 
 		given(storeRepository.findById(anyLong()))
 			.willReturn(Optional.of(store));
@@ -210,6 +227,8 @@ class AdminStoreServiceImplTest {
 			.willReturn(Optional.empty());
 		given(memberRepository.findByUserId(anyString()))
 			.willReturn(Optional.of(member));
+		given(locationComponents.getKakaoApiDouments(anyString()))
+			.willReturn(documents);
 		ArgumentCaptor<Store> captor = ArgumentCaptor.forClass(Store.class);
 
 		// when
@@ -219,6 +238,8 @@ class AdminStoreServiceImplTest {
 		verify(storeRepository, times(1)).save(captor.capture());
 		assertEquals("ceo@naver.com", captor.getValue().getMember().getUserId());
 		assertEquals("잠실역점", captor.getValue().getStoreName());
+		assertEquals(123.378, captor.getValue().getLat());
+		assertEquals(243.467, captor.getValue().getLnt());
 	}
 
 	@Test

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.smartorder.mapper.LocationMapper">
+
+  <select id="selectNearList" resultType="com.example.smartorder.dto.LocationDto">
+    select s.id,
+           s.store_name,
+           s.zipcode,
+           s.addr,
+           s.addr_detail,
+           s.start_time,
+           s.end_time,
+           s.open_day,
+           s.open,
+      (
+          6371 * acos(
+          cos(radians(#{lat}))
+          * cos(radians(s.lat))
+          * cos(radians(s.lnt) - radians(#{lnt}))
+          + sin(radians(#{lat}))
+          * sin(radians(s.lat)))
+      ) as distance
+    from store s
+        having distance &lt; 2
+    order by distance ASC
+      limit 0, 10
+  </select>
+
+</mapper>
