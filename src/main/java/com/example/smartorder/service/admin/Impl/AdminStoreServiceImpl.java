@@ -12,6 +12,7 @@ import com.example.smartorder.dto.AdminStoreDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Store;
 import com.example.smartorder.model.AdminStore;
+import com.example.smartorder.model.KakaoApi;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.admin.AdminStoreService;
@@ -58,9 +59,11 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 		}
 
 		// 위도 경도 불러와서 저장
-		Map<String, Object> xy = locationComponents.getXY(parameter.getAddr());
-		Double x = Double.parseDouble(xy.get("x").toString());
-		Double y = Double.parseDouble(xy.get("y").toString());
+		KakaoApi.Documents documents =
+			locationComponents.getKakaoApiDouments(parameter.getAddr());
+
+		Double x = Double.parseDouble(documents.getX());
+		Double y = Double.parseDouble(documents.getY());
 
 		storeRepository.save(parameter.toEntity(member, x, y));
 	}
@@ -87,9 +90,11 @@ public class AdminStoreServiceImpl implements AdminStoreService {
 		}
 
 		// 위도 경도 불러와서 저장
-		Map<String, Object> xy = locationComponents.getXY(parameter.getAddr());
-		Double x = Double.parseDouble(xy.get("x").toString());
-		Double y = Double.parseDouble(xy.get("y").toString());
+		KakaoApi.Documents documents =
+			locationComponents.getKakaoApiDouments(parameter.getAddr());
+
+		Double x = Double.parseDouble(documents.getX());
+		Double y = Double.parseDouble(documents.getY());
 
 		store.setMember(member);
 		store.setStoreName(parameter.getStoreName());

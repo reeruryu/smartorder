@@ -15,6 +15,7 @@ public enum ErrorCode {
 	STORE_NOT_OPEN(400, "운영 중인 가게가 아닙니다."),
 	CART_EMPTY(400, "장바구니가 비어 있습니다."),
 	CANNOT_CANCEL_ORDER(400, "주문을 취소할 수 없습니다."),
+	INVALID_ADDRESS(400, "잘못된 주소입니다."),
 
 
 	// 401 인증 정보 없음
@@ -62,7 +63,8 @@ public enum ErrorCode {
 
 	// 500
 	INTERNAL_SERVER_ERROR(500, "서버 내부 오류가 발생했습니다."),
-	FAIL_SEND_MAIL(500, "메일 전송에 실패했습니다.")
+	FAIL_SEND_MAIL(500, "메일 전송에 실패했습니다."),
+	FAIL_CALL_KAKAO_API(500, "카카오 api 호출에 실패했습니다.")
 	;
 
 	private int code;
