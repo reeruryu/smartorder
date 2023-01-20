@@ -21,14 +21,13 @@ import com.example.smartorder.dto.AdminStoreDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Store;
 import com.example.smartorder.model.AdminStore;
+import com.example.smartorder.model.KakaoApi;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.admin.Impl.AdminStoreServiceImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -107,16 +106,15 @@ class AdminStoreServiceImplTest {
 			.storeName("잠실점")
 			.addr("송파구 올림픽로 435")
 			.build();
-		Map<String, Object> map = new HashMap<>();
-		map.put("x", "123.378");
-		map.put("y", "243.467");
+		KakaoApi.Documents documents = KakaoApi.Documents.builder()
+			.x("123.378").y("243.467").build();
 
 		given(storeRepository.findByStoreName(anyString()))
 			.willReturn(Optional.empty());
 		given(memberRepository.findByUserId(anyString()))
 			.willReturn(Optional.of(member));
-		given(locationComponents.getXY(anyString()))
-			.willReturn(map);
+		given(locationComponents.getKakaoApiDouments(anyString()))
+			.willReturn(documents);
 		ArgumentCaptor<Store> captor = ArgumentCaptor.forClass(Store.class);
 
 		// when
@@ -220,9 +218,8 @@ class AdminStoreServiceImplTest {
 			.storeName("잠실역점")
 			.addr("송파구 올림픽로 435")
 			.build();
-		Map<String, Object> map = new HashMap<>();
-		map.put("x", "123.378");
-		map.put("y", "243.467");
+		KakaoApi.Documents documents = KakaoApi.Documents.builder()
+			.x("123.378").y("243.467").build();
 
 		given(storeRepository.findById(anyLong()))
 			.willReturn(Optional.of(store));
@@ -230,8 +227,8 @@ class AdminStoreServiceImplTest {
 			.willReturn(Optional.empty());
 		given(memberRepository.findByUserId(anyString()))
 			.willReturn(Optional.of(member));
-		given(locationComponents.getXY(anyString()))
-			.willReturn(map);
+		given(locationComponents.getKakaoApiDouments(anyString()))
+			.willReturn(documents);
 		ArgumentCaptor<Store> captor = ArgumentCaptor.forClass(Store.class);
 
 		// when
