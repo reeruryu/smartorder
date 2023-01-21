@@ -4,6 +4,7 @@ import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 import static com.example.smartorder.common.error.ErrorCode.USER_NOT_EMAIL_AUTH;
 import static com.example.smartorder.common.error.ErrorCode.USER_STATUS_STOP;
 import static com.example.smartorder.common.error.ErrorCode.USER_STATUS_WITHDRAW;
+import static com.example.smartorder.type.TransactionType.CHARGE;
 import static com.example.smartorder.type.UserStatus.STATUS_EMAIL_REQ;
 import static com.example.smartorder.type.UserStatus.STATUS_STOP;
 import static com.example.smartorder.type.UserStatus.STATUS_WITHDRAW;
@@ -12,10 +13,13 @@ import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.ConvPayDto;
 import com.example.smartorder.entity.ConvPay;
 import com.example.smartorder.entity.Member;
+import com.example.smartorder.entity.TransactionConvPay;
 import com.example.smartorder.repository.ConvPayRepository;
 import com.example.smartorder.repository.MemberRepository;
+import com.example.smartorder.repository.TransactionConvPayRepository;
 import com.example.smartorder.service.pay.ConvPayService;
 import com.example.smartorder.type.UserStatus;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +28,7 @@ import org.springframework.stereotype.Service;
 public class ConvPayServiceImpl implements ConvPayService {
 
 	private final ConvPayRepository convPayRepository;
+	private final TransactionConvPayRepository transactionConvPayRepository;
 	private final MemberRepository memberRepository;
 
 	@Override
@@ -42,6 +47,14 @@ public class ConvPayServiceImpl implements ConvPayService {
 			convPay.addMoney(amount);
 			convPayRepository.save(convPay);
 		}
+
+		transactionConvPayRepository.save(
+			TransactionConvPay.builder()
+				.convPay(convPay)
+				.amount(amount)
+				.transactionType(CHARGE)
+				.transactionDt(LocalDateTime.now())
+				.build());
 	}
 
 	@Override
