@@ -53,7 +53,6 @@ public class ConvPayServiceImpl implements ConvPayService {
 				.convPay(convPay)
 				.amount(amount)
 				.transactionType(CHARGE)
-				.transactionDt(LocalDateTime.now())
 				.build());
 	}
 

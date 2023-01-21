@@ -22,6 +22,7 @@ public enum ErrorCode {
 	CANNOT_CHANGE_SAME_ORDER_STATE(400, "같은 주문상태로 바꿀 수 없습니다."),
 	CANNOT_CHANGE_PREVIOUS_ORDER_STATE(400, "전 주문 상태로 바꿀 수 없습니다."),
 	NOT_ENOUGH_BALANCE(400, "잔액이 부족합니다."),
+	INVALID_PAYMENT_REQUEST(400, "잘못된 결제 요청입니다"),
 
 
 	// 401 인증 정보 없음
@@ -61,6 +62,7 @@ public enum ErrorCode {
 	ALREADY_MENU_NAME_EXISTS(409, "중복된 메뉴명입니다."),
 	ALREADY_STORE_NAME_EXISTS(409, "중복된 가게명입니다."),
 	ORDER_ALREADY_CANCEL(400, "이미 취소된 주문입니다."),
+	ALREADY_PAY_COMPLETE(400, "이미 결제 완료된 주문입니다."),
 
 
 	// 415

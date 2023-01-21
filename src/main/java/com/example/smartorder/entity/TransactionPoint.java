@@ -1,6 +1,7 @@
 package com.example.smartorder.entity;
 
 import com.example.smartorder.type.TransactionType;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -20,14 +21,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class TransactionConvPay extends BaseEntity {
+public class TransactionPoint extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-	private ConvPay convPay;
+	private Point point;
 
 	private long amount;
 
