@@ -9,6 +9,7 @@ import static com.example.smartorder.common.error.ErrorCode.CANNOT_CHANGE_PREVIO
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_CHANGE_SAME_ORDER_STATE;
 import static com.example.smartorder.common.error.ErrorCode.END_FASTER_THAN_START;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_ORDER;
+import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_PAY;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STORE;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 import static com.example.smartorder.common.error.ErrorCode.NOT_TODAY_ORDER;
@@ -17,6 +18,7 @@ import static com.example.smartorder.type.OrderState.BEFORE_COOKING;
 import static com.example.smartorder.type.OrderState.COOKING;
 import static com.example.smartorder.type.OrderState.PICKUP_COMPLETE;
 import static com.example.smartorder.type.OrderState.PICKUP_REQ;
+import static com.example.smartorder.type.PayState.*;
 import static com.example.smartorder.type.PayState.BEFORE_PAY;
 import static com.example.smartorder.type.PayState.PAY_CANCEL;
 
@@ -26,13 +28,16 @@ import com.example.smartorder.dto.OrderHistDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Orders;
 import com.example.smartorder.entity.Store;
+import com.example.smartorder.model.CartParam.Order;
 import com.example.smartorder.model.OrderParam;
 import com.example.smartorder.model.OrderParam.CeoUpdate;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.OrderRepository;
 import com.example.smartorder.repository.StoreRepository;
+import com.example.smartorder.service.pay.PayService;
 import com.example.smartorder.service.smartorder.OrderService;
 import com.example.smartorder.type.OrderState;
+import com.example.smartorder.type.PayState;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
@@ -46,6 +51,8 @@ public class OrderServiceImpl implements OrderService {
 	private final OrderRepository orderRepository;
 	private final MemberRepository memberRepository;
 	private final StoreRepository storeRepository;
+
+	private final PayService payService;
 
 	@Override
 	public Long order(OrderDto orderDto) {
@@ -83,7 +90,9 @@ public class OrderServiceImpl implements OrderService {
 
 		validateOrder(order);
 
-		// TODO 결제 전이면 끝, 결제완료면 취소 진행
+		if (order.getPayState() != BEFORE_PAY) {
+			payService.payCancel(order, member);
+		}
 
 		order.setOrderCancel(true);
 		order.setOrderCancelReason(parameter.getOrderCancelReason());
@@ -131,7 +140,9 @@ public class OrderServiceImpl implements OrderService {
 
 		validateOrder(order);
 
-		// TODO 고객 결제 취소 진행
+		if (order.getPayState() != BEFORE_PAY) {
+			payService.payCeoCancel(order);
+		}
 
 		order.setPayState(PAY_CANCEL);
 		order.setOrderCancel(true);
@@ -190,6 +201,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	private void validateOrder(Orders order) {
+
 		if (order.isOrderCancel()) {
 			throw new CustomException(ORDER_ALREADY_CANCEL);
 		}

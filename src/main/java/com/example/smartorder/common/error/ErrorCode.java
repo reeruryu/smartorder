@@ -49,6 +49,7 @@ public enum ErrorCode {
 	NOT_FOUND_CARTMENU(404, "해당하는 장바구니 메뉴가 없습니다."),
 	NOT_FOUND_ORDER(404, "해당하는 주문이 없습니다."),
 	NOT_FOUND_LOCATION(404, "위치 정보를 입력하세요."),
+	NOT_FOUND_PAY(404, "해당하는 결제 내역이 없습니다."),
 
 
 	// 405 허용하지 않은 방법 Method Not Allowed
@@ -63,6 +64,7 @@ public enum ErrorCode {
 	ALREADY_STORE_NAME_EXISTS(409, "중복된 가게명입니다."),
 	ORDER_ALREADY_CANCEL(400, "이미 취소된 주문입니다."),
 	ALREADY_PAY_COMPLETE(400, "이미 결제 완료된 주문입니다."),
+	ALREADY_PAY_CANCEL(400, "이미 결제 취소된 주문입니다."),
 
 
 	// 415
