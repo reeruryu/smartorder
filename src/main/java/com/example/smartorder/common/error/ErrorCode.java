@@ -21,6 +21,7 @@ public enum ErrorCode {
 	CANNOT_CHANGE_COMPLETE_ORDER_STATE(400, "완료된 주문상태는 바꿀 수 없습니다"),
 	CANNOT_CHANGE_SAME_ORDER_STATE(400, "같은 주문상태로 바꿀 수 없습니다."),
 	CANNOT_CHANGE_PREVIOUS_ORDER_STATE(400, "전 주문 상태로 바꿀 수 없습니다."),
+	NOT_ENOUGH_BALANCE(400, "잔액이 부족합니다."),
 
 
 	// 401 인증 정보 없음
