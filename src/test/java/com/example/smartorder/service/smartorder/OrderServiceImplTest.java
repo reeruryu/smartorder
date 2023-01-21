@@ -3,12 +3,18 @@ package com.example.smartorder.service.smartorder;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_ORDER;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_STORE;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_CANCEL_ORDER;
+import static com.example.smartorder.common.error.ErrorCode.CANNOT_CHANGE_CANCELED_ORDER;
+import static com.example.smartorder.common.error.ErrorCode.CANNOT_CHANGE_COMPLETE_ORDER_STATE;
+import static com.example.smartorder.common.error.ErrorCode.CANNOT_CHANGE_PREVIOUS_ORDER_STATE;
+import static com.example.smartorder.common.error.ErrorCode.CANNOT_CHANGE_SAME_ORDER_STATE;
 import static com.example.smartorder.common.error.ErrorCode.END_FASTER_THAN_START;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
+import static com.example.smartorder.common.error.ErrorCode.NOT_TODAY_ORDER;
 import static com.example.smartorder.common.error.ErrorCode.ORDER_ALREADY_CANCEL;
 import static com.example.smartorder.type.OrderState.BEFORE_COOKING;
 import static com.example.smartorder.type.OrderState.COOKING;
 import static com.example.smartorder.type.OrderState.PICKUP_COMPLETE;
+import static com.example.smartorder.type.OrderState.PICKUP_REQ;
 import static com.example.smartorder.type.PayState.BEFORE_PAY;
 import static com.example.smartorder.type.PayState.PAY_CANCEL;
 import static com.example.smartorder.type.PayState.PAY_COMPLETE;
@@ -31,6 +37,7 @@ import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Orders;
 import com.example.smartorder.entity.Store;
 import com.example.smartorder.model.OrderParam;
+import com.example.smartorder.model.OrderParam.CeoUpdate;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.OrderRepository;
 import com.example.smartorder.repository.StoreRepository;
@@ -399,4 +406,208 @@ class OrderServiceImplTest {
 		assertTrue(captor.getValue().isOrderCancel());
 		assertNotNull(captor.getValue().getCancelDt());
 	}
+
+	/**
+	 * 점주가 현재(오늘)의 주문 상태를 변경합니다.
+	 */
+	@Test
+	@DisplayName("주문 상태 변경 성공")
+	void updateOrderStateSuccess() {
+		// given
+		CeoUpdate req = CeoUpdate.builder()
+			.orderId(1L).storeId(1L)
+			.orderState(COOKING).build();
+		Member ceo = Member.builder()
+			.id(1L).build();
+		Member user = Member.builder()
+			.id(2L).build();
+		Store store = Store.builder()
+			.id(1L).member(ceo).build();
+		Orders order = Orders.builder()
+			.id(1L).member(user).orderCancel(false)
+			.orderState(BEFORE_COOKING).build();
+		order.setRegDt(LocalDateTime.now());
+
+		given(memberRepository.findByUserId(anyString()))
+			.willReturn(Optional.of(ceo));
+		given(storeRepository.findById(anyLong()))
+			.willReturn(Optional.of(store));
+		given(orderRepository.findById(anyLong()))
+			.willReturn(Optional.of(order));
+		ArgumentCaptor<Orders> captor = ArgumentCaptor.forClass(Orders.class);
+
+		// when
+		Long orderId = orderService.updateOrderState(req, "ceo@gmail.com");
+
+		// then
+		verify(orderRepository, times(1)).save(captor.capture());
+		assertEquals(COOKING, captor.getValue().getOrderState());
+
+	}
+
+	@Test
+	@DisplayName("주문 상태 변경 실패 - 취소된 주문은 변경이 불가합니다.")
+	void updateOrderStateFail_cannotChangeCanceledOrder() {
+		// given
+		CeoUpdate req = CeoUpdate.builder()
+			.orderId(1L).storeId(1L)
+			.orderState(COOKING).build();
+		Member ceo = Member.builder()
+			.id(1L).build();
+		Member user = Member.builder()
+			.id(2L).build();
+		Store store = Store.builder()
+			.id(1L).member(ceo).build();
+		Orders order = Orders.builder()
+			.id(1L).member(user).orderCancel(true)
+			.orderState(BEFORE_COOKING).build();
+		order.setRegDt(LocalDateTime.now());
+
+		given(memberRepository.findByUserId(anyString()))
+			.willReturn(Optional.of(ceo));
+		given(storeRepository.findById(anyLong()))
+			.willReturn(Optional.of(store));
+		given(orderRepository.findById(anyLong()))
+			.willReturn(Optional.of(order));
+
+		// when
+		CustomException exception = assertThrows(CustomException.class,
+			() -> orderService.updateOrderState(req, "ceo@gmail.com"));
+
+		// then
+		assertEquals(CANNOT_CHANGE_CANCELED_ORDER, exception.getErrorCode());
+	}
+
+	@Test
+	@DisplayName("주문 상태 변경 실패 - 현재(오늘) 주문 건이 아닙니다.")
+	void updateOrderStateFail_notTodayOrder() {
+		// given
+		CeoUpdate req = CeoUpdate.builder()
+			.orderId(1L).storeId(1L)
+			.orderState(COOKING).build();
+		Member ceo = Member.builder()
+			.id(1L).build();
+		Member user = Member.builder()
+			.id(2L).build();
+		Store store = Store.builder()
+			.id(1L).member(ceo).build();
+		Orders order = Orders.builder()
+			.id(1L).member(user).orderCancel(false)
+			.orderState(BEFORE_COOKING).build();
+		order.setRegDt(LocalDateTime.now().minusDays(1));
+
+		given(memberRepository.findByUserId(anyString()))
+			.willReturn(Optional.of(ceo));
+		given(storeRepository.findById(anyLong()))
+			.willReturn(Optional.of(store));
+		given(orderRepository.findById(anyLong()))
+			.willReturn(Optional.of(order));
+
+		// when
+		CustomException exception = assertThrows(CustomException.class,
+			() -> orderService.updateOrderState(req, "ceo@gmail.com"));
+
+		// then
+		assertEquals(NOT_TODAY_ORDER, exception.getErrorCode());
+	}
+
+	@Test
+	@DisplayName("주문 상태 변경 실패 - 같은 주문 상태로 변경이 불가합니다.")
+	void updateOrderStateFail_cannotChangeSameOrderState() {
+		// given
+		CeoUpdate req = CeoUpdate.builder()
+			.orderId(1L).storeId(1L)
+			.orderState(COOKING).build();
+		Member ceo = Member.builder()
+			.id(1L).build();
+		Member user = Member.builder()
+			.id(2L).build();
+		Store store = Store.builder()
+			.id(1L).member(ceo).build();
+		Orders order = Orders.builder()
+			.id(1L).member(user).orderCancel(false)
+			.orderState(COOKING).build();
+		order.setRegDt(LocalDateTime.now());
+
+		given(memberRepository.findByUserId(anyString()))
+			.willReturn(Optional.of(ceo));
+		given(storeRepository.findById(anyLong()))
+			.willReturn(Optional.of(store));
+		given(orderRepository.findById(anyLong()))
+			.willReturn(Optional.of(order));
+
+		// when
+		CustomException exception = assertThrows(CustomException.class,
+			() -> orderService.updateOrderState(req, "ceo@gmail.com"));
+
+		// then
+		assertEquals(CANNOT_CHANGE_SAME_ORDER_STATE, exception.getErrorCode());
+	}
+
+	@Test
+	@DisplayName("주문 상태 변경 실패 - 완료된 주문은 변경이 불가합니다.")
+	void updateOrderStateFail_cannotChangeCompleteOrderState() {
+		// given
+		CeoUpdate req = CeoUpdate.builder()
+			.orderId(1L).storeId(1L)
+			.orderState(COOKING).build();
+		Member ceo = Member.builder()
+			.id(1L).build();
+		Member user = Member.builder()
+			.id(2L).build();
+		Store store = Store.builder()
+			.id(1L).member(ceo).build();
+		Orders order = Orders.builder()
+			.id(1L).member(user).orderCancel(false)
+			.orderState(PICKUP_COMPLETE).build();
+		order.setRegDt(LocalDateTime.now());
+
+		given(memberRepository.findByUserId(anyString()))
+			.willReturn(Optional.of(ceo));
+		given(storeRepository.findById(anyLong()))
+			.willReturn(Optional.of(store));
+		given(orderRepository.findById(anyLong()))
+			.willReturn(Optional.of(order));
+
+		// when
+		CustomException exception = assertThrows(CustomException.class,
+			() -> orderService.updateOrderState(req, "ceo@gmail.com"));
+
+		// then
+		assertEquals(CANNOT_CHANGE_COMPLETE_ORDER_STATE, exception.getErrorCode());
+	}
+
+	@Test
+	@DisplayName("주문 상태 변경 실패 - 전 주문 상태로 변경이 불가합니다.")
+	void updateOrderStateFail_cannotChangePreviousOrderState() {
+		// given
+		CeoUpdate req = CeoUpdate.builder()
+			.orderId(1L).storeId(1L)
+			.orderState(COOKING).build();
+		Member ceo = Member.builder()
+			.id(1L).build();
+		Member user = Member.builder()
+			.id(2L).build();
+		Store store = Store.builder()
+			.id(1L).member(ceo).build();
+		Orders order = Orders.builder()
+			.id(1L).member(user).orderCancel(false)
+			.orderState(PICKUP_REQ).build();
+		order.setRegDt(LocalDateTime.now());
+
+		given(memberRepository.findByUserId(anyString()))
+			.willReturn(Optional.of(ceo));
+		given(storeRepository.findById(anyLong()))
+			.willReturn(Optional.of(store));
+		given(orderRepository.findById(anyLong()))
+			.willReturn(Optional.of(order));
+
+		// when
+		CustomException exception = assertThrows(CustomException.class,
+			() -> orderService.updateOrderState(req, "ceo@gmail.com"));
+
+		// then
+		assertEquals(CANNOT_CHANGE_PREVIOUS_ORDER_STATE, exception.getErrorCode());
+	}
+
 }

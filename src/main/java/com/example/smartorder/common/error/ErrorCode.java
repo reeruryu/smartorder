@@ -16,6 +16,11 @@ public enum ErrorCode {
 	CART_EMPTY(400, "장바구니가 비어 있습니다."),
 	CANNOT_CANCEL_ORDER(400, "주문을 취소할 수 없습니다."),
 	INVALID_ADDRESS(400, "잘못된 주소입니다."),
+	CANNOT_CHANGE_CANCELED_ORDER(400, "취소된 주문입니다."),
+	NOT_TODAY_ORDER(400, "오늘(현재) 주문이 아닙니다."),
+	CANNOT_CHANGE_COMPLETE_ORDER_STATE(400, "완료된 주문상태는 바꿀 수 없습니다"),
+	CANNOT_CHANGE_SAME_ORDER_STATE(400, "같은 주문상태로 바꿀 수 없습니다."),
+	CANNOT_CHANGE_PREVIOUS_ORDER_STATE(400, "전 주문 상태로 바꿀 수 없습니다."),
 
 
 	// 401 인증 정보 없음

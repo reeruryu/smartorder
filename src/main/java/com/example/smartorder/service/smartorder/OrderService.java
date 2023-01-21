@@ -3,6 +3,7 @@ package com.example.smartorder.service.smartorder;
 import com.example.smartorder.dto.OrderDto;
 import com.example.smartorder.dto.OrderHistDto;
 import com.example.smartorder.model.OrderParam;
+import com.example.smartorder.model.OrderParam.CeoUpdate;
 import java.time.LocalDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,4 +37,9 @@ public interface OrderService {
 	 * 점주가 주문을 취소합니다.
 	 */
 	Long orderCeoCancel(OrderParam.CeoCancel parameter, String userId);
+
+	/**
+	 * 점주가 현재(오늘)의 주문 상태를 변경합니다.
+	 */
+	Long updateOrderState(OrderParam.CeoUpdate parameter, String userId);
 }
