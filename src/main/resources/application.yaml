@@ -41,4 +41,4 @@ mybatis:
     map-underscore-to-camel-case: true
 
 api:
-  key : 5639e87e58d677766b2f3146fd14828b
+  key :
