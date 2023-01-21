@@ -1,9 +1,16 @@
 package com.example.smartorder.service.pay.Impl;
 
+import static com.example.smartorder.common.error.ErrorCode.*;
 import static com.example.smartorder.type.TransactionType.*;
 
+import com.example.smartorder.common.error.ErrorCode;
+import com.example.smartorder.common.exception.CustomException;
+import com.example.smartorder.dto.OrderHistDto;
+import com.example.smartorder.dto.TransactionConvPayDto;
+import com.example.smartorder.dto.TransactionPointDto;
 import com.example.smartorder.entity.ConvPay;
 import com.example.smartorder.entity.Member;
+import com.example.smartorder.entity.Orders;
 import com.example.smartorder.entity.Point;
 import com.example.smartorder.entity.TransactionConvPay;
 import com.example.smartorder.entity.TransactionPoint;
@@ -16,6 +23,8 @@ import com.example.smartorder.service.pay.TransactionService;
 import com.example.smartorder.type.TransactionType;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -112,5 +121,31 @@ public class TransactionServiceImpl implements TransactionService {
 				.transactionType(EARN_CANCEL)
 				.build());
 		}
+	}
+
+	@Override
+	public Page<TransactionConvPayDto> getConvPayTransaction(
+		Pageable pageable, String userId) {
+
+		Member member = memberRepository.findByUserId(userId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+		Page<TransactionConvPay> transaction =
+			transactionConvPayRepository.findAllByMember(member, pageable);
+
+		return transaction.map(TransactionConvPayDto::of);
+	}
+
+	@Override
+	public Page<TransactionPointDto> getPointTransaction(
+		Pageable pageable, String userId) {
+
+		Member member = memberRepository.findByUserId(userId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+		Page<TransactionPoint> transaction =
+			transactionPointRepository.findAllByMember(member, pageable);
+
+		return transaction.map(TransactionPointDto::of);
 	}
 }
