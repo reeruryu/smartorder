@@ -12,6 +12,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import com.example.smartorder.common.exception.CustomException;
+import com.example.smartorder.dto.ConvPayDto;
 import com.example.smartorder.entity.ConvPay;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.repository.ConvPayRepository;
@@ -103,6 +104,50 @@ class ConvPayServiceImplTest {
 
 		// then
 		assertEquals(USER_STATUS_STOP, exception.getErrorCode());
+
+	}
+
+	@Test
+	@DisplayName("간편 페이 조회 성공 - 처음 조회 or 충전한 적 없음")
+	void getBalanceSuccess_convPayNull() {
+		// given
+		Member member = Member.builder()
+			.id(1L).userStatus(STATUS_ING).build();
+
+		given(memberRepository.findByUserId(anyString()))
+			.willReturn(Optional.of(member));
+		given(convPayRepository.findByMember(any()))
+			.willReturn(null);
+		ArgumentCaptor<ConvPay> captor = ArgumentCaptor.forClass(ConvPay.class);
+
+		// when
+		convPayService.getBalance("user@naver.com");
+
+		// then
+		verify(convPayRepository, times(1)).save(captor.capture());
+		assertEquals(0, captor.getValue().getBalance());
+
+	}
+
+	@Test
+	@DisplayName("간편 페이 충전 성공 - 조회한 적 있음 or 충전한 적 있음")
+	void getBalanceSuccess_convPayNotNull() {
+		// given
+		Member member = Member.builder()
+			.id(1L).userStatus(STATUS_ING).build();
+		ConvPay convPay = ConvPay.builder()
+			.balance(5000).member(member).build();
+
+		given(memberRepository.findByUserId(anyString()))
+			.willReturn(Optional.of(member));
+		given(convPayRepository.findByMember(any()))
+			.willReturn(convPay);
+
+		// when
+		ConvPayDto convPayDto = convPayService.getBalance("user@naver.com");
+
+		// then
+		assertEquals(5000, convPayDto.getBalance());
 
 	}
 }

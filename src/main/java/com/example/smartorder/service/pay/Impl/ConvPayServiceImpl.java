@@ -9,6 +9,7 @@ import static com.example.smartorder.type.UserStatus.STATUS_STOP;
 import static com.example.smartorder.type.UserStatus.STATUS_WITHDRAW;
 
 import com.example.smartorder.common.exception.CustomException;
+import com.example.smartorder.dto.ConvPayDto;
 import com.example.smartorder.entity.ConvPay;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.repository.ConvPayRepository;
@@ -41,6 +42,22 @@ public class ConvPayServiceImpl implements ConvPayService {
 			convPay.addMoney(amount);
 			convPayRepository.save(convPay);
 		}
+	}
+
+	@Override
+	public ConvPayDto getBalance(String userId) {
+		Member member = memberRepository.findByUserId(userId)
+			.orElseThrow(() -> new CustomException(NOT_FOUND_USER));
+
+		validateUserStatus(member.getUserStatus());
+
+		ConvPay convPay = convPayRepository.findByMember(member);
+		if (convPay == null) { // 없으면 생성
+			convPay = ConvPay.createConvPay(member, 0);
+			convPayRepository.save(convPay);
+		}
+
+		return ConvPayDto.of(convPay);
 	}
 
 	private void validateUserStatus(UserStatus userStatus) {

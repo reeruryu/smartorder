@@ -1,11 +1,13 @@
 package com.example.smartorder.controller.pay;
 
 import com.example.smartorder.common.dto.ApiResponse;
+import com.example.smartorder.dto.ConvPayDto;
 import com.example.smartorder.model.ConvPayParam;
 import com.example.smartorder.service.pay.ConvPayService;
 import java.security.Principal;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,13 @@ public class ConvPayController {
 		convPayService.addMoney(parameter.getAmount(), principal.getName());
 
 		return ApiResponse.OK();
+	}
+
+	@GetMapping
+	public ApiResponse getBalance(Principal principal) {
+		ConvPayDto convPayDto = convPayService.getBalance(principal.getName());
+
+		return ApiResponse.OK(convPayDto);
 	}
 
 }
