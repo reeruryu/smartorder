@@ -41,7 +41,7 @@ import com.example.smartorder.model.OrderParam.CeoUpdate;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.OrderRepository;
 import com.example.smartorder.repository.StoreRepository;
-import com.example.smartorder.service.smartorder.Impl.OrderServiceImpl;
+import com.example.smartorder.service.smartorder.impl.OrderServiceImpl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;

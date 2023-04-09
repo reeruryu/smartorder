@@ -1,4 +1,4 @@
-package com.example.smartorder.service.smartorder.Impl;
+package com.example.smartorder.service.smartorder.impl;
 
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_LOCATION;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;

@@ -1,4 +1,4 @@
-package com.example.smartorder.service.pay.Impl;
+package com.example.smartorder.service.pay.impl;
 
 import static com.example.smartorder.common.error.ErrorCode.ALREADY_PAY_CANCEL;
 import static com.example.smartorder.common.error.ErrorCode.ALREADY_PAY_COMPLETE;

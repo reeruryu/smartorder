@@ -19,7 +19,7 @@ import com.example.smartorder.model.StoreParam;
 import com.example.smartorder.model.StoreParam.OpenTime;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.StoreRepository;
-import com.example.smartorder.service.smartorder.Impl.StoreServiceImpl;
+import com.example.smartorder.service.smartorder.impl.StoreServiceImpl;
 import java.time.LocalTime;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;

@@ -31,7 +31,7 @@ import com.example.smartorder.repository.CategoryRepository;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.StoreMenuRepository;
 import com.example.smartorder.repository.StoreRepository;
-import com.example.smartorder.service.smartorder.Impl.StoreMenuServiceImpl;
+import com.example.smartorder.service.smartorder.impl.StoreMenuServiceImpl;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

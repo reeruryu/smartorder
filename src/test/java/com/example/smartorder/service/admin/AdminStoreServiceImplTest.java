@@ -24,7 +24,7 @@ import com.example.smartorder.model.AdminStore;
 import com.example.smartorder.model.KakaoApi;
 import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.StoreRepository;
-import com.example.smartorder.service.admin.Impl.AdminStoreServiceImpl;
+import com.example.smartorder.service.admin.impl.AdminStoreServiceImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

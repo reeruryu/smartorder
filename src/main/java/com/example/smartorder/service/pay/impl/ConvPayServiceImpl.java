@@ -1,4 +1,4 @@
-package com.example.smartorder.service.pay.Impl;
+package com.example.smartorder.service.pay.impl;
 
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 import static com.example.smartorder.common.error.ErrorCode.USER_NOT_EMAIL_AUTH;
@@ -19,7 +19,6 @@ import com.example.smartorder.repository.MemberRepository;
 import com.example.smartorder.repository.TransactionConvPayRepository;
 import com.example.smartorder.service.pay.ConvPayService;
 import com.example.smartorder.type.UserStatus;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

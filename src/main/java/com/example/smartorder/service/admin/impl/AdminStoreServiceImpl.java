@@ -1,4 +1,4 @@
-package com.example.smartorder.service.admin.Impl;
+package com.example.smartorder.service.admin.impl;
 
 
 import static com.example.smartorder.common.error.ErrorCode.ALREADY_STORE_NAME_EXISTS;
@@ -18,7 +18,6 @@ import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.admin.AdminStoreService;
 import com.example.smartorder.type.UserRole;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;

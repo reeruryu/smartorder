@@ -17,7 +17,7 @@ import com.example.smartorder.entity.ConvPay;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.repository.ConvPayRepository;
 import com.example.smartorder.repository.MemberRepository;
-import com.example.smartorder.service.pay.Impl.ConvPayServiceImpl;
+import com.example.smartorder.service.pay.impl.ConvPayServiceImpl;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

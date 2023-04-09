@@ -1,4 +1,4 @@
-package com.example.smartorder.service.smartorder.Impl;
+package com.example.smartorder.service.smartorder.impl;
 
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_ORDER;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_STORE;
@@ -9,7 +9,6 @@ import static com.example.smartorder.common.error.ErrorCode.CANNOT_CHANGE_PREVIO
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_CHANGE_SAME_ORDER_STATE;
 import static com.example.smartorder.common.error.ErrorCode.END_FASTER_THAN_START;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_ORDER;
-import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_PAY;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_STORE;
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 import static com.example.smartorder.common.error.ErrorCode.NOT_TODAY_ORDER;
@@ -18,7 +17,6 @@ import static com.example.smartorder.type.OrderState.BEFORE_COOKING;
 import static com.example.smartorder.type.OrderState.COOKING;
 import static com.example.smartorder.type.OrderState.PICKUP_COMPLETE;
 import static com.example.smartorder.type.OrderState.PICKUP_REQ;
-import static com.example.smartorder.type.PayState.*;
 import static com.example.smartorder.type.PayState.BEFORE_PAY;
 import static com.example.smartorder.type.PayState.PAY_CANCEL;
 
@@ -28,7 +26,6 @@ import com.example.smartorder.dto.OrderHistDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.entity.Orders;
 import com.example.smartorder.entity.Store;
-import com.example.smartorder.model.CartParam.Order;
 import com.example.smartorder.model.OrderParam;
 import com.example.smartorder.model.OrderParam.CeoUpdate;
 import com.example.smartorder.repository.MemberRepository;
@@ -37,7 +34,6 @@ import com.example.smartorder.repository.StoreRepository;
 import com.example.smartorder.service.pay.PayService;
 import com.example.smartorder.service.smartorder.OrderService;
 import com.example.smartorder.type.OrderState;
-import com.example.smartorder.type.PayState;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;

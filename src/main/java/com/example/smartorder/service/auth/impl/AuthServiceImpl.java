@@ -1,4 +1,4 @@
-package com.example.smartorder.service.auth.Impl;
+package com.example.smartorder.service.auth.impl;
 
 import static com.example.smartorder.common.error.ErrorCode.ALREADY_AUTH_EMAIL;
 import static com.example.smartorder.common.error.ErrorCode.ALREADY_USERID_EXISTS;

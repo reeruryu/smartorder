@@ -1,4 +1,4 @@
-package com.example.smartorder.service.smartorder.Impl;
+package com.example.smartorder.service.smartorder.impl;
 
 import static com.example.smartorder.common.error.ErrorCode.*;
 import static com.example.smartorder.common.error.ErrorCode.CANNOT_ACCESS_CART;
@@ -12,7 +12,6 @@ import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 import static com.example.smartorder.common.error.ErrorCode.STORE_NOT_OPEN;
 import static com.example.smartorder.type.SaleState.ON_SALE;
 
-import com.example.smartorder.common.error.ErrorCode;
 import com.example.smartorder.common.exception.CustomException;
 import com.example.smartorder.dto.CartMenuDto;
 import com.example.smartorder.dto.OrderDto;

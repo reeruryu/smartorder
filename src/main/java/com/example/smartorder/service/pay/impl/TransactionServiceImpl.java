@@ -1,16 +1,13 @@
-package com.example.smartorder.service.pay.Impl;
+package com.example.smartorder.service.pay.impl;
 
 import static com.example.smartorder.common.error.ErrorCode.*;
 import static com.example.smartorder.type.TransactionType.*;
 
-import com.example.smartorder.common.error.ErrorCode;
 import com.example.smartorder.common.exception.CustomException;
-import com.example.smartorder.dto.OrderHistDto;
 import com.example.smartorder.dto.TransactionConvPayDto;
 import com.example.smartorder.dto.TransactionPointDto;
 import com.example.smartorder.entity.ConvPay;
 import com.example.smartorder.entity.Member;
-import com.example.smartorder.entity.Orders;
 import com.example.smartorder.entity.Point;
 import com.example.smartorder.entity.TransactionConvPay;
 import com.example.smartorder.entity.TransactionPoint;
@@ -20,8 +17,6 @@ import com.example.smartorder.repository.PointRepository;
 import com.example.smartorder.repository.TransactionConvPayRepository;
 import com.example.smartorder.repository.TransactionPointRepository;
 import com.example.smartorder.service.pay.TransactionService;
-import com.example.smartorder.type.TransactionType;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

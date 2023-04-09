@@ -15,7 +15,7 @@ import com.example.smartorder.dto.LocationDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.mapper.LocationMapper;
 import com.example.smartorder.repository.MemberRepository;
-import com.example.smartorder.service.smartorder.Impl.LocationServiceImpl;
+import com.example.smartorder.service.smartorder.impl.LocationServiceImpl;
 import java.time.LocalTime;
 import java.util.Arrays;
 import java.util.List;

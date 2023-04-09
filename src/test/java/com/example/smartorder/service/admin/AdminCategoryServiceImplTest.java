@@ -17,7 +17,7 @@ import com.example.smartorder.entity.Category;
 import com.example.smartorder.model.AdminCategory;
 import com.example.smartorder.repository.CategoryRepository;
 import com.example.smartorder.repository.MenuRepository;
-import com.example.smartorder.service.admin.Impl.AdminCategoryServiceImpl;
+import com.example.smartorder.service.admin.impl.AdminCategoryServiceImpl;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

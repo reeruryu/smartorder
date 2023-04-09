@@ -1,4 +1,4 @@
-package com.example.smartorder.service.pay.Impl;
+package com.example.smartorder.service.pay.impl;
 
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 import static com.example.smartorder.common.error.ErrorCode.USER_NOT_EMAIL_AUTH;

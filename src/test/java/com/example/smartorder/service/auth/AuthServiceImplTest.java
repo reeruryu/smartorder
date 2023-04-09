@@ -29,7 +29,7 @@ import com.example.smartorder.dto.AuthDto;
 import com.example.smartorder.entity.Member;
 import com.example.smartorder.model.Auth;
 import com.example.smartorder.repository.MemberRepository;
-import com.example.smartorder.service.auth.Impl.AuthServiceImpl;
+import com.example.smartorder.service.auth.impl.AuthServiceImpl;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.example.smartorder.service.admin.Impl;
+package com.example.smartorder.service.admin.impl;
 
 import static com.example.smartorder.common.error.ErrorCode.NOT_FOUND_USER;
 
